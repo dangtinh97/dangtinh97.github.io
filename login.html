@@ -27,17 +27,34 @@
 
 </div>
 <script src="https://apis.google.com/js/platform.js" async defer></script>
+<script src="assets/js/utility.js" async defer></script>
+<script
+        src="https://code.jquery.com/jquery-3.5.1.js"
+        integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+        crossorigin="anonymous"></script>
 <script>
-    function onSignIn(googleUser) {
+    async function onSignIn(googleUser) {
         var profile = googleUser.getBasicProfile();
         localStorage.setItem('account',JSON.stringify(profile));
-        alert(profile.getName());
-        return window.location.href="./index.html";
+        let register = await requestAjax(API.user_post,'POST',{
+            full_name:profile.getName(),
+            email:profile.getEmail(),
+            mail_id:profile.getId(),
+            avatar:profile.getImageUrl(),
+        });
+
+        if( register.status===200){
+            document.cookie = "token="+register.data.token;
+            return window.location.href="./index.html";
+        }
+        console.log(register);
         console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
         console.log('Name: ' + profile.getName());
         console.log('Image URL: ' + profile.getImageUrl());
         console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
     }
+
+
 </script>
 </body>
 </html>
