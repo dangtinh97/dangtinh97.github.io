@@ -349,14 +349,16 @@
             <div class="sidebar-item sidebar-search">
                 <div>
                     <div class="input-group">
-                        <input type="email" class="form-control search-user" id="search-user" style="color: black" placeholder="Tìm kiếm...">
+                        <input type="email" class="form-control search-user" id="search-user" style="color: black"
+                               placeholder="Tìm kiếm...">
                         <div class="input-group-append" id="btn-search" style="cursor: pointer">
                                 <span class="input-group-text">
                                     <i class="fa fa-search" aria-hidden="true"></i>
                                 </span>
                         </div>
                     </div>
-                    <a href="#" class="shadow p-3 mt-3 bg-body rounded bg-light text-dark result" style="display: none"></a>
+                    <a href="#" class="shadow p-3 mt-3 bg-body rounded bg-light text-dark result"
+                       style="display: none"></a>
                 </div>
             </div>
             <!-- sidebar-menu  -->
@@ -683,7 +685,8 @@
                         </ul>
                     </div>
                 </div>
-                <div class="text-center text-white" id="load-message" style="position: absolute;top: 12%;left: 48%;display: none">
+                <div class="text-center text-white" id="load-message"
+                     style="position: absolute;top: 12%;left: 48%;display: none">
                     <div class="spinner-border" role="status">
 
                     </div>
@@ -792,7 +795,9 @@
 <script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
 <script src="../node_modules/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js"></script> -->
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.1.1/socket.io.js" integrity="sha512-oFOCo2/3DtjrJG4N27BjSLQWoiBv171sK6a+JiWjp/7agxC2nCUP358AqzxkBUb5jX8g6CYLPdSKQTbC0weCwA==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.1.1/socket.io.js"
+        integrity="sha512-oFOCo2/3DtjrJG4N27BjSLQWoiBv171sK6a+JiWjp/7agxC2nCUP358AqzxkBUb5jX8g6CYLPdSKQTbC0weCwA=="
+        crossorigin="anonymous"></script>
 <script src="assets/js/main.js"></script>
 <script src="assets/js/utility.js" async defer></script>
 <script>
@@ -803,24 +808,27 @@
     };
 
     document.addEventListener("DOMContentLoaded", function () {
-        let audio=new Audio('assets/mp3/ting.wav');
-        audio.muted=true;
+        let audio = new Audio('assets/mp3/ting.wav');
+        audio.muted = true;
         let me = localStorage.getItem('account');
-        me = JSON.parse(me);
-        var socket = io('https://web-app-socket-5euxxskrra-uc.a.run.app/',{
-            reconnectionDelayMax: 10000,
-            auth: {
-                token: getCookie('token')
-            },
-            query: {
-                "mail_id": me.JR ?? ""
-            }
-        });
+        var socket = null;
+        if (me !== null) {
+            me = JSON.parse(me);
+            socket = io('https://web-app-socket-5euxxskrra-uc.a.run.app/', {
+                reconnectionDelayMax: 10000,
+                auth: {
+                    token: getCookie('token')
+                },
+                query: {
+                    "mail_id": me.JR ?? ""
+                }
+            });
+        }
         const token = getCookie('token');
         let idLastScroll = '';
         let idScrolled = '';
         let user = null;
-        let awaitScroll=false;
+        let awaitScroll = false;
         let showUser = async (mailId) => {
             $(".result").html('<div class="text-center">\n' +
                 '  <div class="spinner-border" role="status">\n' +
@@ -842,36 +850,37 @@
             } else {
                 $(".result").html('Không tìm thấy....').fadeIn();
                 $(".result").fadeOut(1500)
-            };
+            }
+            ;
             return find;
         };
-        let getMessage = async (userId,idLast)=>{
+        let getMessage = async (userId, idLast) => {
             $("#load-message").fadeIn();
-            let get = await requestAjax(API.get_message,'GET',{
-                user_id:userId,
-                last_chat_id:idLast,
-            },{
+            let get = await requestAjax(API.get_message, 'GET', {
+                user_id: userId,
+                last_chat_id: idLast,
+            }, {
                 Authorization: 'Bearer ' + token
             });
             $("#load-message").fadeOut();
             $(".loader").remove();
-            if(!get.success) return;
+            if (!get.success) return;
             let data = get.data;
-            if(idLast===data[data.length-1]['id']) return;
-            idLastScroll=data[data.length-1]['id'];
-            awaitScroll=false;
-            data.forEach(function (value){
-                if(value.user_id_take!==parseInt(userId)){
+            if (idLast === data[data.length - 1]['id']) return;
+            idLastScroll = data[data.length - 1]['id'];
+            awaitScroll = false;
+            data.forEach(function (value) {
+                if (value.user_id_take !== parseInt(userId)) {
                     $(".msg_card_body").prepend('<div class="d-flex justify-content-start mb-4">\n' +
                         '                        <div class="img_cont_msg">\n' +
-                        '                            <img src="'+user.avatar+'" class="rounded-circle user_img_msg">\n' +
+                        '                            <img src="' + user.avatar + '" class="rounded-circle user_img_msg">\n' +
                         '                        </div>\n' +
-                        '                        <div class="msg_cotainer">'+value.message+'<span class="msg_time"></span>\n' +
+                        '                        <div class="msg_cotainer">' + value.message + '<span class="msg_time"></span>\n' +
                         '                        </div>\n' +
                         '                    </div>')
-                }else{
+                } else {
                     $(".msg_card_body").prepend('<div class="d-flex justify-content-end mb-4">\n' +
-                        '                        <div class="msg_cotainer_send">'+value.message+'<span class="msg_time_send"></span>\n' +
+                        '                        <div class="msg_cotainer_send">' + value.message + '<span class="msg_time_send"></span>\n' +
                         '                        </div>\n' +
                         '                    </div>')
                 }
@@ -888,42 +897,43 @@
                 $(".user_img,.user_img_msg").attr('src', find.data.avatar)
                 $(".user_info > span").html(find.data.full_name);
                 $(".card-footer").fadeIn();
-               await getMessage(find.data.id,'');
+                await getMessage(find.data.id, '');
                 let obj = document.getElementsByClassName('msg_card_body')[0];
                 obj.scrollTop = obj.scrollHeight
             }, 500);
-        };
-        socket.on('send-message',function (e){
-            console.log(e,user);
-            if(user!==null && user.mail_id===e.from_user_id){
+        }
+        ;
+        socket.on('send-message', function (e) {
+            console.log(e, user);
+            if (user !== null && user.mail_id === e.from_user_id) {
                 $(".msg_card_body").append('<div class="d-flex justify-content-start mb-4">\n' +
                     '                        <div class="img_cont_msg">\n' +
-                    '                            <img src="'+user.avatar+'" class="rounded-circle user_img_msg">\n' +
+                    '                            <img src="' + user.avatar + '" class="rounded-circle user_img_msg">\n' +
                     '                        </div>\n' +
-                    '                        <div class="msg_cotainer">'+e.content+'<span class="msg_time"></span>\n' +
+                    '                        <div class="msg_cotainer">' + e.content + '<span class="msg_time"></span>\n' +
                     '                        </div>\n' +
                     '                    </div>')
-            }else{
+            } else {
                 $(".sidebar-menu >ul").html('');
                 listMessUser();
-                audio.muted=false;
+                audio.muted = false;
                 audio.load();
                 audio.play();
             }
         })
 
-        let sendMessage =async ()=>{
-            let mess = ($(".type_msg").val()).trim().replace(/(<([^>]+)>)/ig,"");
+        let sendMessage = async () => {
+            let mess = ($(".type_msg").val()).trim().replace(/(<([^>]+)>)/ig, "");
             if (mess === "") return;
             $(".msg_card_body").append('<div class="d-flex justify-content-end mb-4">\n' +
-                '                        <div class="msg_cotainer_send">'+mess+'<span class="msg_time_send"></span>\n' +
+                '                        <div class="msg_cotainer_send">' + mess + '<span class="msg_time_send"></span>\n' +
                 '                        </div>\n' +
                 '                    </div>');
             let obj = document.getElementsByClassName('msg_card_body')[0];
             obj.scrollTop = obj.scrollHeight;
-            socket.emit('send-message',{
-                to_user_id:user.mail_id,
-                content:mess,
+            socket.emit('send-message', {
+                to_user_id: user.mail_id,
+                content: mess,
             });
             let send = await requestAjax(API.send_message, 'POST', {
                 user_id_take: user.id,
@@ -936,29 +946,29 @@
             return true;
         }
 
-        let listMessUser=async function (idLastChat){
-            let res=await requestAjax(API.list_chat,'GET',{
-                last_chat_id:idLastChat
-            },{
+        let listMessUser = async function (idLastChat) {
+            let res = await requestAjax(API.list_chat, 'GET', {
+                last_chat_id: idLastChat
+            }, {
                 Authorization: 'Bearer ' + token
             });
-            if(typeof res.data.list==="undefined" || (res.data.list).length===0) return;
-           let data = res.data.list;
-           data.forEach(function (e){
-               $(".sidebar-menu > ul").append('<li>\n' +
-                   '                        <a href="./index.html?mail_id='+e.mail_id+'">\n' +
-                   // '                            <i class="fa fa-book"></i>\n' +
-                   '                            <span class="menu-text">'+e.full_name+'</span>\n' +
-                   '                            <span class="badge badge-pill badge-primary">'+e.count+'</span>\n' +
-                   '                        </a>\n' +
-                   '                    </li>')
-           })
+            if (typeof res.data.list === "undefined" || (res.data.list).length === 0) return;
+            let data = res.data.list;
+            data.forEach(function (e) {
+                $(".sidebar-menu > ul").append('<li>\n' +
+                    '                        <a href="./index.html?mail_id=' + e.mail_id + '">\n' +
+                    // '                            <i class="fa fa-book"></i>\n' +
+                    '                            <span class="menu-text">' + e.full_name + '</span>\n' +
+                    '                            <span class="badge badge-pill badge-primary">' + e.count + '</span>\n' +
+                    '                        </a>\n' +
+                    '                    </li>')
+            })
 
         };
 
-        setTimeout(function (){
+        setTimeout(function () {
             listMessUser();
-        },500);
+        }, 500);
 
         // $(this).on('scroll','.msg_card_body',function (){
         //     console.log($(this).scrollTop);
@@ -966,15 +976,15 @@
 
 
         var elBodyChat = document.getElementsByClassName('msg_card_body')[0];
-        elBodyChat.addEventListener('scroll', function(event) {
+        elBodyChat.addEventListener('scroll', function (event) {
             if (event.target.scrollTop === 0) {
-                if(idScrolled===idLastScroll) return;
-                idScrolled=idLastScroll;
-                getMessage(user.id,idLastScroll);
+                if (idScrolled === idLastScroll) return;
+                idScrolled = idLastScroll;
+                getMessage(user.id, idLastScroll);
             }
         }, false);
 
-        $("#search-user").on('keyup',async function (e) {
+        $("#search-user").on('keyup', async function (e) {
             if (e.key === 'Enter' || e.keyCode === 13) {
                 await showUser($("#search-user").val());
             }
@@ -992,16 +1002,16 @@
             await showUser(emailSearch);
         });
 
-        $(this).on('click','#reset',async function (){
+        $(this).on('click', '#reset', async function () {
             await loginNew();
             window.location.reload();
         });
-        let loginNew=async ()=>{
-           let request = await requestAjax(API.login_api,'POST',{
-                mail_id:JSON.parse(localStorage.getItem('account')).JR,
-                password:getCookie('token'),
+        let loginNew = async () => {
+            let request = await requestAjax(API.login_api, 'POST', {
+                mail_id: JSON.parse(localStorage.getItem('account')).JR,
+                password: getCookie('token'),
             });
-            document.cookie = "token="+request.data.token;
+            document.cookie = "token=" + request.data.token;
         }
 
 
