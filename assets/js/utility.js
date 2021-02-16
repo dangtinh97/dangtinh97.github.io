@@ -6,6 +6,7 @@ const API = {
     send_message:BASE_URL+'/chats',
     get_message:BASE_URL+'/chats',
     list_chat:BASE_URL+'/chats/manager',
+    login_api:BASE_URL+'/login',
 }
 
 let requestAjax =async (url,method,data=null,headers={})=>{

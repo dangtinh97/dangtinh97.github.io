@@ -635,10 +635,10 @@
                     <a class="dropdown-item" href="#">Setting</a>
                 </div>
             </div>
-            <div id="logout">
-                <a href="#">
+            <div id="reset" style="cursor: pointer">
+                <div style="margin: auto;color: white">
                     <i class="fa fa-power-off"></i>
-                </a>
+                </div>
             </div>
             <div class="pinned-footer">
                 <a href="#">
@@ -791,7 +791,7 @@
 <script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
 <script src="../node_modules/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js"></script> -->
 
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.1.1/socket.io.js" integrity="sha512-oFOCo2/3DtjrJG4N27BjSLQWoiBv171sK6a+JiWjp/7agxC2nCUP358AqzxkBUb5jX8g6CYLPdSKQTbC0weCwA==" crossorigin="anonymous"></script>
 <script src="assets/js/main.js"></script>
 <script src="assets/js/utility.js" async defer></script>
 <script>
@@ -802,6 +802,17 @@
     };
 
     document.addEventListener("DOMContentLoaded", function () {
+        let me = localStorage.getItem('account');
+        me = JSON.parse(me);
+        var socket = io('https://web-app-socket-5euxxskrra-uc.a.run.app/',{
+            reconnectionDelayMax: 10000,
+            auth: {
+                token: getCookie('token')
+            },
+            query: {
+                "mail_id": me.JR
+            }
+        });
         const token = getCookie('token');
         let idLastScroll = '';
         let idScrolled = '';
@@ -880,6 +891,19 @@
             }, 500);
         };
 
+        socket.on('send-message',function (e){
+            console.log(e,user);
+            if(user!==null && user.mail_id===e.from_user_id){
+                $(".msg_card_body").append('<div class="d-flex justify-content-start mb-4">\n' +
+                    '                        <div class="img_cont_msg">\n' +
+                    '                            <img src="'+user.avatar+'" class="rounded-circle user_img_msg">\n' +
+                    '                        </div>\n' +
+                    '                        <div class="msg_cotainer">'+e.content+'<span class="msg_time"></span>\n' +
+                    '                        </div>\n' +
+                    '                    </div>')
+            }
+        })
+
         let sendMessage =async ()=>{
             let mess = ($(".type_msg").val()).trim().replace(/(<([^>]+)>)/ig,"");
             if (mess === "") return;
@@ -889,6 +913,10 @@
                 '                    </div>');
             let obj = document.getElementsByClassName('msg_card_body')[0];
             obj.scrollTop = obj.scrollHeight;
+            socket.emit('send-message',{
+                to_user_id:user.mail_id,
+                content:mess,
+            });
             let send = await requestAjax(API.send_message, 'POST', {
                 user_id_take: user.id,
                 message: mess,
@@ -922,8 +950,7 @@
 
         setTimeout(function (){
             listMessUser();
-        },500)
-
+        },500);
 
         // $(this).on('scroll','.msg_card_body',function (){
         //     console.log($(this).scrollTop);
@@ -957,6 +984,18 @@
             await showUser(emailSearch);
         });
 
+        $(this).on('click','#reset',async function (){
+            await loginNew();
+            window.location.reload();
+        });
+        let loginNew=async ()=>{
+           let request = await requestAjax(API.login_api,'POST',{
+                mail_id:JSON.parse(localStorage.getItem('account')).JR,
+                password:getCookie('token'),
+            });
+            document.cookie = "token="+request.data.token;
+        }
+
 
         $(this).on('click', '#toggle-sidebar2,#toggle-sidebar3', function () {
             if ($(this)[0].id == 'toggle-sidebar2') {
@@ -977,6 +1016,7 @@
         $("#avatar").attr('src', account.vI)
         $("#name").html(account.sd);
     })
+
 </script>
 </body>
 
