@@ -808,22 +808,21 @@
     };
 
     document.addEventListener("DOMContentLoaded", function () {
+        let account = localStorage.getItem('account');
+        if (account === null) return window.location.href = '/login.html';
+        account = JSON.parse(account);
         let audio = new Audio('assets/mp3/ting.wav');
         audio.muted = true;
-        let me = localStorage.getItem('account');
-        var socket = null;
-        if (me !== null) {
-            me = JSON.parse(me);
-            socket = io('https://web-app-socket-5euxxskrra-uc.a.run.app/', {
-                reconnectionDelayMax: 10000,
-                auth: {
-                    token: getCookie('token')
-                },
-                query: {
-                    "mail_id": me.JR ?? ""
-                }
-            });
-        }
+        var socket = io('https://web-app-socket-5euxxskrra-uc.a.run.app/', {
+            reconnectionDelayMax: 10000,
+            auth: {
+                token: getCookie('token')
+            },
+            query: {
+                "mail_id": account.JR ?? ""
+            }
+        });
+
         const token = getCookie('token');
         let idLastScroll = '';
         let idScrolled = '';
@@ -1028,12 +1027,10 @@
             $("#toggle-sidebar3").fadeIn();
         });
 
-        let account = localStorage.getItem('account');
-        if (account === null) return window.location.href = '/login.html';
-        account = JSON.parse(account);
+
         $("#avatar").attr('src', account.vI)
         $("#name").html(account.sd);
-    })
+    });
 
 </script>
 </body>
