@@ -805,7 +805,6 @@
     document.addEventListener("DOMContentLoaded", function () {
         let audio=new Audio('assets/mp3/ting.wav');
         audio.muted=true;
-
         let me = localStorage.getItem('account');
         me = JSON.parse(me);
         var socket = io('https://web-app-socket-5euxxskrra-uc.a.run.app/',{
@@ -814,7 +813,7 @@
                 token: getCookie('token')
             },
             query: {
-                "mail_id": me.JR
+                "mail_id": me.JR ?? ""
             }
         });
         const token = getCookie('token');
