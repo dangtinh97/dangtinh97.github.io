@@ -321,6 +321,7 @@
 </head>
 
 <body>
+
 <div class="page-wrapper default-theme sidebar-bg bg1 toggled">
     <nav id="sidebar" class="sidebar-wrapper">
         <div class="sidebar-content">
@@ -802,9 +803,13 @@
     };
 
     document.addEventListener("DOMContentLoaded", function () {
+        let audio=new Audio('assets/mp3/ting.wav');
+        audio.muted=true;
+
         let me = localStorage.getItem('account');
         me = JSON.parse(me);
-        var socket = io('https://web-app-socket-5euxxskrra-uc.a.run.app/',{
+        //var socket = io('https://web-app-socket-5euxxskrra-uc.a.run.app/',{
+        var socket = io('http://localhost:8888',{
             reconnectionDelayMax: 10000,
             auth: {
                 token: getCookie('token')
@@ -890,7 +895,6 @@
                 obj.scrollTop = obj.scrollHeight
             }, 500);
         };
-
         socket.on('send-message',function (e){
             console.log(e,user);
             if(user!==null && user.mail_id===e.from_user_id){
@@ -901,6 +905,12 @@
                     '                        <div class="msg_cotainer">'+e.content+'<span class="msg_time"></span>\n' +
                     '                        </div>\n' +
                     '                    </div>')
+            }else{
+                $(".sidebar-menu >ul").html('');
+                listMessUser();
+                audio.muted=false;
+                audio.load();
+                audio.play();
             }
         })
 
