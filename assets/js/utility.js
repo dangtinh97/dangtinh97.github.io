@@ -18,6 +18,9 @@ let requestAjax =async (url,method,data=null,headers={})=>{
         data:data,
         headers: headers,
         success:function (e){
+            if(!e.success){
+                alert(e.content);
+            }
             res  =e;
         }
     }).fail(function (e){
