@@ -790,10 +790,6 @@
 <script src="//malihu.github.io/custom-scrollbar/jquery.mCustomScrollbar.concat.min.js"></script>
 
 <!-- using local scripts -->
-<!-- <script src="../node_modules/jquery/dist/jquery.min.js"></script>
-<script src="../node_modules/popper.js/dist/umd/popper.min.js"></script>
-<script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
-<script src="../node_modules/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js"></script> -->
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.1.1/socket.io.js"
         integrity="sha512-oFOCo2/3DtjrJG4N27BjSLQWoiBv171sK6a+JiWjp/7agxC2nCUP358AqzxkBUb5jX8g6CYLPdSKQTbC0weCwA=="
@@ -801,11 +797,7 @@
 <script src="assets/js/main.js"></script>
 <script src="assets/js/utility.js" async defer></script>
 <script>
-    function getCookie(name) {
-        const value = `; ${document.cookie}`;
-        const parts = value.split(`; ${name}=`);
-        if (parts.length === 2) return parts.pop().split(';').shift();
-    };
+
 
     document.addEventListener("DOMContentLoaded", function () {
         let account = localStorage.getItem('account');
@@ -816,14 +808,14 @@
         var socket = io('https://web-app-socket-5euxxskrra-uc.a.run.app/', {
             reconnectionDelayMax: 10000,
             auth: {
-                token: getCookie('token')
+                token: localStorage.getItem('token')
             },
             query: {
                 "mail_id": account.JR ?? ""
             }
         });
 
-        const token = getCookie('token');
+        const token = localStorage.getItem('token');
         let idLastScroll = '';
         let idScrolled = '';
         let user = null;
@@ -1008,9 +1000,9 @@
         let loginNew = async () => {
             let request = await requestAjax(API.login_api, 'POST', {
                 mail_id: JSON.parse(localStorage.getItem('account')).JR,
-                password: getCookie('token'),
+                password: localStorage.getItem('token'),
             });
-            document.cookie = "token=" + request.data.token;
+            localStorage.setItem('token',request.data.token)
         }
 
 
