@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description"
           content="Responsive sidebar template with sliding effect and dropdown menu based on bootstrap 3">
-    <title>Sidebar template</title>
+    <title>Kết nối yêu thương</title>
 
     <!-- using online links -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
@@ -348,25 +348,20 @@
             <div class="sidebar-item sidebar-search">
                 <div>
                     <div class="input-group">
-                        <input type="email" class="form-control search-user" id="search-user" placeholder="Tìm kiếm...">
+                        <input type="email" class="form-control search-user" id="search-user" style="color: black" placeholder="Tìm kiếm...">
                         <div class="input-group-append" id="btn-search" style="cursor: pointer">
                                 <span class="input-group-text">
                                     <i class="fa fa-search" aria-hidden="true"></i>
                                 </span>
                         </div>
-
                     </div>
-                    <a href="#" class="shadow p-3 mt-3 bg-body rounded bg-light text-dark result" style="display: none">
-                        <div><img
-                                src="https://lh3.googleusercontent.com/a-/AOh14Ght7nqZ_gXIVjt_YREaJeIuxEA6WenKrWI2PeOvAw=s96-c"
-                                width="50px" class="result-avatar"></div>
-                        <div style="margin: auto"><h5 class="result-name">Vũ đăng Tính</h5></div>
-                    </a>
+                    <a href="#" class="shadow p-3 mt-3 bg-body rounded bg-light text-dark result" style="display: none"></a>
                 </div>
             </div>
             <!-- sidebar-menu  -->
             <div class=" sidebar-item sidebar-menu">
                 <ul>
+                    <!---
                     <li class="header-menu">
                         <span>General</span>
                     </li>
@@ -498,7 +493,7 @@
                             <i class="fa fa-folder"></i>
                             <span class="menu-text">Examples</span>
                         </a>
-                    </li>
+                    </li>--->
                 </ul>
             </div>
             <!-- sidebar-menu  -->
@@ -640,7 +635,7 @@
                     <a class="dropdown-item" href="#">Setting</a>
                 </div>
             </div>
-            <div>
+            <div id="logout">
                 <a href="#">
                     <i class="fa fa-power-off"></i>
                 </a>
@@ -685,6 +680,11 @@
                             <li><i class="fas fa-plus"></i> Add to group</li>
                             <li><i class="fas fa-ban"></i> Block</li>
                         </ul>
+                    </div>
+                </div>
+                <div class="text-center text-white" id="load-message" style="position: absolute;top: 12%;left: 48%;display: none">
+                    <div class="spinner-border" role="status">
+
                     </div>
                 </div>
                 <div class="card-body msg_card_body">
@@ -808,6 +808,10 @@
         let user = null;
         let awaitScroll=false;
         let showUser = async (mailId) => {
+            $(".result").html('<div class="text-center">\n' +
+                '  <div class="spinner-border" role="status">\n' +
+                '  </div>\n' +
+                '</div>').css({'display': 'flex'}).fadeIn();
             let find = await requestAjax(API.user_search, 'GET', {
                 email: mailId,
             }, {
@@ -815,21 +819,27 @@
             });
             if (typeof find.data.mail_id !== "undefined") {
                 user = find.data;
-                $(".result").css({'display': 'flex'}).attr('href', './index.html?mail_id=' + find.data.mail_id);
+                $(".result").css({'display': 'flex'}).attr('href', './index.html?mail_id=' + find.data.mail_id).html('<div><img\n' +
+                    '                                src="https://lh3.googleusercontent.com/a-/AOh14Ght7nqZ_gXIVjt_YREaJeIuxEA6WenKrWI2PeOvAw=s96-c"\n' +
+                    '                                width="50px" class="result-avatar"></div>\n' +
+                    '                        <div style="margin: auto"><h5 class="result-name">Vũ đăng Tính</h5></div>');
                 $(".result-avatar").attr('src', find.data.avatar);
                 $(".result-name").html(find.data.full_name);
             } else {
-                $(".result").css('display', 'none')
+                $(".result").html('Không tìm thấy....').fadeIn();
+                $(".result").fadeOut(1500)
             };
             return find;
         };
         let getMessage = async (userId,idLast)=>{
+            $("#load-message").fadeIn();
             let get = await requestAjax(API.get_message,'GET',{
                 user_id:userId,
                 last_chat_id:idLast,
             },{
                 Authorization: 'Bearer ' + token
             });
+            $("#load-message").fadeOut();
             $(".loader").remove();
             if(!get.success) return;
             let data = get.data;
@@ -842,12 +852,12 @@
                         '                        <div class="img_cont_msg">\n' +
                         '                            <img src="'+user.avatar+'" class="rounded-circle user_img_msg">\n' +
                         '                        </div>\n' +
-                        '                        <div class="msg_cotainer">'+value.message+'<span class="msg_time">8:40 AM, Today</span>\n' +
+                        '                        <div class="msg_cotainer">'+value.message+'<span class="msg_time"></span>\n' +
                         '                        </div>\n' +
                         '                    </div>')
                 }else{
                     $(".msg_card_body").prepend('<div class="d-flex justify-content-end mb-4">\n' +
-                        '                        <div class="msg_cotainer_send">'+value.message+'<span class="msg_time_send">8:55 AM, Today</span>\n' +
+                        '                        <div class="msg_cotainer_send">'+value.message+'<span class="msg_time_send"></span>\n' +
                         '                        </div>\n' +
                         '                    </div>')
                 }
@@ -867,7 +877,7 @@
                await getMessage(find.data.id,'');
                 let obj = document.getElementsByClassName('msg_card_body')[0];
                 obj.scrollTop = obj.scrollHeight
-            }, 100);
+            }, 500);
         };
 
         let sendMessage =async ()=>{
@@ -890,6 +900,30 @@
             return true;
         }
 
+        let listMessUser=async function (idLastChat){
+            let res=await requestAjax(API.list_chat,'GET',{
+                last_chat_id:idLastChat
+            },{
+                Authorization: 'Bearer ' + token
+            });
+            if(typeof res.data.list==="undefined" || (res.data.list).length===0) return;
+           let data = res.data.list;
+           data.forEach(function (e){
+               $(".sidebar-menu > ul").append('<li>\n' +
+                   '                        <a href="./index.html?mail_id='+e.mail_id+'">\n' +
+                   // '                            <i class="fa fa-book"></i>\n' +
+                   '                            <span class="menu-text">'+e.full_name+'</span>\n' +
+                   '                            <span class="badge badge-pill badge-primary">'+e.count+'</span>\n' +
+                   '                        </a>\n' +
+                   '                    </li>')
+           })
+
+        };
+
+        setTimeout(function (){
+            listMessUser();
+        },500)
+
 
         // $(this).on('scroll','.msg_card_body',function (){
         //     console.log($(this).scrollTop);
@@ -905,9 +939,9 @@
             }
         }, false);
 
-        $(".msg_card_body").on('keyup', function (e) {
+        $("#search-user").on('keyup',async function (e) {
             if (e.key === 'Enter' || e.keyCode === 13) {
-                sendMessage();
+                await showUser($("#search-user").val());
             }
         });
 
