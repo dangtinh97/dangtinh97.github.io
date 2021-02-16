@@ -808,8 +808,7 @@
 
         let me = localStorage.getItem('account');
         me = JSON.parse(me);
-        //var socket = io('https://web-app-socket-5euxxskrra-uc.a.run.app/',{
-        var socket = io('http://localhost:8888',{
+        var socket = io('https://web-app-socket-5euxxskrra-uc.a.run.app/',{
             reconnectionDelayMax: 10000,
             auth: {
                 token: getCookie('token')
