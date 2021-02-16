@@ -801,9 +801,8 @@
 
     document.addEventListener("DOMContentLoaded", function () {
         let account = localStorage.getItem('account');
-        if (account === null ||localStorage.getItem('token')==="" || localStorage.getItem('token')===null) return window.location.href = '/login.html';
         const token = localStorage.getItem('token');
-        console.log(account,token);
+        if (account === null ||token==="" || token===null) return window.location.href = '/login.html';
         account = JSON.parse(account);
         let audio = new Audio('assets/mp3/ting.wav');
         audio.muted = true;
@@ -813,7 +812,7 @@
                 token: localStorage.getItem('token')
             },
             query: {
-                "mail_id": JSON.parse(localStorage.getItem('account')).JR
+                "mail_id": account.JR
             }
         });
 
