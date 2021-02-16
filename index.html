@@ -802,6 +802,7 @@
     document.addEventListener("DOMContentLoaded", function () {
         let account = localStorage.getItem('account');
         if (account === null ||localStorage.getItem('token')==="" || localStorage.getItem('token')===null) return window.location.href = '/login.html';
+        console.log(account,token);
         account = JSON.parse(account);
         let audio = new Audio('assets/mp3/ting.wav');
         audio.muted = true;
