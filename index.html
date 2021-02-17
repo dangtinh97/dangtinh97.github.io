@@ -16,311 +16,39 @@
           integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
     <link rel="stylesheet" href="//malihu.github.io/custom-scrollbar/jquery.mCustomScrollbar.min.css">
 
-    <!-- using local links -->
-    <!-- <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../node_modules/@fortawesome/fontawesome-free/css/all.min.css">
-    <link rel="stylesheet" href="../node_modules/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.css"> -->
-
     <link rel="stylesheet" href="assets/css/main.css">
     <link rel="stylesheet" href="assets/css/sidebar-themes.css">
+    <link rel="stylesheet" href="assets/css/form-chat.css">
     <link rel="shortcut icon" type="image/png" href="assets/img/favicon.png"/>
-    <style>
-        .loader {
-            margin: 100px auto;
-            font-size: 25px;
-            width: 1em;
-            height: 1em;
-            border-radius: 50%;
-            position: relative;
-            text-indent: -9999em;
-            -webkit-animation: load5 1.1s infinite ease;
-            animation: load5 1.1s infinite ease;
-            -webkit-transform: translateZ(0);
-            -ms-transform: translateZ(0);
-            transform: translateZ(0);
-        }
 
-        @-webkit-keyframes load5 {
-            0%,
-            100% {
-                box-shadow: 0em -2.6em 0em 0em #ffffff, 1.8em -1.8em 0 0em rgba(255, 255, 255, 0.2), 2.5em 0em 0 0em rgba(255, 255, 255, 0.2), 1.75em 1.75em 0 0em rgba(255, 255, 255, 0.2), 0em 2.5em 0 0em rgba(255, 255, 255, 0.2), -1.8em 1.8em 0 0em rgba(255, 255, 255, 0.2), -2.6em 0em 0 0em rgba(255, 255, 255, 0.5), -1.8em -1.8em 0 0em rgba(255, 255, 255, 0.7);
-            }
-            12.5% {
-                box-shadow: 0em -2.6em 0em 0em rgba(255, 255, 255, 0.7), 1.8em -1.8em 0 0em #ffffff, 2.5em 0em 0 0em rgba(255, 255, 255, 0.2), 1.75em 1.75em 0 0em rgba(255, 255, 255, 0.2), 0em 2.5em 0 0em rgba(255, 255, 255, 0.2), -1.8em 1.8em 0 0em rgba(255, 255, 255, 0.2), -2.6em 0em 0 0em rgba(255, 255, 255, 0.2), -1.8em -1.8em 0 0em rgba(255, 255, 255, 0.5);
-            }
-            25% {
-                box-shadow: 0em -2.6em 0em 0em rgba(255, 255, 255, 0.5), 1.8em -1.8em 0 0em rgba(255, 255, 255, 0.7), 2.5em 0em 0 0em #ffffff, 1.75em 1.75em 0 0em rgba(255, 255, 255, 0.2), 0em 2.5em 0 0em rgba(255, 255, 255, 0.2), -1.8em 1.8em 0 0em rgba(255, 255, 255, 0.2), -2.6em 0em 0 0em rgba(255, 255, 255, 0.2), -1.8em -1.8em 0 0em rgba(255, 255, 255, 0.2);
-            }
-            37.5% {
-                box-shadow: 0em -2.6em 0em 0em rgba(255, 255, 255, 0.2), 1.8em -1.8em 0 0em rgba(255, 255, 255, 0.5), 2.5em 0em 0 0em rgba(255, 255, 255, 0.7), 1.75em 1.75em 0 0em #ffffff, 0em 2.5em 0 0em rgba(255, 255, 255, 0.2), -1.8em 1.8em 0 0em rgba(255, 255, 255, 0.2), -2.6em 0em 0 0em rgba(255, 255, 255, 0.2), -1.8em -1.8em 0 0em rgba(255, 255, 255, 0.2);
-            }
-            50% {
-                box-shadow: 0em -2.6em 0em 0em rgba(255, 255, 255, 0.2), 1.8em -1.8em 0 0em rgba(255, 255, 255, 0.2), 2.5em 0em 0 0em rgba(255, 255, 255, 0.5), 1.75em 1.75em 0 0em rgba(255, 255, 255, 0.7), 0em 2.5em 0 0em #ffffff, -1.8em 1.8em 0 0em rgba(255, 255, 255, 0.2), -2.6em 0em 0 0em rgba(255, 255, 255, 0.2), -1.8em -1.8em 0 0em rgba(255, 255, 255, 0.2);
-            }
-            62.5% {
-                box-shadow: 0em -2.6em 0em 0em rgba(255, 255, 255, 0.2), 1.8em -1.8em 0 0em rgba(255, 255, 255, 0.2), 2.5em 0em 0 0em rgba(255, 255, 255, 0.2), 1.75em 1.75em 0 0em rgba(255, 255, 255, 0.5), 0em 2.5em 0 0em rgba(255, 255, 255, 0.7), -1.8em 1.8em 0 0em #ffffff, -2.6em 0em 0 0em rgba(255, 255, 255, 0.2), -1.8em -1.8em 0 0em rgba(255, 255, 255, 0.2);
-            }
-            75% {
-                box-shadow: 0em -2.6em 0em 0em rgba(255, 255, 255, 0.2), 1.8em -1.8em 0 0em rgba(255, 255, 255, 0.2), 2.5em 0em 0 0em rgba(255, 255, 255, 0.2), 1.75em 1.75em 0 0em rgba(255, 255, 255, 0.2), 0em 2.5em 0 0em rgba(255, 255, 255, 0.5), -1.8em 1.8em 0 0em rgba(255, 255, 255, 0.7), -2.6em 0em 0 0em #ffffff, -1.8em -1.8em 0 0em rgba(255, 255, 255, 0.2);
-            }
-            87.5% {
-                box-shadow: 0em -2.6em 0em 0em rgba(255, 255, 255, 0.2), 1.8em -1.8em 0 0em rgba(255, 255, 255, 0.2), 2.5em 0em 0 0em rgba(255, 255, 255, 0.2), 1.75em 1.75em 0 0em rgba(255, 255, 255, 0.2), 0em 2.5em 0 0em rgba(255, 255, 255, 0.2), -1.8em 1.8em 0 0em rgba(255, 255, 255, 0.5), -2.6em 0em 0 0em rgba(255, 255, 255, 0.7), -1.8em -1.8em 0 0em #ffffff;
-            }
-        }
-
-        @keyframes load5 {
-            0%,
-            100% {
-                box-shadow: 0em -2.6em 0em 0em #ffffff, 1.8em -1.8em 0 0em rgba(255, 255, 255, 0.2), 2.5em 0em 0 0em rgba(255, 255, 255, 0.2), 1.75em 1.75em 0 0em rgba(255, 255, 255, 0.2), 0em 2.5em 0 0em rgba(255, 255, 255, 0.2), -1.8em 1.8em 0 0em rgba(255, 255, 255, 0.2), -2.6em 0em 0 0em rgba(255, 255, 255, 0.5), -1.8em -1.8em 0 0em rgba(255, 255, 255, 0.7);
-            }
-            12.5% {
-                box-shadow: 0em -2.6em 0em 0em rgba(255, 255, 255, 0.7), 1.8em -1.8em 0 0em #ffffff, 2.5em 0em 0 0em rgba(255, 255, 255, 0.2), 1.75em 1.75em 0 0em rgba(255, 255, 255, 0.2), 0em 2.5em 0 0em rgba(255, 255, 255, 0.2), -1.8em 1.8em 0 0em rgba(255, 255, 255, 0.2), -2.6em 0em 0 0em rgba(255, 255, 255, 0.2), -1.8em -1.8em 0 0em rgba(255, 255, 255, 0.5);
-            }
-            25% {
-                box-shadow: 0em -2.6em 0em 0em rgba(255, 255, 255, 0.5), 1.8em -1.8em 0 0em rgba(255, 255, 255, 0.7), 2.5em 0em 0 0em #ffffff, 1.75em 1.75em 0 0em rgba(255, 255, 255, 0.2), 0em 2.5em 0 0em rgba(255, 255, 255, 0.2), -1.8em 1.8em 0 0em rgba(255, 255, 255, 0.2), -2.6em 0em 0 0em rgba(255, 255, 255, 0.2), -1.8em -1.8em 0 0em rgba(255, 255, 255, 0.2);
-            }
-            37.5% {
-                box-shadow: 0em -2.6em 0em 0em rgba(255, 255, 255, 0.2), 1.8em -1.8em 0 0em rgba(255, 255, 255, 0.5), 2.5em 0em 0 0em rgba(255, 255, 255, 0.7), 1.75em 1.75em 0 0em #ffffff, 0em 2.5em 0 0em rgba(255, 255, 255, 0.2), -1.8em 1.8em 0 0em rgba(255, 255, 255, 0.2), -2.6em 0em 0 0em rgba(255, 255, 255, 0.2), -1.8em -1.8em 0 0em rgba(255, 255, 255, 0.2);
-            }
-            50% {
-                box-shadow: 0em -2.6em 0em 0em rgba(255, 255, 255, 0.2), 1.8em -1.8em 0 0em rgba(255, 255, 255, 0.2), 2.5em 0em 0 0em rgba(255, 255, 255, 0.5), 1.75em 1.75em 0 0em rgba(255, 255, 255, 0.7), 0em 2.5em 0 0em #ffffff, -1.8em 1.8em 0 0em rgba(255, 255, 255, 0.2), -2.6em 0em 0 0em rgba(255, 255, 255, 0.2), -1.8em -1.8em 0 0em rgba(255, 255, 255, 0.2);
-            }
-            62.5% {
-                box-shadow: 0em -2.6em 0em 0em rgba(255, 255, 255, 0.2), 1.8em -1.8em 0 0em rgba(255, 255, 255, 0.2), 2.5em 0em 0 0em rgba(255, 255, 255, 0.2), 1.75em 1.75em 0 0em rgba(255, 255, 255, 0.5), 0em 2.5em 0 0em rgba(255, 255, 255, 0.7), -1.8em 1.8em 0 0em #ffffff, -2.6em 0em 0 0em rgba(255, 255, 255, 0.2), -1.8em -1.8em 0 0em rgba(255, 255, 255, 0.2);
-            }
-            75% {
-                box-shadow: 0em -2.6em 0em 0em rgba(255, 255, 255, 0.2), 1.8em -1.8em 0 0em rgba(255, 255, 255, 0.2), 2.5em 0em 0 0em rgba(255, 255, 255, 0.2), 1.75em 1.75em 0 0em rgba(255, 255, 255, 0.2), 0em 2.5em 0 0em rgba(255, 255, 255, 0.5), -1.8em 1.8em 0 0em rgba(255, 255, 255, 0.7), -2.6em 0em 0 0em #ffffff, -1.8em -1.8em 0 0em rgba(255, 255, 255, 0.2);
-            }
-            87.5% {
-                box-shadow: 0em -2.6em 0em 0em rgba(255, 255, 255, 0.2), 1.8em -1.8em 0 0em rgba(255, 255, 255, 0.2), 2.5em 0em 0 0em rgba(255, 255, 255, 0.2), 1.75em 1.75em 0 0em rgba(255, 255, 255, 0.2), 0em 2.5em 0 0em rgba(255, 255, 255, 0.2), -1.8em 1.8em 0 0em rgba(255, 255, 255, 0.5), -2.6em 0em 0 0em rgba(255, 255, 255, 0.7), -1.8em -1.8em 0 0em #ffffff;
-            }
-        }
-
-
-        .card {
-            height: 670px;
-            border-radius: 15px !important;
-            background-color: rgba(0, 0, 0, 0.4) !important;
-        }
-
-        .msg_card_body {
-            overflow-y: auto;
-        }
-
-        .card-header {
-            border-radius: 15px 15px 0 0 !important;
-            border-bottom: 0 !important;
-        }
-
-        .card-footer {
-            display: none;
-            border-radius: 0 0 15px 15px !important;
-            border-top: 0 !important;
-        }
-
-        .type_msg {
-            background-color: rgba(0, 0, 0, 0.3) !important;
-            border: 0 !important;
-            color: white !important;
-            height: 60px !important;
-            overflow-y: auto;
-        }
-
-        .type_msg:focus {
-            box-shadow: none !important;
-            outline: 0px !important;
-        }
-
-        .attach_btn {
-            border-radius: 15px 0 0 15px !important;
-            background-color: rgba(0, 0, 0, 0.3) !important;
-            border: 0 !important;
-            color: white !important;
-            cursor: pointer;
-        }
-
-        .send_btn {
-            border-radius: 0 15px 15px 0 !important;
-            background-color: rgba(0, 0, 0, 0.3) !important;
-            border: 0 !important;
-            color: white !important;
-            cursor: pointer;
-        }
-
-        .contacts li {
-            width: 100% !important;
-            padding: 5px 10px;
-            margin-bottom: 15px !important;
-        }
-
-        .user_img {
-            height: 70px;
-            width: 70px;
-            border: 1.5px solid #f5f6fa;
-
-        }
-
-        .user_img_msg {
-            height: 40px;
-            width: 40px;
-            border: 1.5px solid #f5f6fa;
-
-        }
-
-        .img_cont {
-            position: relative;
-            height: 70px;
-            width: 70px;
-        }
-
-        .img_cont_msg {
-            height: 40px;
-            width: 40px;
-        }
-
-        .online_icon {
-            position: absolute;
-            height: 15px;
-            width: 15px;
-            background-color: #4cd137;
-            border-radius: 50%;
-            bottom: 0.2em;
-            right: 0.4em;
-            border: 1.5px solid white;
-        }
-
-        .offline {
-            background-color: #c23616 !important;
-        }
-
-        .user_info {
-            margin-top: auto;
-            margin-bottom: auto;
-            margin-left: 15px;
-        }
-
-        .user_info span {
-            font-size: 20px;
-            color: white;
-        }
-
-        .user_info p {
-            font-size: 10px;
-            color: rgba(255, 255, 255, 0.6);
-        }
-
-        .video_cam {
-            margin-left: 50px;
-            margin-top: 5px;
-        }
-
-        .video_cam span {
-            color: white;
-            font-size: 20px;
-            cursor: pointer;
-            margin-right: 20px;
-        }
-
-        .msg_cotainer {
-            margin-top: auto;
-            margin-bottom: auto;
-            margin-left: 10px;
-            border-radius: 25px;
-            background-color: #82ccdd;
-            padding: 10px;
-            position: relative;
-        }
-
-        .msg_cotainer_send {
-            margin-top: auto;
-            margin-bottom: auto;
-            margin-right: 10px;
-            border-radius: 25px;
-            background-color: #78e08f;
-            padding: 10px;
-            position: relative;
-        }
-
-        .msg_time {
-            position: absolute;
-            left: 0;
-            bottom: -15px;
-            color: rgba(255, 255, 255, 0.5);
-            font-size: 10px;
-        }
-
-        .msg_time_send {
-            position: absolute;
-            right: 0;
-            bottom: -15px;
-            color: rgba(255, 255, 255, 0.5);
-            font-size: 10px;
-        }
-
-        .msg_head {
-            position: relative;
-        }
-
-        #action_menu_btn {
-            position: absolute;
-            right: 10px;
-            top: 10px;
-            color: white;
-            cursor: pointer;
-            font-size: 20px;
-        }
-
-        .action_menu {
-            z-index: 1;
-            position: absolute;
-            padding: 15px 0;
-            background-color: rgba(0, 0, 0, 0.5);
-            color: white;
-            border-radius: 15px;
-            top: 30px;
-            right: 15px;
-            display: none;
-        }
-
-        .action_menu ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .action_menu ul li {
-            width: 100%;
-            padding: 10px 15px;
-            margin-bottom: 5px;
-        }
-
-        .action_menu ul li i {
-            padding-right: 10px;
-
-        }
-
-        .action_menu ul li:hover {
-            cursor: pointer;
-            background-color: rgba(0, 0, 0, 0.2);
-        }
-
-        @media (max-width: 576px) {
-            .contacts_card {
-                margin-bottom: 15px !important;
-            }
-        }
-
-        #chat {
-            height: 100%;
-            margin: 0;
-            background: #7F7FD5;
-            background: -webkit-linear-gradient(to right, #91EAE4, #86A8E7, #7F7FD5);
-            background: linear-gradient(to right, #91EAE4, #86A8E7, #7F7FD5);
-        }
-    </style>
 </head>
 
 <body>
+
+<!-- Modal -->
+<div class="modal fade"  data-bs-backdrop="static" data-bs-keyboard="false"  aria-hidden="true" id="call-modal" tabindex="-1" aria-labelledby="staticBackdropLabel"  >
+    <div class="modal-dialog modal-xl" data-bs-backdrop="static" aria-hidden="true" data-bs-keyboard="false">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Kết nối yêu thương</h5>
+            </div>
+            <div class="modal-body row">
+                <div  class="col-md-6 p-4" style="background: #5cb85c">
+                    <video id="friend-camera" width="100%" height="100%" ></video>
+                </div>
+                <div class="col-md-6 text-center p-4" style="background: red;">
+                    <video id="my-camera" width="90%" autoplay ></video>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div style="cursor: pointer" id="call-off"><img alt="Kết thúc cuộc gọi" src="assets/images/call-off.png" width="50px"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
 
 <div class="page-wrapper default-theme sidebar-bg bg1 toggled">
     <nav id="sidebar" class="sidebar-wrapper">
@@ -671,7 +399,7 @@
                             <p>1767 Messages</p>
                         </div>
                         <div class="video_cam">
-                            <span><i class="fas fa-video"></i></span>
+                            <span id="call_video" data-bs-toggle="modal" data-bs-target="#call-modal"><i class="fas fa-video"></i></span>
                             <span><i class="fas fa-phone"></i></span>
                         </div>
                     </div>
@@ -794,19 +522,22 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.1.1/socket.io.js"
         integrity="sha512-oFOCo2/3DtjrJG4N27BjSLQWoiBv171sK6a+JiWjp/7agxC2nCUP358AqzxkBUb5jX8g6CYLPdSKQTbC0weCwA=="
         crossorigin="anonymous"></script>
+
 <script src="assets/js/main.js"></script>
 <script src="assets/js/utility.js" async defer></script>
 <script>
-
-
+    const WS_URL ='https://web-app-socket-5euxxskrra-uc.a.run.app/'
     document.addEventListener("DOMContentLoaded", function () {
+       // $("#call-modal").modal({backdrop: 'static', keyboard: false});
+        var myModal = new bootstrap.Modal(document.getElementById('call-modal'),{ backdrop: 'static', keyboard: false});
+
         let account = localStorage.getItem('account');
         const token = localStorage.getItem('token');
         if (account === null ||token==="" || token===null) return window.location.href = '/login.html';
         account = JSON.parse(account);
         let audio = new Audio('assets/mp3/ting.wav');
         audio.muted = true;
-        var socket = io('https://web-app-socket-5euxxskrra-uc.a.run.app/', {
+        var socket = io(WS_URL, {
             reconnectionDelayMax: 10000,
             auth: {
                 token: localStorage.getItem('token')
@@ -815,6 +546,42 @@
                 "mail_id": account.JR
             }
         });
+        let streamMedia =null;
+        $(this).on('click','#call_video',function (){
+            myModal.show();
+            var video =  document.querySelector('#my-camera');
+
+            if (navigator.mediaDevices.getUserMedia) {
+                navigator.mediaDevices.getUserMedia({ video: true })
+                    .then(function (stream) {
+                        streamMedia=stream;
+                        video.srcObject = stream;
+                        video.onloadedmetadata = (e) => {
+                            video.play();
+                        };
+                    })
+                    .catch(function (err0r) {
+                        alert("Thất bại\nĐể thực hiện video call, vui lòng cho phép sử dụng camera.");
+                    });
+            }
+        });
+
+        function stopBothVideoAndAudio(stream) {
+            stream.getTracks().forEach(function(track) {
+                if (track.readyState == 'live') {
+                    track.stop();
+                };
+            });
+        }
+
+        $(this).on('click','#call-off',function (){
+            let confirmOff = confirm("Bạn có muốn kết thúc cuộc gọi ?");
+            if(!confirmOff) return;
+            myModal.hide();
+            stopBothVideoAndAudio(streamMedia);
+        })
+
+
 
 
         let idLastScroll = '';
@@ -843,7 +610,6 @@
                 $(".result").html('Không tìm thấy....').fadeIn();
                 $(".result").fadeOut(1500)
             }
-            ;
             return find;
         };
         let getMessage = async (userId, idLast) => {
@@ -858,6 +624,7 @@
             $(".loader").remove();
             if (!get.success) return;
             let data = get.data;
+            if(data.length===0) return;
             if (idLast === data[data.length - 1]['id']) return;
             idLastScroll = data[data.length - 1]['id'];
             awaitScroll = false;
@@ -881,11 +648,16 @@
         }
         var url = new URL(location.href);
         var mailIdSearch = url.searchParams.get("mail_id");
-        if (mailIdSearch !== "") {
+        console.log(mailIdSearch);
+        if (mailIdSearch !== "" && mailIdSearch!==null) {
+            console.log('a');
             setTimeout(async function () {
                 let find = await showUser(mailIdSearch);
-                // document.getElementsByClassName('msg_card_body')[0].innerHTML="";
-                if (typeof find.data.mail_id === "undefined") return;
+                if (typeof find.data.mail_id === "undefined"){
+                    $(".user_info").html('<h3 class="text-white">Kết nối yêu thương</h3>');
+                    $(".video_cam").remove();
+                    return;
+                }
                 $(".user_img,.user_img_msg").attr('src', find.data.avatar)
                 $(".user_info > span").html(find.data.full_name);
                 $(".card-footer").fadeIn();
@@ -893,8 +665,12 @@
                 let obj = document.getElementsByClassName('msg_card_body')[0];
                 obj.scrollTop = obj.scrollHeight
             }, 500);
+        }else{
+            $(".user_info").html('<h3 class="text-white">Kết nối yêu thương</h3>');
+            $(".video_cam").remove();
+
         }
-        ;
+
         socket.on('send-message', function (e) {
             console.log(e, user);
             if (user !== null && user.mail_id === e.from_user_id) {
@@ -1023,6 +799,9 @@
 
         $("#avatar").attr('src', account.vI)
         $("#name").html(account.sd);
+
+
+
     });
 
 </script>
