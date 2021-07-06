@@ -16,6 +16,10 @@
     <h3 class="text-white pt-3">Vũ Đăng Tính</h3>
 </div>
 <div class="mt-4">
+    <audio id="mp3" controls style="display: none">
+        <source src="https://data25.chiasenhac.com/download2/2180/2/2179288-589d5be3/128/Chang%20Co%20Mai%20Sau%20-%20Khang%20Viet_%20Nguyen%20Th.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
     <a href="fb://profile/100003973725211" class="card border-primary mb-3" >
         <div class="card-body text-primary ">
             <i size="2x" class="fab fa-facebook fa-2x"></i>
@@ -55,6 +59,13 @@
             <h5 class="card-title">Gmail</h5>
         </div>
     </a>
+
+    <a id="showMe" target="_blank" href="https://nhantien.momo.vn/ApTp78igxAt/1000" class="card border-primary mb-3" >
+        <div class="card-body text-primary ">
+            <i class="fas fa-donate fa-2x"></i>
+            <h5 class="card-title">ủng hộ tôi</h5>
+        </div>
+    </a>
 </div>
 <script>
     var userAgent = navigator.userAgent;
@@ -62,6 +73,15 @@
         let hrefSendSMS = document.getElementById('send_sms').href;
         document.getElementById('send_sms').href = hrefSendSMS.replace('?','&');
     }
+
+    var play = false;
+
+    document.body.addEventListener("click", function (evt) {
+        if(!play) document.getElementById('mp3').play();
+        if(play) document.getElementById('mp3').pause();
+        play = !play;
+    });
+
 </script>
 </body>
 </html>

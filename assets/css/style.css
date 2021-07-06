@@ -9,3 +9,13 @@ body{
 a {
     text-decoration: none !important
 }
+
+#showMe {
+    animation: cssAnimation 0s 5s forwards;
+    visibility: hidden;
+    height: 0px;
+}
+
+@keyframes cssAnimation {
+    to   { visibility: visible; height: max-content}
+}
