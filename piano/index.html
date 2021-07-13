@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PIANO</title>
+    <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
+    <style>
+        ._white{
+            border: 1px solid black;
+            height: 150px;
+            width: 50px;
+            position: relative;
+
+        }
+
+        ._black{
+            left: -17px;
+            border: 1px solid black;
+            height: 100px;
+            width: 35px;
+            position: relative;
+            background: black;
+            color: white;
+        }
+        span{
+            position: absolute;
+            bottom: 0;
+            text-align: center;
+        }
+    </style>
+</head>
+<body class="bg-gradient">
+<div id="row-note" style="display: flex">
+
+</div>
+
+<script src="../assets/js/jquery-3.6.0.js"></script>
+<script>
+    const notesConfig ={
+        c:'đô',
+        d:'rê',
+        e:'mi',
+        f:'fa',
+        g:'son',
+        a:'la',
+        b:'si'
+    };
+    let files = [];
+    var audio = null;
+    const  note = ['c','c','d','d','e','f','f','g','g','a','a','b'];
+    let nNote = 0;
+    let interval = 0;
+    const position = [0,1,0,1,0,0,1,0,1,0,1,0];
+    let nPosition = 0;
+    let defaultKey = {
+        'KeyA':28,
+        'KeyW':29,
+        'KeyD':30,
+        'KeyR':31,
+        'KeyG':32,
+        'KeyJ':33,
+        'KeyI':34,
+        'KeyL':35,
+        'KeyP':36,
+        'Quote':37,
+        'BracketRight':38,
+        'Enter':39,
+        'KeyZ':40, //đô
+        'KeyS':41,
+        'KeyC':42, //rê
+        'KeyF':43,
+        'KeyB':44, //mi
+        'KeyM':45, //fa
+        'KeyK':46,
+        'Period':47, //son .
+        'Semicolon':48,
+        'Slash':49,
+        //'Enter':50,
+        //'Slash':51
+    };
+    for(let i=28;i<=63;i++){
+        let name = note[nNote]+'_'+position[nPosition]+'_'+interval+'.mp3';
+        let append = '';
+        if(position[nPosition+1]===1){
+            append = '<div data-id="'+(i+1)+'" data-mp3="'+note[nNote]+'_'+position[nPosition+1]+'_'+interval+'.mp3'+'" class="_black"><span>'+getKeyByValue(defaultKey,i+1)+'</span></div>';
+        }
+
+        let html = '<div style="display: flex">\n' +
+            '        <div data-id="'+i+'" data-mp3="'+name+'" class="_white"><span>'+notesConfig[note[nNote]]+'\n('+getKeyByValue(defaultKey,i)+')</span></div>\n' +
+            append+
+            '    </div>';
+
+        if(position[nPosition]===0) $("#row-note").append(html);
+        if(note[nNote]=='b') interval++;
+        nNote++;
+        nPosition++;
+        if(nNote>=12) nNote=0;
+        if(nPosition>=12) nPosition=0;
+        files[i] = new Audio('./assets/mp3/'+name);
+
+    }
+
+    function getKeyByValue(object, value) {
+        return Object.keys(object).find(key => object[key] === value);
+    }
+    let before = null;
+
+    document.addEventListener("DOMContentLoaded",function (){
+        console.log("a")
+        $(this).on('click','._white, ._black',function (){
+            let id = $(this).data('id');
+            if(before!=null) files[before].load();
+            before = id;
+            files[id].play()
+        })
+    })
+
+
+    let beforePress = null;
+    document.addEventListener('keypress',function (e){
+        let key = e.code;
+        console.log(key);
+        if(typeof defaultKey[key]!=="undefined") {
+            let id = defaultKey[key];
+            console.log(id);
+            if(beforePress!=null) files[beforePress].load();
+            beforePress = id;
+            files[id].play()
+        }
+    })
+
+
+
+
+
+</script>
+</body>
+</html>
