@@ -1,5 +1,5 @@
 <script>
   var url = new URL(window.location.href);
 var c = url.searchParams.get("redirect_to");
-console.log(c);
+window.location.href = c;
 </script>
