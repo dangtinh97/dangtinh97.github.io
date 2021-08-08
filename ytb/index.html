@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" integrity="sha512-5A8nwdMOWrSz20fDsjczgUidUBR8liPYU+WymTZP1lmY9G6Oc7HlZv156XqnsgNUzTyMefFTcsFH/tnJE/+xBg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>HTML - YTB</title>
+    <style>
+        html, body {
+            background-color: #181818;
+            height: 100%;
+        }
+        i{
+            color: white;
+        }
+        header{
+            opacity: 0.95;
+            position: fixed;
+            top: 0;
+            background-color: #212121;
+            justify-content: space-between;
+            padding: 0 16px;
+            display: flex;
+            height: 56px;
+            width: 100%;
+        }
+        #body{
+            margin-top: 56px;
+        }
+
+        .logo-menu{
+
+            padding: 18px 14px 18px 16px;
+            display: flex;
+        }
+
+        .logo-menu .logo{
+            padding: 0 1rem;
+        }
+
+        .logo-menu .menu{
+            padding-right: 1rem;
+        }
+        .search{
+            display: flex;
+            width: 40%;
+            padding: 18px 14px 18px 16px;
+        }
+
+        .search div.form-group{
+            flex:1;
+            display: flex;
+        }
+        .search button{
+            height: 30px;
+        }
+        .search .btn-search{
+            border: #323232;
+            width: 65px;
+            background-color: #323232;
+        }
+
+        .search div.form-group input{
+            padding: 7px;
+            border: 1px solid #323223;
+            height: 30px;
+            width:100%;
+            background-color: #121212;
+        }
+
+        .action{
+            padding: 18px 14px 18px 16px;
+        }
+
+        .action ul{
+            display: flex;
+            list-style-type: none;
+        }
+        .action ul li{
+            padding: 0 10px;
+        }
+
+        #micro{
+            padding: 4px;
+            margin:0 3px;
+            justify-content: center;
+            align-items: center;
+            width: 36px;
+            background: black;
+            display: flex;
+            height: 36px;
+            border-radius: 50%;
+        }
+
+        #columns{
+            justify-content: center;
+            display: flex;
+            margin-left: 24px;
+        }
+        #columns #watch-comment{
+            padding: 24px 24px 0 0;
+            flex: 3;
+        }
+
+        #watch-comment #watch{
+
+        }
+
+        #columns #list{
+            flex: 1;
+            padding: 24px 24px 0 0;
+        }
+
+        #list .item-video{
+            display: flex;
+            margin-bottom: 5px;
+        }
+
+        .item-video .info{
+            min-width: 100px;
+            color: white;
+            padding: 0 7px;
+        }
+
+        .info .channel,.view-time{
+            font-size: 12px;
+            color: #656565;
+        }
+
+        .info .title{
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2; /* number of lines to show */
+            -webkit-box-orient: vertical;
+        }
+
+        @media screen and (min-width: 1920px){
+            #columns{
+                margin: 0 5%;
+                justify-content: center;
+            }
+        }
+
+        @media screen and (max-width: 999px){
+            #columns{
+                flex-direction: column;
+            }
+        }
+
+        ._action_view{
+            top: 50%;
+            justify-content: space-between;
+        }
+
+        ._action_view div{
+            margin: auto 0;
+        }
+        ._action_view ul{
+            display: flex;
+            list-style-type: none;
+        }
+
+        ._action_view ul li{
+            padding: 0 10px;
+        }
+
+        #watch .info{
+            height: 81px;
+        }
+
+        @media screen and (max-width: 655px){
+            .search{
+                display: none;
+            }
+        }
+
+    </style>
+</head>
+<body>
+<div id="content">
+    <header>
+        <div class="logo-menu">
+            <div class="menu">
+                <i class="fa fa-bars" aria-hidden="true"></i>
+            </div>
+            <div class="logo">
+                <img width="90px"  src="assets/img/logo.png">
+            </div>
+        </div>
+
+        <div class="search">
+            <div class="form-group" >
+                <input placeholder="Tìm kiếm" class="" type="text">
+                <button type="button" class="btn-search"><i class="fa fa-search" aria-hidden="true"></i></button>
+            </div>
+            <div id="micro"><i class="fa fa-microphone" aria-hidden="true"></i></div>
+        </div>
+
+<!--        <div id="search-2" style="width: 0">-->
+<!--            <button type="button" class="btn"><i class="fa fa-search" aria-hidden="true"></i></button>-->
+<!--        </div>-->
+
+        <div class="action">
+            <ul>
+                <li><i class="fa fa-video-camera" aria-hidden="true"></i></li>
+                <li><i class="fa fa-video-camera" aria-hidden="true"></i></li>
+                <li><i class="fa fa-video-camera" aria-hidden="true"></i></li>
+                <li><i class="fa fa-video-camera" aria-hidden="true"></i></li>
+            </ul>
+        </div>
+    </header>
+
+    <div id="body">
+        <div id="columns" style="display: flex">
+            <div id="watch-comment">
+                <div id="watch">
+                    <iframe width="100%"
+                            src="https://www.youtube.com/embed/DhFzz4KJsRk">
+                    </iframe>
+                    <div class="info" style="color: white;margin-top: 5px" >
+                        <div class="title">TÌNH ĐƠN PHƯƠNG - NGUYỄN BẢO KHÁNH - NGHE MUỐN RỤNG CON TIM ORGAN DJ</div>
+                        <div class="d-flex _action_view">
+                            <div class="view-time" style="margin-top: 5px">
+                                63.606 lượt xem4 thg 8, 2018
+                            </div>
+                            <div>
+                                <ul>
+                                    <li><i class="fa fa-thumbs-up" aria-hidden="true"></i> Thích</li>
+                                    <li><i class="fa fa-thumbs-down" aria-hidden="true"></i> Không thích</i></li>
+                                    <li><i class="fa fa-share" aria-hidden="true"></i> Chia sẻ</li>
+                                    <li><i class="fa fa-video-camera" aria-hidden="true"></i></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="comment"></div>
+            </div>
+            <div id="list">
+
+            </div>
+        </div>
+
+    </div>
+</div>
+<script
+        src="https://code.jquery.com/jquery-3.6.0.js"
+        integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+        crossorigin="anonymous"></script>
+<script>
+    document.addEventListener("DOMContentLoaded",function (){
+
+        let width = document.getElementsByTagName('iframe')[0].offsetWidth;
+        $("iframe").css('height',width*0.56);
+
+        $(window).resize(function() {
+            let width = document.getElementsByTagName('iframe')[0].offsetWidth;
+            $("iframe").css('height',width*0.56);
+        });
+
+        for(let i=0;i<20;i++){
+            $("#list").append(`<div class="item-video">
+                    <div class="thumbnail">
+                        <img src="assets/img/thumbnail.png" width="168" height="94">
+                    </div>
+                    <div class="info">
+                        <div class="title">[Để học Flexbox tốt hơn] Liên hệ Flex model với các thuộc tính flexbox trong CSS</div>
+                        <div class="channel">F8 studio</div>
+                        <div class="view-time">13N lượt xem - 7 tháng trước</div>
+                    </div>
+                </div>`)
+        }
+    })
+
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js" integrity="sha384-eMNCOe7tC1doHpGoWe/6oMVemdAVTMs2xqW4mwXrXsW0L84Iytr2wi5v2QjrP/xp" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.min.js" integrity="sha384-cn7l7gDp0eyniUwwAZgrzD06kc/tftFf19TOAs2zVinnD/C7E91j9yyk5//jjpt/" crossorigin="anonymous"></script>
+</body>
+</html>
