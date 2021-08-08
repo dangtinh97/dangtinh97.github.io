@@ -149,6 +149,9 @@
         }
 
         @media screen and (max-width: 999px){
+            .search{
+                width: 100%;
+            }
             #columns{
                 flex-direction: column;
             }
@@ -184,6 +187,10 @@
             /*}*/
         }
 
+        #result-search{
+            padding: 14px;
+        }
+
         @media screen and (max-width: 450px){
             #columns{
                 margin-left: 0;
@@ -200,10 +207,6 @@
             #watch .info{
                 margin: 0 24px;
             }
-
-            .search{
-                width: 100%;
-            }
         }
 
     </style>
@@ -211,21 +214,26 @@
 <body>
 <div id="content">
     <header>
+
+
+        <div class="search">
+            <div class="form-group" >
+                <div class="form-group" style="display: flex;flex-direction: column">
+                    <input placeholder="Tìm kiếm" class="" type="text">
+                    <div id="result-search"  style="background-color: white;min-height: 50px;display: none"></div>
+                </div>
+                <button type="button" class="btn-search"><i class="fa fa-search" aria-hidden="true"></i></button>
+            </div>
+            <!--            <div id="micro"><i class="fa fa-microphone" aria-hidden="true"></i></div>-->
+        </div>
+
         <div class="logo-menu">
             <div class="menu">
                 <i class="fa fa-bars" aria-hidden="true"></i>
             </div>
-            <div class="logo">
-                <img width="90px"  src="assets/img/logo.png">
-            </div>
-        </div>
-
-        <div class="search">
-            <div class="form-group" >
-                <input placeholder="Tìm kiếm" class="" type="text">
-                <button type="button" class="btn-search"><i class="fa fa-search" aria-hidden="true"></i></button>
-            </div>
-            <!--            <div id="micro"><i class="fa fa-microphone" aria-hidden="true"></i></div>-->
+            <!--            <div class="logo">-->
+            <!--                <img width="90px"  src="assets/img/logo.png">-->
+            <!--            </div>-->
         </div>
 
         <!--        <div id="search-2" style="width: 0">-->
@@ -302,6 +310,15 @@
                     </div>
                 </div>`)
         }
+
+
+        $(this).on('keyup','input',function (){
+            if($(this).val()=="") {
+               return $("#result-search").fadeOut();
+            }
+
+            $("#result-search").fadeIn(1000)
+        })
     })
 
 </script>
