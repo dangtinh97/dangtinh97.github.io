@@ -64,6 +64,7 @@
         }
 
         .search div.form-group input{
+            color: white;
             padding: 7px;
             border: 1px solid #323223;
             height: 30px;
@@ -83,6 +84,8 @@
             padding: 0 10px;
         }
 
+
+
         #micro{
             padding: 4px;
             margin:0 3px;
@@ -101,7 +104,7 @@
             margin-left: 24px;
         }
         #columns #watch-comment{
-            padding: 24px 24px 0 0;
+            margin: 24px 0;
             flex: 3;
         }
 
@@ -111,7 +114,7 @@
 
         #columns #list{
             flex: 1;
-            padding: 24px 24px 0 0;
+            margin: 24px;
         }
 
         #list .item-video{
@@ -149,6 +152,9 @@
             #columns{
                 flex-direction: column;
             }
+            #watch-comment #watch{
+                margin-right: 24px;
+            }
         }
 
         ._action_view{
@@ -173,8 +179,30 @@
         }
 
         @media screen and (max-width: 655px){
+            /*.search{*/
+            /*    display: none;*/
+            /*}*/
+        }
+
+        @media screen and (max-width: 450px){
+            #columns{
+                margin-left: 0;
+            }
+
+            #watch-comment #watch{
+                margin-right: 0px;
+            }
+
+            #list{
+                margin-left: 24px;
+            }
+
+            #watch .info{
+                margin: 0 24px;
+            }
+
             .search{
-                display: none;
+                width: 100%;
             }
         }
 
@@ -197,21 +225,21 @@
                 <input placeholder="Tìm kiếm" class="" type="text">
                 <button type="button" class="btn-search"><i class="fa fa-search" aria-hidden="true"></i></button>
             </div>
-            <div id="micro"><i class="fa fa-microphone" aria-hidden="true"></i></div>
+            <!--            <div id="micro"><i class="fa fa-microphone" aria-hidden="true"></i></div>-->
         </div>
 
-<!--        <div id="search-2" style="width: 0">-->
-<!--            <button type="button" class="btn"><i class="fa fa-search" aria-hidden="true"></i></button>-->
-<!--        </div>-->
+        <!--        <div id="search-2" style="width: 0">-->
+        <!--            <button type="button" class="btn"><i class="fa fa-search" aria-hidden="true"></i></button>-->
+        <!--        </div>-->
 
-        <div class="action">
-            <ul>
-                <li><i class="fa fa-video-camera" aria-hidden="true"></i></li>
-                <li><i class="fa fa-video-camera" aria-hidden="true"></i></li>
-                <li><i class="fa fa-video-camera" aria-hidden="true"></i></li>
-                <li><i class="fa fa-video-camera" aria-hidden="true"></i></li>
-            </ul>
-        </div>
+        <!--        <div class="action">-->
+        <!--            <ul>-->
+        <!--                <li><i class="fa fa-video-camera" aria-hidden="true"></i></li>-->
+        <!--                <li><i class="fa fa-video-camera" aria-hidden="true"></i></li>-->
+        <!--                <li><i class="fa fa-video-camera" aria-hidden="true"></i></li>-->
+        <!--                <li><i class="fa fa-video-camera" aria-hidden="true"></i></li>-->
+        <!--            </ul>-->
+        <!--        </div>-->
     </header>
 
     <div id="body">
@@ -225,16 +253,16 @@
                         <div class="title">TÌNH ĐƠN PHƯƠNG - NGUYỄN BẢO KHÁNH - NGHE MUỐN RỤNG CON TIM ORGAN DJ</div>
                         <div class="d-flex _action_view">
                             <div class="view-time" style="margin-top: 5px">
-                                63.606 lượt xem4 thg 8, 2018
+                                63.606 lượt xem - 4 thg 8, 2018
                             </div>
-                            <div>
-                                <ul>
-                                    <li><i class="fa fa-thumbs-up" aria-hidden="true"></i> Thích</li>
-                                    <li><i class="fa fa-thumbs-down" aria-hidden="true"></i> Không thích</i></li>
-                                    <li><i class="fa fa-share" aria-hidden="true"></i> Chia sẻ</li>
-                                    <li><i class="fa fa-video-camera" aria-hidden="true"></i></li>
-                                </ul>
-                            </div>
+                            <!--                            <div>-->
+                            <!--                                <ul>-->
+                            <!--                                    <li><i class="fa fa-thumbs-up" aria-hidden="true"></i> Thích</li>-->
+                            <!--                                    <li><i class="fa fa-thumbs-down" aria-hidden="true"></i> Không thích</i></li>-->
+                            <!--                                    <li><i class="fa fa-share" aria-hidden="true"></i> Chia sẻ</li>-->
+                            <!--                                    <li><i class="fa fa-video-camera" aria-hidden="true"></i></li>-->
+                            <!--                                </ul>-->
+                            <!--                            </div>-->
                         </div>
                     </div>
                 </div>
