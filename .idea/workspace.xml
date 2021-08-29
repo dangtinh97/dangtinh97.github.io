@@ -4,7 +4,178 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="656b2030-eb5c-4440-873c-a2ec2a4754aa" name="Default Changelist" comment="" />
+    <list default="true" id="656b2030-eb5c-4440-873c-a2ec2a4754aa" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/me_img.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/css/bootstrap.min.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/css/style.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/images/209537917_1001378604003746_6841919934300277934_n.jpeg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/images/avt-me.jpeg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/images/dangtinhqr.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/images/momo.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/images/taotap-card.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/images/zalo.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/js/jquery-3.6.0.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/js/thong-tin-bieu-quyet-ban-co-dong-y-dau-tu-du-an-bq01-2021-07-13-03-56-32.xlsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/js/thong-tin-bieu-quyet-ban-co-dong-y-dau-tu-du-an-bq01-2021-07-13-03-57-24.xlsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/js/thong-tin-bieu-quyet-ban-co-dong-y-dau-tu-du-an-bq01-2021-07-13-04-02-31.xlsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/js/thong-tin-bieu-quyet-ban-co-dong-y-dau-tu-du-an-bq01-2021-07-13-04-04-18.xlsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/js/thong-tin-bieu-quyet-ban-co-dong-y-dau-tu-du-an-bq03-2021-07-13-02-56-43.xlsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/js/thong-tin-bieu-quyet-ban-co-dong-y-dau-tu-du-an-bq03-2021-07-13-03-15-50.xlsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/js/thong-tin-bieu-quyet-ban-co-dong-y-dau-tu-du-an-bq03-2021-07-13-08-00-37.xlsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/js/thong-tin-bieu-quyet-ban-co-dong-y-dau-tu-du-an-bq03-2021-07-13-08-01-37.xlsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/js/thong-tin-bieu-quyet-ban-co-dong-y-dau-tu-du-an-bq03-2021-07-13-08-02-45.xlsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/js/thong-tin-bieu-quyet-ban-co-dong-y-dau-tu-du-an-bq03-2021-07-13-08-04-40.xlsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/js/thong-tin-bieu-quyet-ban-co-dong-y-dau-tu-du-an-bq03-2021-07-13-08-05-20.xlsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/js/thong-tin-bieu-quyet-ban-co-dong-y-dau-tu-du-an-bq03-2021-07-13-08-06-02.xlsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/js/thong-tin-bieu-quyet-ban-co-dong-y-dau-tu-du-an-bq03-2021-07-13-08-07-34.xlsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/js/thong-tin-bieu-quyet-ban-co-dong-y-dau-tu-du-an-bq03-2021-07-13-08-11-12.xlsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/js/thong-tin-bieu-quyet-ban-co-dong-y-dau-tu-du-an-phase-2-2021-07-13-03-01-17.xlsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/js/thong-tin-bieu-quyet-ban-co-dong-y-dau-tu-du-an-phase-2-2021-07-13-03-03-12.xlsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/js/thong-tin-bieu-quyet-ban-co-dong-y-dau-tu-du-an-phase-2-2021-07-13-03-08-28.xlsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/js/thong-tin-bieu-quyet-ban-co-dong-y-dau-tu-du-an-phase-2-2021-07-13-03-12-00.xlsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/js/thong-tin-bieu-quyet-ban-co-dong-y-dau-tu-du-an-phase-2-2021-07-13-03-16-35.xlsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/js/thong-tin-bieu-quyet-ban-co-dong-y-dau-tu-du-an-phase-3-2021-07-13-03-13-00.xlsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/js/thong-tin-bieu-quyet-ban-co-dong-y-dau-tu-du-an-phase-3-2021-07-13-03-16-14.xlsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/js/thong-tin-bieu-quyet-ban-co-dong-y-dau-tu-du-an-phase-3-2021-07-13-09-44-10.xlsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/js/thong-tin-bieu-quyet-ban-co-dong-y-dau-tu-du-an-phase-3-2021-07-13-09-44-27.xlsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/js/thong-tin-bieu-quyet-bq05-2021-07-13-02-43-02.xlsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/js/thong-tin-bieu-quyet-bq05-2021-07-13-09-45-51.xlsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/drum/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/drum/mp3/1.mp3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/drum/mp3/10.mp3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/drum/mp3/2.mp3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/drum/mp3/3.mp3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/drum/mp3/4.mp3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/drum/mp3/5.mp3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/drum/mp3/6.mp3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/drum/mp3/7.mp3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/drum/mp3/8.mp3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/drum/mp3/9.mp3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/file1/backblue.gif" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/file1/cookies.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/file1/fade.gif" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/file1/img.youtube.com/vi/UiaYpoil42k/hqdefault.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/file1/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/file1/lianapp.tbl_loan_0908835188.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/file1/oauth.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/file1/public/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/file1/w.ladicdn.com/s1440x425/5c7362c6c417ab07e5196b05/untitled-1-20201103074659.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/file1/w.ladicdn.com/s1440x594/5c7362c6c417ab07e5196b05/wtge4-20201102084136.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/file1/w.ladicdn.com/s1440x616/5c7362c6c417ab07e5196b05/gfdhtg-20201103044735.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/file1/w.ladicdn.com/s350x350/5c7362c6c417ab07e5196b05/df-20191029092328.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/file1/w.ladicdn.com/s400x400/5c7362c6c417ab07e5196b05/icon-4-1564111666.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/file1/w.ladicdn.com/s400x400/5c7362c6c417ab07e5196b05/tye5-20201103032747.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/file1/w.ladicdn.com/s400x400/5d4ad3d00a83a22a0481e48e/459f8e0d4e81a3dffa90-20200629082652.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/file1/w.ladicdn.com/s400x400/5d4ad3d00a83a22a0481e48e/7a4dba731bd4f68aafc5-20200629083406.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/file1/w.ladicdn.com/s400x400/5d4ad3d00a83a22a0481e48e/fe6b0b4d51e8bcb6e5f9-20200629082407.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/file1/w.ladicdn.com/s400x500/5c7362c6c417ab07e5196b05/etfgwe4te-20201102083943.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/file1/w.ladicdn.com/s450x400/5c7362c6c417ab07e5196b05/fgvsrw34t4-20201102083944.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/file1/w.ladicdn.com/s450x500/5c7362c6c417ab07e5196b05/eawe-20201103045333.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/file1/w.ladicdn.com/s450x550/5d4ad3d00a83a22a0481e48e/fb3-20200629082320.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/file1/w.ladicdn.com/s500x550/5d4ad3d00a83a22a0481e48e/6-1562744205-20200629081238.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/file1/w.ladicdn.com/s500x600/5c7362c6c417ab07e5196b05/eawe-20201103045333.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/file1/w.ladicdn.com/s500x600/5c7362c6c417ab07e5196b05/etfgwe4te-20201102083943.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/file1/w.ladicdn.com/s500x650/5d4ad3d00a83a22a0481e48e/fb3-20200629082320.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/file1/w.ladicdn.com/s550x450/5c7362c6c417ab07e5196b05/fgvsrw34t4-20201102083944.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/file1/w.ladicdn.com/s550x500/5c7362c6c417ab07e5196b05/drvggtser-20201102083943.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/file1/w.ladicdn.com/s550x500/5c7362c6c417ab07e5196b05/fgrt-20201103034920.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/file1/w.ladicdn.com/s550x600/5c7362c6c417ab07e5196b05/fffffff-20201103044850.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/file1/w.ladicdn.com/s550x600/5c7362c6c417ab07e5196b05/ghyr7tu567ui56i6y-20201102083944.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/file1/w.ladicdn.com/s550x600/5d4ad3d00a83a22a0481e48e/fb1-20200629082924.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/file1/w.ladicdn.com/s550x600/5d4ad3d00a83a22a0481e48e/fb2-20200629083302.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/file1/w.ladicdn.com/s550x650/5c7362c6c417ab07e5196b05/eawe-20201103045333.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/file1/w.ladicdn.com/s550x650/5c7362c6c417ab07e5196b05/fffffff-20201103044850.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/file1/w.ladicdn.com/s550x650/5d4ad3d00a83a22a0481e48e/9-1562744290-20200629073014.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/file1/w.ladicdn.com/s600x450/5c7362c6c417ab07e5196b05/fgvsrw34t4-20201102083944.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/file1/w.ladicdn.com/s600x450/5c7362c6c417ab07e5196b05/sdtfgaerafgd-20201103044515.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/file1/w.ladicdn.com/s600x550/5c7362c6c417ab07e5196b05/drvggtser-20201102083943.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/file1/w.ladicdn.com/s600x700/5d4ad3d00a83a22a0481e48e/6-1562744205-20200629081238.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/file1/w.ladicdn.com/s600x750/5d4ad3d00a83a22a0481e48e/7-1562744614-20200629073936.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/file1/w.ladicdn.com/s650x500/5c7362c6c417ab07e5196b05/fgvsrw34t4-20201102083944.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/file1/w.ladicdn.com/s650x600/5d4ad3d00a83a22a0481e48e/4-1562744967-20200629074423.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/file1/w.ladicdn.com/s650x700/5c7362c6c417ab07e5196b05/awae-20201103032747.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/file1/w.ladicdn.com/s650x700/5c7362c6c417ab07e5196b05/tye5-20201103032747.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/file1/w.ladicdn.com/s700x750/5c7362c6c417ab07e5196b05/ghyr7tu567ui56i6y-20201102083944.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/file1/w.ladicdn.com/s700x800/5c7362c6c417ab07e5196b05/fffffff-20201103044850.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/file1/w.ladicdn.com/s700x800/5d4ad3d00a83a22a0481e48e/9-1562744290-20200629073014.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/file1/w.ladicdn.com/s700x900/5d4ad3d00a83a22a0481e48e/7-1562744614-20200629073936.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/file1/w.ladicdn.com/s700x950/5d4ad3d00a83a22a0481e48e/8-1562744367-20200629073330.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/file1/w.ladicdn.com/s750x600/5c7362c6c417ab07e5196b05/fgrt-20201103034920.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/file1/w.ladicdn.com/s750x750/5c7362c6c417ab07e5196b05/awae-20201103032747.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/file1/w.ladicdn.com/s750x750/5c7362c6c417ab07e5196b05/tye5-20201103032747.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/file1/w.ladicdn.com/s750x750/5d4ad3d00a83a22a0481e48e/11-1562744765-20200629074049.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/file1/w.ladicdn.com/s768x557/5c7362c6c417ab07e5196b05/untitled-1-20201103074659.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/file1/w.ladicdn.com/s768x862/5c7362c6c417ab07e5196b05/ggg-20201103081438.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/file1/w.ladicdn.com/s768x916/5c7362c6c417ab07e5196b05/o-20201103082758.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/file1/w.ladicdn.com/s800x550/5c7362c6c417ab07e5196b05/sdtfgaerafgd-20201103044515.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/file1/w.ladicdn.com/s800x700/5d4ad3d00a83a22a0481e48e/4-1562744967-20200629074423.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/file1/w.ladicdn.com/uploads/images/b0d831b2-21ab-4f2b-9f5e-e460ab5daf0c.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/file1/w.ladicdn.com/v2/source/ladipage.minea3f.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/file1/w.ladicdn.com/v2/source/ladipage.vi.minea3f.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/file1/w.ladicdn.com_443/5d4ad3d00a83a22a0481e48e/9-1562744290-20200629073014.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/piano/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/piano/.idea/piano.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/piano/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/piano/.idea/workspace.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/piano/assets/mp3/a_0_0.mp3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/piano/assets/mp3/a_0_1.mp3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/piano/assets/mp3/a_0_2.mp3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/piano/assets/mp3/a_1_0.mp3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/piano/assets/mp3/a_1_1.mp3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/piano/assets/mp3/a_1_2.mp3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/piano/assets/mp3/b_0_0.mp3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/piano/assets/mp3/b_0_1.mp3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/piano/assets/mp3/b_0_2.mp3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/piano/assets/mp3/c_0_0.mp3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/piano/assets/mp3/c_0_1.mp3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/piano/assets/mp3/c_0_2.mp3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/piano/assets/mp3/c_1_0.mp3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/piano/assets/mp3/c_1_1.mp3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/piano/assets/mp3/c_1_2.mp3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/piano/assets/mp3/d_0_0.mp3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/piano/assets/mp3/d_0_1.mp3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/piano/assets/mp3/d_0_2.mp3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/piano/assets/mp3/d_1_0.mp3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/piano/assets/mp3/d_1_1.mp3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/piano/assets/mp3/d_1_2.mp3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/piano/assets/mp3/e_0_0.mp3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/piano/assets/mp3/e_0_1.mp3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/piano/assets/mp3/e_0_2.mp3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/piano/assets/mp3/f_0_0.mp3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/piano/assets/mp3/f_0_1.mp3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/piano/assets/mp3/f_0_2.mp3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/piano/assets/mp3/f_1_0.mp3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/piano/assets/mp3/f_1_1.mp3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/piano/assets/mp3/f_1_2.mp3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/piano/assets/mp3/g_0_0.mp3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/piano/assets/mp3/g_0_1.mp3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/piano/assets/mp3/g_0_2.mp3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/piano/assets/mp3/g_1_0.mp3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/piano/assets/mp3/g_1_1.mp3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/piano/assets/mp3/g_1_2.mp3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/piano/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/redirect.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/redirect/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-stream/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-stream/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-stream/.idea/web-stream.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-stream/.idea/workspace.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-stream/assets/css/auth.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-stream/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-stream/login.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ytb/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ytb/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ytb/.idea/workspace.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ytb/.idea/ytb.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ytb/assets/img/logo.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ytb/assets/img/test.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ytb/assets/img/thumbnail.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ytb/index.html" beforeDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -40,6 +211,9 @@
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/piano/assets" />
       <recent name="$PROJECT_DIR$" />
@@ -60,10 +234,22 @@
       <workItem from="1625662412255" duration="598000" />
       <workItem from="1626159353853" duration="2332000" />
       <workItem from="1626190367802" duration="9024000" />
+      <workItem from="1630217539520" duration="884000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
 </project>

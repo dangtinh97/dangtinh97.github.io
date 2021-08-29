@@ -1,6 +1,0 @@
-# HTTrack Website Copier Cookie File
-# This file format is compatible with Netscape cookies
-mimita.tainghetrothinh.online	TRUE	/	FALSE	1999999999	LADI_FORM_SUBMIT	0
-mimita.tainghetrothinh.online	TRUE	/	FALSE	1999999999	LADI_PAGE_VIEW	1
-mimita.tainghetrothinh.online	TRUE	/	FALSE	1999999999	LADI_CLIENT_ID	587eb2ab-c408-4810-61f9-858760bce7d6
-

@@ -1,95 +1,13 @@
 <!doctype html>
 <html lang="en">
 <head>
-
-    <meta property="og:title" content="Thẻ cá nhân"/>
-    <meta property="og:type" content="Thẻ cá nhân"/>
-    <meta property="og:url" content="https://dangtinh97.github.io"/>
-    <meta property="og:image" content="https://dangtinh97.github.io/assets/images/taotap-card.png"/>
-    <meta property="og:site_name" content="Thẻ cá nhân"/>
-    <meta property="og:description" content="Sự khác biệt duy nhất giữa một ngày tốt đẹp và một ngày tồi tệ nằm ở chính thái độ của bạn."/>
-
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <link rel="stylesheet" href="assets/css/style.css">
-  <link rel="stylesheet" href="assets/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
-    <title>Đăng Tính</title>
+    <title>Portfolio</title>
 </head>
 <body>
-<div>
-  <img width="150px" class="rounded-circle border border-info" src="./assets/images/avt-me.jpeg">
-    <h3 class="text-white pt-3">Vũ Đăng Tính</h3>
-</div>
-<div class="mt-4">
-    <audio id="mp3" controls style="display: none">
-        <source src="https://data25.chiasenhac.com/download2/2180/2/2179288-589d5be3/128/Chang%20Co%20Mai%20Sau%20-%20Khang%20Viet_%20Nguyen%20Th.mp3" type="audio/mpeg">
-        Your browser does not support the audio element.
-    </audio>
-    <a href="fb://profile/100003973725211" class="card border-primary mb-3" >
-        <div class="card-body text-primary ">
-            <i size="2x" class="fab fa-facebook fa-2x"></i>
-            <h5 class="card-title">Facebook</h5>
-        </div>
-    </a>
-    <a target="_blank" href="https://zalo.me/0372052643" class="card border-primary mb-3" >
-        <div class="card-body text-primary ">
-            <img src="assets/images/zalo.png" width="42px">
-            <h5 class="card-title">Zalo</h5>
-        </div>
-    </a>
 
-    <a href="skype:dangtinh1122?chat" class="card border-primary mb-3" >
-        <div class="card-body text-primary ">
-            <i class="fab fa-skype fa-2x"></i>
-            <h5 class="card-title">Skype</h5>
-        </div>
-    </a>
-
-    <a href="tel:0372052643" class="card border-primary mb-3" >
-        <div class="card-body text-primary ">
-            <i class="fas fa-mobile-alt fa-2x"></i>
-            <h5 class="card-title">Điện thoại</h5>
-        </div>
-    </a>
-    <a id="send_sms" href="sms:0372052643?body=Xin%20ch%C3%A0o%20%C4%91%C3%A2y%20l%C3%A0%20s%E1%BB%91%20%C4%91i%E1%BB%87n%20tho%E1%BA%A1i%20c%E1%BB%A7a%20t%C3%B4i..." class="card border-primary mb-3" >
-        <div class="card-body text-primary ">
-            <i class="fas fa-comments"></i>
-            <h5 class="card-title">Gửi tin nhắn</h5>
-        </div>
-    </a>
-
-    <a target="_blank" href="mailto:dangtinha2@gmail.com" class="card border-primary mb-3" >
-        <div class="card-body text-primary ">
-            <i class="far fa-envelope-open fa-2x"></i>
-            <h5 class="card-title">Gmail</h5>
-        </div>
-    </a>
-
-    <a id="showMe" target="_blank" href="https://nhantien.momo.vn/ApTp78igxAt/1000" class="card border-primary mb-3" >
-        <div class="card-body text-primary ">
-            <i class="fas fa-donate fa-2x"></i>
-            <h5 class="card-title">ủng hộ tôi</h5>
-        </div>
-    </a>
-</div>
-<script>
-    var userAgent = navigator.userAgent;
-    if(userAgent.indexOf('iphone')!= -1 || userAgent.indexOf('iPhone')!= -1) {
-        let hrefSendSMS = document.getElementById('send_sms').href;
-        document.getElementById('send_sms').href = hrefSendSMS.replace('?','&');
-    }
-
-    var play = false;
-
-    document.body.addEventListener("click", function (evt) {
-        if(!play) document.getElementById('mp3').play();
-        if(play) document.getElementById('mp3').pause();
-        play = !play;
-    });
-
-</script>
 </body>
 </html>
