@@ -217,7 +217,9 @@
     function openApp() {
         window.location = appurl;
         timeout = setTimeout(function(){
-            document.location = appstore;
+            if(confirm('You do not seem to have the App installed, do you want to go download it now?')){
+                document.location = appstore;
+            }
         }, 1000);
         window.addEventListener('pagehide', preventPopup);
     }
