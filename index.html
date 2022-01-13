@@ -210,16 +210,17 @@
     var appurl = 'drumtify://?videoID=TKIfLjkUYJw&song=SMaw4bubbmcgZOG6q24gbmdoZSBuaOG6oWMgT2ZmbGluZSBraGkgdOG6r3QgbcOgbiBow6xuaCBob+G6t2MgY2jhur8gxJHhu5kgUGlQIHRyw6puIERydW10aWZ5&singer=RHJ1bXRpZnkgLSBNdXNpYyBGb3IgTGlmZQ==';
     var timeOut = null;
     let outAppNotify = false;
-
+    let text = "";
     function openApp() {
          outAppNotify = false;
         window.location = appurl;
         timeOut = setTimeout(function (){
-            return alert("show content");
+            text +="vào hàm time out|"
+            document.getElementById('show_text').innerText = text;
             // window.location = "https://apps.apple.com/vn/app/drumtify-music-for-life/id1530173879?l=en";
         },1500)
     }
-    let text = "";
+
 
     function openApp2(){
         clearTimeout(timeOut);
@@ -230,7 +231,7 @@
 
     document.addEventListener("visibilitychange", event => {
         text +=document.visibilityState+"|"
-        document.getElementById('show_text').outerHTML = text;
+        document.getElementById('show_text').innerText = text;
         clearInterval(timeOut);
         if(document.visibilityState === "hidden") {
 
