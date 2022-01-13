@@ -18,6 +18,7 @@
 <body>
 <button type="button" onclick="openApp()">open drumtify</button>
 <button type="button" onclick="openApp2()">open tab noname</button>
+<div id="show_text">open tab noname</div>
 <section class="container" id="page-chat" style="display: none">
 <div class="container-fluid h-100">
     <div class="row justify-content-center h-100">
@@ -218,6 +219,7 @@
             // window.location = "https://apps.apple.com/vn/app/drumtify-music-for-life/id1530173879?l=en";
         },1500)
     }
+    let text = "";
 
     function openApp2(){
         clearTimeout(timeOut);
@@ -227,6 +229,8 @@
 
 
     document.addEventListener("visibilitychange", event => {
+        text +=document.visibilityState+"|"
+        document.getElementById('show_text').outerHTML = text;
         clearInterval(timeOut);
         if(document.visibilityState === "hidden") {
 
