@@ -204,7 +204,9 @@
 </section>
 <script>
     function openApp(){
-        window.open('locamos://?store_oid=61d4158f556f9d737eacc608&type=STORE&cmd=share_gift&lang=en')
+        let open =window.open('locamos://?store_oid=61d4158f556f9d737eacc608&type=STORE&cmd=share_gift&lang=en')
+        document.getElementsByClassName('type_msg')[0].innerHTML="vu dangtinh"+open.name+"a"
+        console.log(open.name);
     }
     document.addEventListener("DOMContentLoaded",function (){
         $(".card").css('height',(window.innerHeight-5)+'px')
