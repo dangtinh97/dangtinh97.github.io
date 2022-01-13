@@ -22,7 +22,7 @@
 
 <script>
     document.addEventListener("DOMContentLoaded",function (){
-
+        var app2="locamos://?store_oid=61dd03f747840552aa29b732&type=STORE&cmd=share_gift&lang=en";
         var app1 = 'drumtify://?videoID=TKIfLjkUYJw&song=SMaw4bubbmcgZOG6q24gbmdoZSBuaOG6oWMgT2ZmbGluZSBraGkgdOG6r3QgbcOgbiBow6xuaCBob+G6t2MgY2jhur8gxJHhu5kgUGlQIHRyw6puIERydW10aWZ5&singer=RHJ1bXRpZnkgLSBNdXNpYyBGb3IgTGlmZQ==';
         var timeOut = null;
         let outAppNotify = false;
@@ -54,11 +54,19 @@
             outAppNotify = false;
             // window.location = appurl;
             window.location = app1;
-            setText("click open app")
+            setText("click open app1")
         }
 
+        function openApp2()
+        {
+            outAppNotify = false;
+            // window.location = appurl;
+            window.location = app2;
+            setText("click open app2")
+        }
 
         $(this).on("click",'#open-app-1',openApp)
+        $(this).on("click",'#open-app-2',openApp2)
     })
 
 
