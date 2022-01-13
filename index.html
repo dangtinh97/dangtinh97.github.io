@@ -16,6 +16,7 @@
     <title>Chat</title>
 </head>
 <body>
+<a class="uri-link" data-uri="locamos://store_oid=1221221" href="#">OPEN URI</a>
 <button type="button" onclick="openApp()">open drumtify</button>
 <button type="button" onclick="openApp2()">open tab noname</button>
 <div id="show_text">open tab noname</div>
@@ -206,6 +207,36 @@
 </div>
 </section>
 <script>
+    document.addEventListener("DOMContentLoaded",function (){
+        var windowHasFocus;
+
+        $(window).focus(function() {
+            windowHasFocus = true;
+        }).blur(function() {
+            windowHasFocus = false;
+        });
+
+        function goToUri(uri) {
+            console.log(uri);
+            window.location = uri;
+            setTimeout(function(){
+                if (windowHasFocus) {
+                    if (confirm('You do not seem to have Qobuz installed, do you want to go download it now?')){
+                        // window.location = 'http://www.qobuz.com';
+                    }
+                }
+            }, 100);
+        }
+
+        $('a').on('click', function(){
+            console.log("click");
+            goToUri($(this).data('uri'));
+        });
+    })
+
+
+
+
     function setText(str)
     {
         text +=str+"|"
