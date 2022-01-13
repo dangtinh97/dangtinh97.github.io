@@ -31,14 +31,15 @@
         let text = "";
         var windowHasFocus;
         var leaveWeb=false;
-
+        var countForcus = 0;
         var clickEnd = 0;
 
         $(window).focus(function() {
             let urlDownload = clickEnd===1 ? downloadApp1 : downloadApp2
-            if(!leaveWeb) openStore(urlDownload)
+            if(!windowHasFocus) openStore(urlDownload)
             setText("forcus")
             windowHasFocus = true;
+
         }).blur(function() {
             clearTimeout(timeOut);
             setText("blur")
