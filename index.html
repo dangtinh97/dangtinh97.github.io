@@ -22,20 +22,35 @@
 
 <script>
     document.addEventListener("DOMContentLoaded",function (){
-        var app2="locamos://?store_oid=61dd03f747840552aa29b732&type=STORE&cmd=share_gift&lang=en";
+        var app2 = "locamos://?store_oid=61dd03f747840552aa29b732&type=STORE&cmd=share_gift&lang=en";
         var app1 = 'drumtify://?videoID=TKIfLjkUYJw&song=SMaw4bubbmcgZOG6q24gbmdoZSBuaOG6oWMgT2ZmbGluZSBraGkgdOG6r3QgbcOgbiBow6xuaCBob+G6t2MgY2jhur8gxJHhu5kgUGlQIHRyw6puIERydW10aWZ5&singer=RHJ1bXRpZnkgLSBNdXNpYyBGb3IgTGlmZQ==';
+        const downloadApp1 = "https://apps.apple.com/vn/app/drumtify-music-for-life/id1530173879?l=en";
+        const downloadApp2 = "https://apps.apple.com/vn/app/360loca/id1544580348?l=vi";
         var timeOut = null;
         let outAppNotify = false;
         let text = "";
         var windowHasFocus;
 
+        var clickEnd = 0;
+
         $(window).focus(function() {
+            let urlDownload = clickEnd===1 ? downloadApp1 : downloadApp2
+            openStore(urlDownload)
             setText("forcus")
             windowHasFocus = true;
         }).blur(function() {
+            clearTimeout(timeOut);
             setText("blur")
             windowHasFocus = false;
         });
+
+
+        function openStore(url)
+        {
+            timeOut = setTimeout(function (){
+                window.location = url;
+            },1000)
+        }
 
 
         document.addEventListener("visibilitychange", event => {
@@ -45,23 +60,27 @@
 
         function setText(str)
         {
-            text +=str+"|"
+            text +=str+"\n"
             document.getElementById('show_text').innerText = text;
         }
 
 
         function openApp() {
+            clickEnd = 1;
             outAppNotify = false;
             // window.location = appurl;
             window.location = app1;
+            openStore(downloadApp1)
             setText("click open app1")
         }
 
         function openApp2()
         {
+            clickEnd =2
             outAppNotify = false;
             // window.location = appurl;
             window.location = app2;
+            openStore(downloadApp2)
             setText("click open app2")
         }
 
