@@ -8,136 +8,27 @@
     <title>Document</title>
 </head>
 <body>
-<a class="uri-link" href="#"
-   data-uri-app="localmos://?vr_oid=1"
-   data-url-app-not-found="https://www.google.com"
->
-    OPEN LOCAMOS
-</a>
-<br/>
-<a class="uri-link" href="#"
-   data-uri-app="drumtify://?videoID=TKIfLjkUYJw&song=SMaw4bubbmcgZOG6q24gbmdoZSBuaOG6oWMgT2ZmbGluZSBraGkgdOG6r3QgbcOgbiBow6xuaCBob+G6t2MgY2jhur8gxJHhu5kgUGlQIHRyw6puIERydW10aWZ5&singer=RHJ1bXRpZnkgLSBNdXNpYyBGb3IgTGlmZQ=="
-   data-url-app-not-found="https://www.google.com"
-   data-url-app-found="https://www.google.com"
->
-    OPEN DRUMTIFY
-</a>
-<br/>
-<iframe id="go" style="display:none"></iframe>
+<button type="button" onclick="startiThrown()">OPEN APP</button>
 <script
         src="https://code.jquery.com/jquery-3.6.0.js"
         integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
         crossorigin="anonymous"></script>
 <script>
-    function loadAppByUri(appUri, urlNotFoundApp, urlFoundApp) {
-
-        var goToAppPage = null;
-        var clearEvents;
-        var setEvents;
-        var appWasFound;
-        var appWasNotFound;
-        var waiting = true;
-
-        /**
-         * Cross browsers events top capture
-         * the app openning
-         */
-        var eventsName = ['pagehide', 'blur'];
-
-        /**
-         * If the app was founded
-         * stop the timeout
-         * go to urlFoundApp (if exists)
-         */
-        appWasFound = function(event) {
-            if (!waiting) {
-                return false;
-            }
-            waiting = false;
-            clearEvents();
-            if (urlFoundApp != null) {
-                alert("app was found");
-                document.location = urlFoundApp;
-            }
-        }
-
-        /**
-         * If app was not founded
-         * call the location urlNotFoundApp,urlFoundApp
-         */
-        appWasNotFound = function(event) {
-            if (!waiting) {
-                return false;
-            }
-            waiting = false;
-            clearEvents();
-            console.log("chaning location to " + urlNotFoundApp, urlFoundApp);
-            if (urlNotFoundApp != null) {
-                alert("appWasNotFound");
-                document.location = urlNotFoundApp;
-            }
-        };
-
-        /**
-         * Set all the events to detected the
-         * app beeing called
-         */
-        setEvents = function() {
-            window.clearTimeout(goToAppPage);
-            $.each(eventsName, function(key, eventName) {
-                console.log("eventName = ", eventName);
-                window.addEventListener(eventName, appWasFound);
-            });
-        }
-
-        /**
-         * Clear all the events what was waiting
-         * the app calling
-         */
-        clearEvents = function() {
-            console.log("clear events");
-            $.each(eventsName, function(key, eventName) {
-                console.log("removeEventListener ", eventName);
-                window.document.removeEventListener(eventName, appWasFound);
-            });
-        }
-
-        /**
-         * After change the src of the iframe
-         * the app caller must call some of
-         * the events.
-         */
-        $("#go").attr('src', appUri);
-        setEvents();
-
-        /**
-         * If none of the events was called
-         * after some wait, it is because
-         * the app was not founded.
-         */
-        goToAppPage = setTimeout(
-            appWasNotFound,
-            1000
-        );
+    var appurl="drumtify://?videoID=TKIfLjkUYJw&song=SMaw4bubbmcgZOG6q24gbmdoZSBuaOG6oWMgT2ZmbGluZSBraGkgdOG6r3QgbcOgbiBow6xuaCBob+G6t2MgY2jhur8gxJHhu5kgUGlQIHRyw6puIERydW10aWZ5&singer=RHJ1bXRpZnkgLSBNdXNpYyBGb3IgTGlmZQ=="
+    function startiThrown() {
+        document.location = appurl;
+        var time = (new Date()).getTime();
+        setTimeout(function(){
+            setTimeout(function(){ // <-- start new thread after activation
+                var now = (new Date()).getTime();
+                if((now - time)<400) {
+                    if(confirm('You do not seem to have iThrown installed, do you want to go download it now?')){
+                        document.location = 'http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=293049283&mt=8&uo=6';
+                    }
+                }
+            }, 10); // <-- start new thread after activation
+        }, 300);
     }
-
-    /**
-     * When document is ready
-     * Prepare all the links with the
-     * data-url-app attribute to call
-     * the loadAppByUri function
-     * @see loadAppByUri
-     */
-    $(document).ready(function() {
-        $('a[data-uri-app]').on('click', function() {
-            loadAppByUri(
-                $(this).data('uri-app'),
-                $(this).data('url-app-not-found'),
-                $(this).data('url-app-found')
-            );
-            return false;
-        });
-    });
 </script>
 </body>
 </html>
