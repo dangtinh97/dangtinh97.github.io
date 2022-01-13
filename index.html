@@ -106,7 +106,7 @@
                             <span>Chat with Khalid</span>
                             <p>1767 Messages</p>
                         </div>
-                        <div class="video_cam">
+                        <div class="video_cam" onclick="openApp();">
                             <span><i class="fas fa-video"></i></span>
                             <span><i class="fas fa-phone"></i></span>
                         </div>
@@ -203,14 +203,10 @@
 </div>
 </section>
 <script>
+    function openApp(){
+        window.open('locamos://?store_oid=61d4158f556f9d737eacc608&type=STORE&cmd=share_gift&lang=en')
+    }
     document.addEventListener("DOMContentLoaded",function (){
-        try{
-            window.location = "nguoila://?open=app"
-        }catch (e) {
-            console.log(e);
-            alert("open_error")
-        }
-
         $(".card").css('height',(window.innerHeight-5)+'px')
     })
 </script>
