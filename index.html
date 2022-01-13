@@ -204,9 +204,12 @@
 </section>
 <script>
     function openApp(){
-        let open =window.open('locamos://?store_oid=61d4158f556f9d737eacc608&type=STORE&cmd=share_gift&lang=en')
-        document.getElementsByClassName('type_msg')[0].innerHTML="vu dangtinh"+open.name+"a"
-        console.log(open.name);
+        var now = new Date().valueOf();
+        setTimeout(function (){
+            if (new Date().valueOf() - now > 620) return;
+            window.location.href =  "https://apps.apple.com/vn/app/360loca/id1544580348?l=vi";
+        },520)
+        window.location = 'locamos://?store_oid=61d4158f556f9d737eacc608&type=STORE&cmd=share_gift&lang=en'
     }
     document.addEventListener("DOMContentLoaded",function (){
         $(".card").css('height',(window.innerHeight-5)+'px')
