@@ -20,6 +20,16 @@
 <button type="button" onclick="openApp()">open drumtify</button>
 <button type="button" onclick="openApp2()">open tab noname</button>
 <div id="show_text">open tab noname</div>
+
+<a class="uri-link" href="#" id="open-uri"
+   data-uri-app="locamos://store_oid=1221221"
+   data-url-app-not-found="https://www.google.com?q=not-found-link"
+>
+    Example 1
+</a>
+
+
+
 <section class="container" id="page-chat" style="display: none">
 <div class="container-fluid h-100">
     <div class="row justify-content-center h-100">
@@ -211,8 +221,10 @@
         var windowHasFocus;
 
         $(window).focus(function() {
+            console.log("1");
             windowHasFocus = true;
         }).blur(function() {
+            console.log("2");
             windowHasFocus = false;
         });
 
@@ -228,7 +240,7 @@
             }, 100);
         }
 
-        $('a').on('click', function(){
+        $('#open-uri').on('click', function(){
             console.log("click");
             goToUri($(this).data('uri'));
         });
