@@ -36,8 +36,9 @@
 
         $(window).focus(function() {
             let urlDownload = clickEnd===1 ? downloadApp1 : downloadApp2
-            if(!windowHasFocus) openStore(urlDownload)
+            if(countForcus===0) openStore(urlDownload)
             setText("forcus")
+            countForcus++;
             windowHasFocus = true;
 
         }).blur(function() {
@@ -69,6 +70,7 @@
 
 
         function openApp() {
+            countForcus=0
             leaveWeb = false;
             clickEnd = 1;
             outAppNotify = false;
@@ -80,6 +82,7 @@
 
         function openApp2()
         {
+            countForcus=0
             leaveWeb = false
             clickEnd =2
             outAppNotify = false;
