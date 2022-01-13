@@ -214,6 +214,7 @@
     function openApp() {
          outAppNotify = false;
         window.location = appurl;
+        window.location = "locamos://?app=url";
         timeOut = setTimeout(function (){
             text +="vào hàm time out|"
             document.getElementById('show_text').innerText = text;
@@ -232,10 +233,7 @@
     document.addEventListener("visibilitychange", event => {
         text +=document.visibilityState+"|"
         document.getElementById('show_text').innerText = text;
-        clearInterval(timeOut);
-        if(document.visibilityState === "hidden") {
-
-        }
+        clearTimeout(timeOut);
     })
 
     document.addEventListener("DOMContentLoaded",function (){
