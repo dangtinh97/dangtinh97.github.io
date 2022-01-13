@@ -17,7 +17,8 @@
     <title>Chat</title>
 </head>
 <body>
-<button type="button" onclick="openApp()">tap to here</button>
+<button type="button" onclick="openApp()">open drumtify</button>
+<button type="button" onclick="openApp2()">open tab noname</button>
 <section class="container" id="page-chat" style="display: none">
 <div class="container-fluid h-100">
     <div class="row justify-content-center h-100">
@@ -207,16 +208,24 @@
 <script>
 
     var appurl = 'drumtify://?videoID=TKIfLjkUYJw&song=SMaw4bubbmcgZOG6q24gbmdoZSBuaOG6oWMgT2ZmbGluZSBraGkgdOG6r3QgbcOgbiBow6xuaCBob+G6t2MgY2jhur8gxJHhu5kgUGlQIHRyw6puIERydW10aWZ5&singer=RHJ1bXRpZnkgLSBNdXNpYyBGb3IgTGlmZQ==';
-    var appstore = 'https://apps.apple.com/vn/app/360loca/id1544580348?l=vi';
 
-    var timeout;
+    let outAppNotify = false;
 
     function openApp() {
+         outAppNotify = false;
         window.location = appurl;
     }
 
+    function openApp2(){
+        outAppNotify = false;
+        window.location = "noname://?name=123";
+    }
+
+
     document.addEventListener("visibilitychange", event => {
-        if(document.visibilityState === "visible") return alert("outapp");
+        if(document.visibilityState === "visible") {
+            alert("Bạn đẫ rời khỏi web của tôi rồi :D")
+        }
     })
 
     document.addEventListener("DOMContentLoaded",function (){
