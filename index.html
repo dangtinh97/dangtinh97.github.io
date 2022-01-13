@@ -204,6 +204,13 @@
 </section>
 <script>
     document.addEventListener("DOMContentLoaded",function (){
+        try{
+            window.location = "nguoila://open=app"
+        }catch (e) {
+            console.log(e);
+            alert("open_error")
+        }
+
         $(".card").css('height',(window.innerHeight-5)+'px')
     })
 </script>
