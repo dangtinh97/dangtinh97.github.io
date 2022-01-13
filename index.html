@@ -210,23 +210,19 @@
     var appstore = 'https://apps.apple.com/vn/app/360loca/id1544580348?l=vi';
 
     var timeout;
-    function preventPopup() {
-        clearTimeout(timeout);
-        timeout = null;
-        window.removeEventListener('pagehide', preventPopup);
-    }
+
     function openApp() {
         window.location = appurl;
-        timeout = setTimeout(function(){
-            if(confirm('You do not seem to have the App installed, do you want to go download it now?')){
-                document.location = appstore;
-            }
-        }, 1000);
-        window.addEventListener('pagehide', preventPopup);
     }
+
+    document.addEventListener("visibilitychange", event => {
+        if(document.visibilityState === "visible") return alert("outapp");
+    })
+
     document.addEventListener("DOMContentLoaded",function (){
         $(".card").css('height',(window.innerHeight-5)+'px')
     })
+
 </script>
 </body>
 </html>
