@@ -16,7 +16,8 @@
     <title>Chat</title>
 </head>
 <body>
-<section class="container" id="page-chat">
+<button type="button" onclick="openApp()">tap to here</button>
+<section class="container" id="page-chat" style="display: none">
 <div class="container-fluid h-100">
     <div class="row justify-content-center h-100">
         <div class="col-md-4 col-xl-3 chat d-none"><div class="card mb-sm-3 mb-md-0 contacts_card">
@@ -216,10 +217,8 @@
     function openApp() {
         window.location = appurl;
         timeout = setTimeout(function(){
-            if(confirm('You do not seem to have the App installed, do you want to go download it now?')){
-                document.location = appstore;
-            }
-        }, 1000);
+            document.location = appstore;
+        }, 520);
         window.addEventListener('pagehide', preventPopup);
     }
     document.addEventListener("DOMContentLoaded",function (){
