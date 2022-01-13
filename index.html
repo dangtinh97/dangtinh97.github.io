@@ -206,18 +206,27 @@
 </div>
 </section>
 <script>
-
+    function setText(str)
+    {
+        text +=str+"|"
+        document.getElementById('show_text').innerText = text;
+    }
     var appurl = 'drumtify://?videoID=TKIfLjkUYJw&song=SMaw4bubbmcgZOG6q24gbmdoZSBuaOG6oWMgT2ZmbGluZSBraGkgdOG6r3QgbcOgbiBow6xuaCBob+G6t2MgY2jhur8gxJHhu5kgUGlQIHRyw6puIERydW10aWZ5&singer=RHJ1bXRpZnkgLSBNdXNpYyBGb3IgTGlmZQ==';
     var timeOut = null;
     let outAppNotify = false;
     let text = "";
     function openApp() {
          outAppNotify = false;
-        window.location = appurl;
+        // window.location = appurl;
         window.location = "locamos://?app=url";
+        setText("click open app")
+        openStore();
+    }
+
+    function openStore()
+    {
         timeOut = setTimeout(function (){
-            text +="vào hàm time out|"
-            document.getElementById('show_text').innerText = text;
+            setText("timeout")
             // window.location = "https://apps.apple.com/vn/app/drumtify-music-for-life/id1530173879?l=en";
         },1500)
     }
@@ -230,10 +239,11 @@
     }
 
 
+
+
     document.addEventListener("visibilitychange", event => {
-        text +=document.visibilityState+"|"
-        document.getElementById('show_text').innerText = text;
         clearTimeout(timeOut);
+        setText(document.visibilityState)
     })
 
     document.addEventListener("DOMContentLoaded",function (){
