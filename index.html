@@ -227,7 +227,8 @@
 
 
     document.addEventListener("visibilitychange", event => {
-        if(document.visibilityState === "visible") {
+        console.log(document.visibilityState)
+        if(document.visibilityState === "hidden") {
             clearInterval(timeOut);
         }
     })
