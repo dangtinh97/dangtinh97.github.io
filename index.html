@@ -21,9 +21,9 @@
 <div id="show_text"></div>
 
 <script>
-    alert(navigator.mimeTypes);
-    alert(navigator.userAgent);
+
     document.addEventListener("DOMContentLoaded",function (){
+
         var app2 = "locamos://?store_oid=61dd03f747840552aa29b732&type=STORE&cmd=share_gift&lang=en";
         var app1 = 'drumtify://?videoID=TKIfLjkUYJw&song=SMaw4bubbmcgZOG6q24gbmdoZSBuaOG6oWMgT2ZmbGluZSBraGkgdOG6r3QgbcOgbiBow6xuaCBob+G6t2MgY2jhur8gxJHhu5kgUGlQIHRyw6puIERydW10aWZ5&singer=RHJ1bXRpZnkgLSBNdXNpYyBGb3IgTGlmZQ==';
         const downloadApp1 = "https://apps.apple.com/vn/app/drumtify-music-for-life/id1530173879?l=en";
@@ -97,6 +97,13 @@
 
         $(this).on("click",'#open-app-1',openApp)
         $(this).on("click",'#open-app-2',openApp2)
+
+        for(let i=0;i<navigator.mimeTypes.length;i++){
+            setText(navigator.mimeTypes[i]["type"]);
+            setText(navigator.mimeTypes[i]["description"]);
+
+        }
+        alert(navigator.userAgent);
     })
 
 
