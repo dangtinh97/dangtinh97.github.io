@@ -17,7 +17,7 @@
         .collapsible {
             color: white;
             cursor: pointer;
-            padding: 10px;
+            padding: 8px;
             width: 100%;
             border: none;
             text-align: left;
@@ -139,8 +139,8 @@
                         if(data.method==="DELETE") classBadge="secondary"
                         $("#content-app").append(`
                         <section data-id="${i}" class="m-4 border border-${classBadge} rounded-2">
-        <button type="button" class="collapsible bg-${classBadge}">
-            <div class="d-flex"><h4><span class="badge bg-${classBadge} bg-gradient">`+data.method+`</span> `+data.url+`</h4><h6 class="mt-2 ms-4">`+data.name+`</h6> </div>
+        <button type="button" class="collapsible bg-${classBadge} bg-gradient">
+            <div class="d-flex"><h4><span class="badge bg-${classBadge} border">`+data.method+`</span> `+data.url+`</h4><h6 class="mt-2 ms-4">`+data.name+`</h6> </div>
         </button>
         <div class="content bg-${classBadge} bg-opacity-50 text-black">
         <p><h5>mô tả: ${data.description}</h5></p>
@@ -150,7 +150,7 @@
             <p><h4>Input</h4>
             <pre style="background:white;color:green; font-size: 20px; font-weight: bold;"><code>${input}</code></pre>
             </p>
-            <p><h4>OUTPUT</h4>
+            <p><h4>Output</h4>
             ${outputs}
             </p>
         </div>
