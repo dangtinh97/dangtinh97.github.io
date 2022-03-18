@@ -64,7 +64,7 @@
 </head>
 <body>
 <div id="app">
-    <div id="menu" class="mt-4">
+    <div id="menu" class="mt-4 row g-2">
 
     </div>
     <div id="content-app">
@@ -125,7 +125,7 @@
                     let i=0;
                     res.forEach(function (data){
                         i++;
-                        $("#menu").append(`<h5 class="menu ms-4" id="${i}">${data.name}</h5>`)
+                        $("#menu").append(`<div class="col-6"><h5 class="menu ms-4 " id="${i}">${data.name}</h5></div>`)
                         let outputs = data.output.map(function (dataOutput){
                             dataOutput = library.json.prettyPrint(dataOutput)
                             return `<pre style="background:white;color:green; font-size: 20px; font-weight: bold;"><code>${dataOutput}</code></pre>`
@@ -140,7 +140,7 @@
                         $("#content-app").append(`
                         <section data-id="${i}" class="m-4 border border-${classBadge} rounded-2">
         <button type="button" class="collapsible bg-${classBadge}">
-            <h4><span class="badge bg-${classBadge} bg-gradient">`+data.method+`</span> `+data.url+`</h4> `+data.name+`
+            <div class="d-flex"><h4><span class="badge bg-${classBadge} bg-gradient">`+data.method+`</span> `+data.url+`</h4><h6 class="mt-2 ms-4">`+data.name+`</h6> </div>
         </button>
         <div class="content bg-${classBadge} bg-opacity-50 text-black">
         <p><h5>mô tả: ${data.description}</h5></p>
