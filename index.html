@@ -5,111 +5,122 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="assets/css/reset.css">
-    <link rel="stylesheet" href="assets/css/demo-chat.css">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.js"></script>
-
-    <title>Chat</title>
+    <link rel="stylesheet" href="app.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css">
+    <title>Haui Chatbot</title>
+    <meta name="google-signin-client_id" content="1021116631045-rj0hshpqkruq9asejajj2se7svhtk9t0.apps.googleusercontent.com">
 </head>
 <body>
-<button type="button" id="open-app-1">open drumtify</button>
-<button type="button" id="open-app-2">open locamos</button>
-<div id="show_text"></div>
+    <div class="g-signin2" data-onsuccess="onSignIn"></div>
+    <a href="#" onclick="signOut();">Sign out</a>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <script>
+        function onSignIn(googleUser) {
+            var id_token = googleUser.getAuthResponse().id_token;
+            console.log(id_token);
+  var profile = googleUser.getBasicProfile();
+  console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+  console.log('Name: ' + profile.getName());
+  console.log('Image URL: ' + profile.getImageUrl());
+  console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+}
+function signOut() {
+    var auth2 = gapi.auth2.getAuthInstance();
+    auth2.signOut().then(function () {
+      console.log('User signed out.');
+    });
+  }
+    </script>
+<div class="page-content page-container d-none" id="page-content">
+    <div>
+        <div class="row d-flex justify-content-center">
+            <div class="col-md-12">
+                <div class="card card-bordered" id="app-chat">
+                    <div class="card-header">
+                        <h4 class="card-title"><strong>Chat</strong></h4> <a class="btn btn-xs btn-secondary" href="#" data-abc="true">Let's Chat App</a>
+                    </div>
 
+                    <div class="ps-container ps-theme-default ps-active-y" id="chat-content">
+                        <div class="media media-chat"> <img class="avatar" src="./logo-page.png" alt="...">
+                            <div class="media-body _message_left">
+                                <p>Hi</p>
+                                <p>How are you ...???</p>
+                                <p>What are you doing tomorrow?<br> Can we come up a bar?</p>
+                                <p class="meta"><time datetime="2018">23:58</time></p>
+                            </div>
+                        </div>
+                        <div class="media media-meta-day">Today</div>
+                        <div class="media media-chat media-chat-reverse">
+                            <div class="media-body _message_right">
+                                <p>Hiii, I'm good.</p>
+                                <p>How are you doing?</p>
+                                <p>Long time no see! Tomorrow office. will be free on sunday.</p>
+                                <p class="meta"><time datetime="2018">00:06</time></p>
+                            </div>
+                        </div>
+                        <div class="media media-chat"> <img class="avatar" src="https://img.icons8.com/color/36/000000/administrator-male.png" alt="...">
+                            <div class="media-body">
+                                <p>Okay</p>
+                                <p>We will go on sunday? </p>
+                                <p class="meta"><time datetime="2018">00:07</time></p>
+                            </div>
+                        </div>
+                        <div class="media media-chat media-chat-reverse">
+                            <div class="media-body">
+                                <p>That's awesome!</p>
+                                <p>I will meet you Sandon Square sharp at 10 AM</p>
+                                <p>Is that okay?</p>
+                                <p class="meta"><time datetime="2018">00:09</time></p>
+                            </div>
+                        </div>
+                        <div class="media media-chat"> <img class="avatar" src="https://img.icons8.com/color/36/000000/administrator-male.png" alt="...">
+                            <div class="media-body">
+                                <p>Okay i will meet you on Sandon Square </p>
+                                <p class="meta"><time datetime="2018">00:10</time></p>
+                            </div>
+                        </div>
+                        <div class="media media-chat media-chat-reverse">
+                            <div class="media-body">
+                                <p>Do you have pictures of Matley Marriage?</p>
+                                <p class="meta"><time datetime="2018">00:10</time></p>
+                            </div>
+                        </div>
+                        <div class="media media-chat"> <img class="avatar" src="https://img.icons8.com/color/36/000000/administrator-male.png" alt="...">
+                            <div class="media-body">
+                                <p>Sorry I don't have. i changed my phone.</p>
+                                <p class="meta"><time datetime="2018">00:12</time></p>
+                            </div>
+                        </div>
+                        <div class="media media-chat media-chat-reverse">
+                            <div class="media-body">
+                                <p>Okay then see you on sunday!!</p>
+                                <p class="meta"><time datetime="2018">00:12</time></p>
+                            </div>
+                        </div>
+                        <div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 0px;">
+                            <div class="ps-scrollbar-x" tabindex="0" style="left: 0px; width: 0px;"></div>
+                        </div>
+                        <div class="ps-scrollbar-y-rail" style="top: 0px; height: 0px; right: 2px;">
+                            <div class="ps-scrollbar-y" tabindex="0" style="top: 0px; height: 2px;"></div>
+                        </div>
+                    </div>
+                    <div id="form-chat" class="publisher bt-1 border-light"> <img class="avatar avatar-xs" src="./logo-page.png" alt="...">
+                        <textarea class="publisher-input" type="text" placeholder="Write something"></textarea>
+                        <span class="publisher-btn file-group"> <i class="fa fa-paperclip file-browser"></i> <input type="file"> </span> <a class="publisher-btn" href="#" data-abc="true"><i class="fa fa-smile"></i></a> <a class="publisher-btn text-info" href="#" data-abc="true"><i class="fa fa-paper-plane"></i></a> </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script
+        src="https://code.jquery.com/jquery-3.6.0.js"
+        integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+        crossorigin="anonymous"></script>
 <script>
-
     document.addEventListener("DOMContentLoaded",function (){
-
-
-
-
-        var app2 = "locamos://?store_oid=61dd03f747840552aa29b732&type=STORE&cmd=share_gift&lang=en";
-        var app1 = 'drumtify://?videoID=TKIfLjkUYJw&song=SMaw4bubbmcgZOG6q24gbmdoZSBuaOG6oWMgT2ZmbGluZSBraGkgdOG6r3QgbcOgbiBow6xuaCBob+G6t2MgY2jhur8gxJHhu5kgUGlQIHRyw6puIERydW10aWZ5&singer=RHJ1bXRpZnkgLSBNdXNpYyBGb3IgTGlmZQ==';
-        const downloadApp1 = "https://apps.apple.com/vn/app/drumtify-music-for-life/id1530173879?l=en";
-        const downloadApp2 = "https://apps.apple.com/vn/app/360loca/id1544580348?l=vi";
-        var timeOut = null;
-        let outAppNotify = false;
-        let text = "";
-        var windowHasFocus;
-        var leaveWeb=false;
-        var countForcus = 0;
-        var clickEnd = 0;
-
-        $(window).focus(function() {
-            let urlDownload = clickEnd===1 ? downloadApp1 : downloadApp2
-            if(countForcus===0 && !leaveWeb) openStore(urlDownload)
-            setText("forcus")
-            countForcus++;
-            windowHasFocus = true;
-
-        }).blur(function() {
-            clearTimeout(timeOut);
-            setText("blur")
-            windowHasFocus = false;
-        });
-
-
-        function openStore(url)
-        {
-            timeOut = setTimeout(function (){
-                // window.location = url;
-            },2000)
-        }
-
-
-        document.addEventListener("visibilitychange", event => {
-            clearTimeout(timeOut);
-            countForcus++;
-            leaveWeb = true;
-            setText(document.visibilityState)
-        })
-
-        function setText(str)
-        {
-            text +=str+"\n"
-            document.getElementById('show_text').innerText = text;
-        }
-
-
-        function openApp() {
-            countForcus=0
-            leaveWeb = false;
-            clickEnd = 1;
-            outAppNotify = false;
-            // window.location = appurl;
-            window.location = app1;
-            openStore(downloadApp1)
-            setText("click open app1")
-        }
-
-        function openApp2()
-        {
-            countForcus=0
-            leaveWeb = false
-            clickEnd =2
-            outAppNotify = false;
-            // window.location = appurl;
-            window.location = app2;
-            openStore(downloadApp2)
-            setText("click open app2")
-        }
-
-        $(this).on("click",'#open-app-1',openApp)
-        $(this).on("click",'#open-app-2',openApp2)
-
-        for(let i=0;i<navigator.mimeTypes.length;i++){
-            setText(navigator.mimeTypes[i]["type"]);
-            setText(navigator.mimeTypes[i]["description"]);
-
-        }
-       setText(navigator.mimeTypes["application/x-skype"]);
+        $("#chat-content").html('')
     })
-
-
 </script>
 </body>
 </html>
