@@ -127,6 +127,7 @@
                         if(data.method==="GET") classBadge="primary"
                         if(data.method==="POST") classBadge="success"
                         if(data.method==="PUT" || data.method==="PATCH") classBadge="warning"
+                        if(data.method==="DELETE") classBadge="secondary"
                         $("#content-app").append(`
                         <section data-id="${i}" class="m-4 border border-${classBadge} rounded-2">
         <button type="button" class="collapsible bg-${classBadge}">
