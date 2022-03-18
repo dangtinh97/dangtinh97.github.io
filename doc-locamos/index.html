@@ -131,7 +131,7 @@
                         $("#menu").append(`<div class="col-6"><h5 class="menu ms-4 " id="${i}">${data.name}</h5></div>`)
                         let outputs = data.output.map(function (dataOutput){
                             dataOutput = library.json.prettyPrint(dataOutput)
-                            return `<pre style="background:white;color:green; font-size: 20px; font-weight: bold;"><code>${dataOutput}</code></pre>`
+                            return `<pre style="background:white;color:green; font-size: 15px; font-weight: bold;"><code>${dataOutput}</code></pre>`
                         })
                         let header=library.json.prettyPrint(data.headers)
                         let input=library.json.prettyPrint(data.input)
@@ -148,10 +148,10 @@
         <div class="content bg-${classBadge} bg-opacity-50 text-black">
         <p><h5>mô tả: ${data.description}</h5></p>
             <p><h4>HEADER</h4>
-            <pre style="background:white;color:green; font-size: 20px; font-weight: bold;"><code>${header}</code></pre>
+            <pre style="background:white;color:green; font-size: 15px; font-weight: bold;"><code>${header}</code></pre>
             </p>
             <p><h4>Input</h4>
-            <pre style="background:white;color:green; font-size: 20px; font-weight: bold;"><code>${input}</code></pre>
+            <pre style="background:white;color:green; font-size: 15px; font-weight: bold;"><code>${input}</code></pre>
             </p>
             <p><h4>Output</h4>
             ${outputs}
