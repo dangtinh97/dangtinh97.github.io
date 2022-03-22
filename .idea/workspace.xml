@@ -5,8 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="656b2030-eb5c-4440-873c-a2ec2a4754aa" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/notify/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc-locamos/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/doc-locamos/index.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,7 +53,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/doc-locamos" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="list.type.of.created.stylesheet" value="SCSS" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
@@ -90,7 +90,9 @@
       <workItem from="1641174708248" duration="97000" />
       <workItem from="1642059353532" duration="2132000" />
       <workItem from="1642077695478" duration="17561000" />
-      <workItem from="1647581481180" duration="6272000" />
+      <workItem from="1647581481180" duration="6784000" />
+      <workItem from="1647699417751" duration="598000" />
+      <workItem from="1647926735656" duration="762000" />
     </task>
     <servers />
   </component>
