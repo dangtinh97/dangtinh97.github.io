@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded",function (){
-    console.log("a")
     if ("Notification" in window) {
         Notification.requestPermission().then(function (permission) {
             $("#alert").html(permission)

@@ -1,21 +1,77 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="manifest" href="./manifest.json">
-    <title>Document</title>
-</head>
+<html>
+<title>Firebase Messaging Demo</title>
+<style>
+    div {
+        margin-bottom: 15px;
+    }
+</style>
 <body>
-<h1 id="alert"></h1>
-<script
-        src="https://code.jquery.com/jquery-3.6.0.js"
-        integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
-        crossorigin="anonymous"></script>
-<script src="notify.js"></script>
+<div id="token"></div>
+<div id="msg"></div>
+<div id="notis"></div>
+<div id="err"></div>
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-app.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/7.16.1/firebase-messaging.js"></script>
 <script>
+    document.addEventListener("DOMContentLoaded",function (){
+
+        //https://github.com/kenng/firebase-push-notification-demo
+        MsgElem = document.getElementById('msg');
+        TokenElem = document.getElementById('token');
+        NotisElem = document.getElementById('notis');
+        ErrElem = document.getElementById('err');
+
+        // TODO: Replace firebaseConfig you get from Firebase Console
+        var firebaseConfig = {
+            apiKey: "AIzaSyClmevonafNZUK4eQDaVSqd7Q9EIJlXGJk",
+            authDomain: "nguoi-la-4f710.firebaseapp.com",
+            databaseURL: "https://nguoi-la-4f710-default-rtdb.firebaseio.com",
+            projectId: "nguoi-la-4f710",
+            storageBucket: "nguoi-la-4f710.appspot.com",
+            messagingSenderId: "18282702403",
+            appId: "1:18282702403:web:73cceeaf5c2dd2743e56f6",
+            measurementId: "G-LT0BKF68Q7"
+        };
+        firebase.initializeApp(firebaseConfig);
+
+
+
+        const messaging = firebase.messaging();
+        messaging
+            .requestPermission()
+            .then(function () {
+                MsgElem.innerHTML = 'Notification permission granted.';
+                console.log('Notification permission granted.');
+
+                // get the token in the form of promise
+                return messaging.getToken();
+            })
+            .then(function (token) {
+                TokenElem.innerHTML = 'Device token is : <br>' + token;
+            })
+            .catch(function (err) {
+                ErrElem.innerHTML = ErrElem.innerHTML + '; ' + err;
+                console.log('Unable to get permission to notify.', err);
+            });
+
+        let enableForegroundNotification = true;
+        messaging.onMessage(function (payload) {
+            console.log('Message received. ', payload);
+            NotisElem.innerHTML =
+                NotisElem.innerHTML + JSON.stringify(payload);
+
+            if (enableForegroundNotification) {
+                let notification = payload.notification;
+                navigator.serviceWorker
+                    .getRegistrations()
+                    .then((registration) => {
+                        registration[0].showNotification(notification.title);
+                    });
+            }
+        });
+    })
 
 </script>
 </body>
