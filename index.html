@@ -10,8 +10,11 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css">
     <title>Haui Chatbot</title>
     <meta name="google-signin-client_id" content="1021116631045-rj0hshpqkruq9asejajj2se7svhtk9t0.apps.googleusercontent.com">
+    <link rel="manifest" href="./manifest.webmanifest">
 </head>
 <body>
+<button class="add-button" style="display: none;">Add to home screen</button>
+<script src="index.js"> </script>
     <div class="g-signin2" data-onsuccess="onSignIn"></div>
     <a href="#" onclick="signOut();">Sign out</a>
     <script src="https://apis.google.com/js/platform.js" async defer></script>
@@ -32,6 +35,13 @@ function signOut() {
     });
   }
     </script>
+
+
+<script
+        src="https://code.jquery.com/jquery-3.6.0.js"
+        integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+        crossorigin="anonymous"></script>
+
 <div class="page-content page-container d-none" id="page-content">
     <div>
         <div class="row d-flex justify-content-center">
@@ -120,6 +130,14 @@ function signOut() {
 <script>
     document.addEventListener("DOMContentLoaded",function (){
         $("#chat-content").html('')
+        $.ajax({
+            url:"https://lum-api-dev.locamos.com/login",
+            type:"POST",
+            dataType:"JSON",
+            success:function (response){
+                console.log(response)
+            }
+        })
     })
 </script>
 </body>
