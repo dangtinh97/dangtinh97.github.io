@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-social/4.12.0/bootstrap-social.min.css">
+    <title>Twitter</title>
+</head>
+<body>
+<div style="width: max-content;margin: 50px">
+    <a id="twitter-button" class="btn btn-block btn-social btn-twitter">
+        <i class="fa fa-twitter"></i> Sign in with Twitter
+    </a>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script src="https://cdn.rawgit.com/oauth-io/oauth-js/c5af4519/dist/oauth.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded",function (){
+        $('#twitter-button').on('click', function() {
+            // Initialize with your OAuth.io app public key
+            OAuth.initialize('SDt_3FcjsPsAqpVebWUBp7zPgrY');
+            // Use popup for OAuth
+            OAuth.popup('twitter').then(twitter => {
+                console.log('twitter:', twitter);
+                // Prompts 'welcome' message with User's email on successful login
+                // #me() is a convenient method to retrieve user data without requiring you
+                // to know which OAuth provider url to call
+                twitter.me().then(data => {
+                    console.log('data:', data);
+                    alert('Twitter says your email is:' + data.email + ".\nView browser 'Console Log' for more details");
+                });
+                // Retrieves user data from OAuth provider by using #get() and
+                // OAuth provider url
+                twitter.get('/1.1/account/verify_credentials.json?include_email=true').then(data => {
+                    console.log('self data:', data);
+                })
+            });
+        })
+    })
+</script>
+</body>
+</html>
