@@ -5,9 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="656b2030-eb5c-4440-873c-a2ec2a4754aa" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/login-facebook/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc-locamos/document-api.json" beforeDir="false" afterPath="$PROJECT_DIR$/doc-locamos/document-api.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,6 +53,7 @@
     "DefaultHtmlFileTemplate": "HTML File",
     "WebServerToolWindowFactoryState": "false",
     "last_opened_file_path": "/Users/dangtinh/Documents/disk-for-me/Code/me/dangtinh97.github.io",
+    "nodejs_package_manager_path": "npm",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -97,7 +96,7 @@
       <workItem from="1648275360661" duration="381000" />
       <workItem from="1648276383833" duration="823000" />
       <workItem from="1648450583815" duration="2035000" />
-      <workItem from="1650528962843" duration="99000" />
+      <workItem from="1650528962843" duration="791000" />
     </task>
     <servers />
   </component>
