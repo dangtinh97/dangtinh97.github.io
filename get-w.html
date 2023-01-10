@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        option:hover{
+            background-color: yellow;
+            box-shadow: 0 0 10px 100px #1882A8 inset;
+        }
+        option {
+            /*background: #1b1a1a !important;*/
+            color: #357b1d !important;
+        }
+        select:hover{
+            /*background: #0b2e13;*/
+        }
+        select.decorated option:hover {
+            box-shadow: 0 0 10px 100px #1882A8 inset;
+        }
+        .opt:hover{
+            background-color: #0c525d;
+        }
+    </style>
+</head>
+<body>
+<h1 id="w"></h1>
+<select style="min-width: 100px">
+    <option class="opt">1</option>
+    <option>2</option>
+    <option>3</option>
+    <option>4</option>
+    <option>5</option>
+    <option>6</option>
+    <option>7</option>
+    <option>8</option>
+</select>
+<script>
+    const w = window.innerWidth
+    document.getElementById('w').innerText = w
+</script>
+</body>
+</html>
