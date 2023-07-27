@@ -4,13 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="656b2030-eb5c-4440-873c-a2ec2a4754aa" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/index-17092022.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/profile/iconify.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/profile/me.jpeg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/profile/style.css" afterDir="false" />
+    <list default="true" id="74ef02f7-95ca-48e0-907d-4806ba4c500d" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dev-tool/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dev-tool/lat-long.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -23,10 +23,6 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="CSS File" />
-        <option value="Sass File" />
-        <option value="JavaScript File" />
-        <option value="SCSS File" />
         <option value="HTML File" />
       </list>
     </option>
@@ -34,21 +30,7 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitSEFilterConfiguration">
-    <file-type-list>
-      <filtered-out-file-type name="LOCAL_BRANCH" />
-      <filtered-out-file-type name="REMOTE_BRANCH" />
-      <filtered-out-file-type name="TAG" />
-      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
-    </file-type-list>
-  </component>
-  <component name="MarkdownSettingsMigration">
-    <option name="stateVersion" value="1" />
-  </component>
-  <component name="ProjectId" id="1uvfyiW4VaLoARTDBGywFgjaFIW" />
-  <component name="ProjectLevelVcsManager">
-    <ConfirmationsSetting value="2" id="Add" />
-  </component>
+  <component name="ProjectId" id="2T93d7QJ7kBQufmbO1CQp8rvN14" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -56,69 +38,32 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "DefaultHtmlFileTemplate": "HTML File",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "/Users/dangtinh/Documents/code/me/dangtinh97.github.io/profile",
-    "nodejs_package_manager_path": "npm",
+    "git-widget-placeholder": "master",
+    "last_opened_file_path": "/Users/dangtinhvu/Documents/code/me/dangtinh97.github.io",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/profile" />
-      <recent name="$PROJECT_DIR$" />
-      <recent name="$PROJECT_DIR$/2022324" />
-      <recent name="$PROJECT_DIR$/doc-locamos" />
-    </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/assets/css" />
-      <recent name="$PROJECT_DIR$/piano/assets" />
-      <recent name="$PROJECT_DIR$" />
-      <recent name="$PROJECT_DIR$/file1" />
-    </key>
-  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="656b2030-eb5c-4440-873c-a2ec2a4754aa" name="Default Changelist" comment="" />
-      <created>1625551240345</created>
+      <changelist id="74ef02f7-95ca-48e0-907d-4806ba4c500d" name="Changes" comment="" />
+      <created>1690441553732</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1625551240345</updated>
-      <workItem from="1625551241975" duration="1218000" />
-      <workItem from="1625577233236" duration="5575000" />
-      <workItem from="1625622842736" duration="596000" />
-      <workItem from="1625662412255" duration="598000" />
-      <workItem from="1626159353853" duration="2332000" />
-      <workItem from="1626190367802" duration="9024000" />
-      <workItem from="1630217539520" duration="12484000" />
-      <workItem from="1641125461633" duration="2189000" />
-      <workItem from="1641174708248" duration="97000" />
-      <workItem from="1642059353532" duration="2132000" />
-      <workItem from="1642077695478" duration="17561000" />
-      <workItem from="1647581481180" duration="6784000" />
-      <workItem from="1647699417751" duration="598000" />
-      <workItem from="1647926735656" duration="3540000" />
-      <workItem from="1648090905060" duration="647000" />
-      <workItem from="1648275360661" duration="381000" />
-      <workItem from="1648276383833" duration="823000" />
-      <workItem from="1648450583815" duration="2035000" />
-      <workItem from="1650528962843" duration="791000" />
-      <workItem from="1663356111905" duration="1676000" />
+      <updated>1690441553732</updated>
+      <workItem from="1690441554885" duration="40000" />
+      <workItem from="1690441607182" duration="2105000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
-  </component>
-  <component name="Vcs.Log.Tabs.Properties">
-    <option name="TAB_STATES">
-      <map>
-        <entry key="MAIN">
-          <value>
-            <State />
-          </value>
-        </entry>
-      </map>
-    </option>
   </component>
 </project>
