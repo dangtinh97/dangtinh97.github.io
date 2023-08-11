@@ -4,13 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="74ef02f7-95ca-48e0-907d-4806ba4c500d" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/dev-tool/index.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/dev-tool/lat-long.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+    <list default="true" id="74ef02f7-95ca-48e0-907d-4806ba4c500d" name="Changes" comment="md5 and sha1">
+      <change afterPath="$PROJECT_DIR$/dev-tool/uuidv4.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev-tool/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/dev-tool/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dev-tool/md5.html" beforeDir="false" afterPath="$PROJECT_DIR$/dev-tool/md5.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -50,6 +48,11 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/dev-tool" />
+    </key>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -59,11 +62,35 @@
       <option name="presentableId" value="Default" />
       <updated>1690441553732</updated>
       <workItem from="1690441554885" duration="40000" />
-      <workItem from="1690441607182" duration="2105000" />
+      <workItem from="1690441607182" duration="3936000" />
+      <workItem from="1690509044947" duration="76000" />
+      <workItem from="1691739462322" duration="905000" />
     </task>
+    <task id="LOCAL-00001" summary="update">
+      <option name="closed" value="true" />
+      <created>1690443723922</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1690443723922</updated>
+    </task>
+    <task id="LOCAL-00002" summary="md5 and sha1">
+      <option name="closed" value="true" />
+      <created>1690455844240</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1690455844240</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="update" />
+    <MESSAGE value="md5 and sha1" />
+    <option name="LAST_COMMIT_MESSAGE" value="md5 and sha1" />
   </component>
 </project>

@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>RANDOM UUID V4</title>
+    <link rel="stylesheet" href="bootstrap.css">
+</head>
+<body>
+<div class="container py-5">
+    <div class="text-lg-center fs-2 mb-5">Online UUID Generator</div>
+    <div class="align-content-center w-100">
+        <div class="text-lg-center fs-2 badge bg-dark" id="uuid"></div>
+    </div>
+
+    <button type="button" onclick="onClick()" class="btn btn-outline-dark d-block mt-5">Random</button>
+</div>
+<script>
+    function generateUUID() { // Public Domain/MIT
+        var d = new Date().getTime();//Timestamp
+        var d2 = ((typeof performance !== 'undefined') && performance.now && (performance.now()*1000)) || 0;//Time in microseconds since page-load or 0 if unsupported
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+            var r = Math.random() * 16;//random number between 0 and 16
+            if(d > 0){//Use timestamp until depleted
+                r = (d + r)%16 | 0;
+                d = Math.floor(d/16);
+            } else {//Use microseconds since page-load if supported
+                r = (d2 + r)%16 | 0;
+                d2 = Math.floor(d2/16);
+            }
+            return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+        });
+    }
+
+    var onClick = function(){
+        document.getElementById('uuid').textContent = generateUUID();
+    }
+    onClick();
+</script>
+</body>
+</html>
