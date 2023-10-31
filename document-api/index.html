@@ -17,8 +17,9 @@
 <!--    <script src="./swagger-initializer.js" charset="UTF-8"> </script>-->
   <script>
     document.addEventListener("DOMContentLoaded",()=>{
+      const urlParams = new URLSearchParams(queryString);
       window.ui = SwaggerUIBundle({
-        url: "",
+        url: urlParams.get("url-api") ?? "",
         dom_id: '#swagger-ui',
         deepLinking: true,
         presets: [
