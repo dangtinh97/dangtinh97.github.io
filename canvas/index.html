@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Canvas Fingerprinting</title>
+</head>
+<body>
+<canvas id="myCanvas" width="500px">
+    Your browser does not support the HTML canvas tag.
+</canvas>
+<div id="hash-code"></div>
+<script>
+    document.addEventListener("DOMContentLoaded",()=>{
+      var c = document.getElementById("myCanvas");
+      var ctx = c.getContext("2d");
+      ctx.font = "30px Arial";
+      ctx.fillText("Canvas Fingerprinting", 10, 50);
+
+      // hashing function
+      src = c.toDataURL();
+      hash = 0;
+      for (i = 0; i < src.length; i++) {
+        char = src.charCodeAt(i);
+        hash = ((hash<<5)-hash)+char;
+        hash = hash & hash;
+      }
+
+// output this however you want
+     document.getElementById('hash-code').innerText = hash;
+
+    })
+</script>
+</body>
+</html>
