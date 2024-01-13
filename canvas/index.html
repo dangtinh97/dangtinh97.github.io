@@ -1,148 +1,235 @@
-<!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Canvas Fingerprinting</title>
+    <title>Canvas Fingerprinting Demo</title>
+<!--    <script src="./fingerprinting/fingerprint.js"></script>-->
+    <script src="./hash/murmurhash3.js"></script>
+    <script src="./hash/java_hashcode.js"></script>
 </head>
 <body>
-<!--<canvas id="myCanvas" width="500px">-->
-<!--    Your browser does not support the HTML canvas tag.-->
-<!--</canvas>-->
-<!--<div id="hash-code"></div>-->
+
+<div style="text-align: center;">
+    <h3 style="margin-top: 60px">Fingerprint with drawing canvas</h3>
+    <h1 id="withCanvasDrawing"></h1>
+</div>
+<div style="text-align: center;">
+    <h3 style="margin-top: 20px">Fingerprint without drawing canvas and murmur3 hash function, metadata only:</h3>
+    <h1 id="withoutCanvasDrawing"></h1>
+</div>
+
+<div style="text-align: center;">
+    <h3 style="margin-top: 20px">Fingerprint without drawing canvas and Java's hashcode hash function, metadata
+        only:
+    </h3>
+    <h1 id="fingerPrintWithJavaHashCode"></h1>
+</div>
+
 <script>
-    document.addEventListener("DOMContentLoaded",()=>{
+  document.addEventListener("DOMContentLoaded",()=>{
+    var Fingerprint = function (options) {
+      var nativeForEach, nativeMap;
+      nativeForEach = Array.prototype.forEach;
+      nativeMap = Array.prototype.map;
 
-      var canvas = document.body.appendChild(document.createElement('canvas'));
-      var ctx = canvas.getContext('2d');
-      canvas.height = 200;
-      canvas.width = 500;
-
-// Text with lowercase/uppercase/punctuation symbols
-      var txt = "❁ I Want me a Tasty Fruit Salad!\n\r <🍏🍎🍐🍊🍋🍌🍉🍇🍓🍈🍒🍑🍍🥝>";
-      ctx.textBaseline = "top";
-// The most common type
-      ctx.font = "14px 'Arial'";
-      ctx.textBaseline = "alphabetic";
-      ctx.fillStyle = "#f60";
-      ctx.fillRect(125,1,62,20);
-// Some tricks for color mixing to increase the difference in rendering
-      ctx.fillStyle = "#069";
-      ctx.fillText(txt, 2, 15);
-      ctx.fillStyle = "rgba(102, 204, 0, 0.7)";
-      ctx.fillText(txt, 4, 17);
-
-// canvas blending
-// http://blogs.adobe.com/webplatform/2013/01/28/blending-features-in-canvas/
-// http://jsfiddle.net/NDYV8/16/
-      ctx.globalCompositeOperation = "multiply";
-      ctx.fillStyle = "rgb(255,0,255)";
-      ctx.beginPath();
-      ctx.arc(50, 50, 50, 0, Math.PI * 2, true);
-      ctx.closePath();
-      ctx.fill();
-      ctx.fillStyle = "rgb(0,255,255)";
-      ctx.beginPath();
-      ctx.arc(100, 50, 50, 0, Math.PI * 2, true);
-      ctx.closePath();
-      ctx.fill();
-      ctx.fillStyle = "rgb(255,255,0)";
-      ctx.beginPath();
-      ctx.arc(75, 100, 50, 0, Math.PI * 2, true);
-      ctx.closePath();
-      ctx.fill();
-      ctx.fillStyle = "rgb(255,0,255)";
-// canvas winding
-// http://blogs.adobe.com/webplatform/2013/01/30/winding-rules-in-canvas/
-// http://jsfiddle.net/NDYV8/19/
-      ctx.arc(75, 75, 75, 0, Math.PI * 2, true);
-      ctx.arc(75, 75, 25, 0, Math.PI * 2, true);
-      ctx.fill("evenodd");
-
-
-      var sha256 = (function(){
-
-        // Eratosthenes seive to find primes up to 311 for magic constants. This is why SHA256 is better than SHA1
-        var i = 1,
-          j,
-          K = [],
-          H = [];
-
-        while(++i < 18){
-          for(j = i * i; j < 312; j += i){
-            K[j] = 1;
+      this.each = function (obj, iterator, context) {
+        if (obj === null) {
+          return;
+        }
+        if (nativeForEach && obj.forEach === nativeForEach) {
+          obj.forEach(iterator, context);
+        } else if (obj.length === +obj.length) {
+          for (var i = 0, l = obj.length; i < l; i++) {
+            if (iterator.call(context, obj[i], i, obj) === {}) return;
           }
-        }
-
-        function x(num, root){
-          return (Math.pow(num, 1 / root) % 1) * 4294967296|0;
-        }
-
-        for(i = 1, j = 0; i < 313; ){
-          if(!K[++i]){
-            H[j] = x(i,2);
-            K[j++] = x(i,3);
-          }
-        }
-
-        function S (X, n) { return ( X >>> n ) | (X << (32 - n)); }
-
-        function SHA256(b){
-          var HASH = H.slice(i = 0),
-            s = unescape(encodeURI(b)), /* encode as utf8 */
-            W = [],
-            l = s.length,
-            m = [],
-            a, y, z;
-          for(; i < l; ) m[i >> 2] |= (s.charCodeAt(i) & 0xff) << 8 * (3 - i++ % 4);
-
-          l *= 8;
-
-          m[l >> 5] |= 0x80 << (24 - l % 32);
-          m[z = (l + 64 >> 5) | 15] = l;
-
-          for(i = 0; i < z; i += 16){
-            a = HASH.slice(j = 0, 8);
-
-            for(; j < 64; a[4] += y){
-              if(j < 16){
-                W[j] = m[j + i];
-              }else{
-                W[j] =
-                  (S(y = W[j - 2], 17) ^ S(y, 19) ^ (y >>> 10)) +
-                  (W[j - 7]|0) +
-                  (S(y = W[j - 15], 7) ^ S(y, 18) ^ (y >>> 3)) +
-                  (W[j - 16]|0);
-              }
-
-              a.unshift(
-                (
-                  y = (
-                      a.pop() +
-                      (S(b = a[4], 6) ^ S(b, 11) ^ S(b, 25)) +
-                      (((b & a[5]) ^ ((~b) & a[6])) + K[j])|0
-                    ) +
-                    (W[j++]|0)
-                ) +
-                (S(l = a[0], 2) ^ S(l, 13) ^ S(l, 22)) +
-                ((l & a[1]) ^ (a[1] & a[2]) ^ (a[2] & l))
-              );
+        } else {
+          for (var key in obj) {
+            if (obj.hasOwnProperty(key)) {
+              if (iterator.call(context, obj[key], key, obj) === {}) return;
             }
-
-            for(j = 8; j--; ) HASH[j] = a[j] + HASH[j];
           }
-
-          for(s = ''; j < 63; ) s += ((HASH[++j >> 3] >> 4 * (7 - j % 8)) & 15).toString(16);
-
-          return s;
         }
+      };
 
-        return SHA256;
-      })();
+      this.map = function(obj, iterator, context) {
+        var results = [];
+        if (obj == null) return results;
+        if (nativeMap && obj.map === nativeMap) return obj.map(iterator, context);
+        this.each(obj, function(value, index, list) {
+          results[results.length] = iterator.call(context, value, index, list);
+        });
+        return results;
+      };
 
+      if (typeof options == 'object'){
+        //Overloading for passing draw or now some data on canvas - good for demonstration purposes
+        this.hasher = options.hasher;
+        this.canvas = options.canvas;
+      } else if(typeof options == 'function'){
+        //Overloading for custom hash functions
+        this.hasher = options;
+      }
+    };
 
-      document.body.appendChild(document.createElement('br'));
-      document.body.appendChild(document.createTextNode(sha256(canvas.toDataURL())));
-    })
+    Fingerprint.prototype = {
+      get: function(){
+        var keys = [];
+        keys.push(navigator.userAgent);
+        keys.push(navigator.language);
+        keys.push(screen.colorDepth);
+        keys.push(this.getScreenResolution().join('x'));
+        keys.push(new Date().getTimezoneOffset());
+        keys.push(this.hasSessionStorage());
+        keys.push(this.hasLocalStorage());
+        keys.push(this.hasIndexDb());
+        //body might not be defined at this point or removed programmatically
+        if(document.body){
+          keys.push(typeof(document.body.addBehavior));
+        } else {
+          keys.push(typeof undefined);
+        }
+        keys.push(typeof(window.openDatabase));
+        keys.push(navigator.cpuClass);
+        keys.push(navigator.platform);
+        keys.push(navigator.doNotTrack);
+        keys.push(this.getPluginsString());
+        if(this.canvas && this.isCanvasSupported()){
+          keys.push(this.getCanvasFingerprint());
+        }
+        if(this.hasher){
+          return this.hasher(keys.join('###'), 31);
+        } else {
+          return murmurhash3_32_gc(keys.join('###'), 31);
+        }
+      },
+
+      /**
+       * If catch SecurityError, it means it exists
+       * @returns {boolean} has local storage
+       */
+      hasLocalStorage: function () {
+        try{
+          return !!window.localStorage;
+        } catch(e) {
+          return true;
+        }
+      },
+
+      /**
+       * If catch SecurityError, it means it exists
+       * @returns {boolean} has session storage
+       */
+      hasSessionStorage: function () {
+        try{
+          return !!window.sessionStorage;
+        } catch(e) {
+          return true;
+        }
+      },
+
+      /**
+       * If catch SecurityError, it means it exists
+       * @returns {boolean} has IndexDb
+       */
+      hasIndexDb: function () {
+        try{
+          return !!window.indexedDB;
+        } catch(e) {
+          return true;
+        }
+      },
+
+      isCanvasSupported: function () {
+        var elem = document.createElement('canvas');
+        return !!(elem.getContext && elem.getContext('2d'));
+      },
+
+      isIE: function () {
+        if(navigator.appName === 'Microsoft Internet Explorer') {
+          return true;
+        } else if(navigator.appName === 'Netscape' && /Trident/.test(navigator.userAgent)){
+          return true;
+        }
+        return false;
+      },
+
+      getPluginsString: function () {
+        if(this.isIE()){
+          return this.getIEPluginsString();
+        } else {
+          return this.getRegularPluginsString();
+        }
+      },
+
+      getRegularPluginsString: function () {
+        return this.map(navigator.plugins, function (p) {
+          var mimeTypes = this.map(p, function(mt){
+            return [mt.type, mt.suffixes].join('~');
+          }).join(',');
+          return [p.name, p.description, mimeTypes].join('::');
+        }, this).join(';');
+      },
+
+      /**
+       * Fetch plugins specific to IE
+       */
+      getIEPluginsString: function () {
+        if(window.ActiveXObject){
+          var names = ['ShockwaveFlash.ShockwaveFlash',
+            'AcroPDF.PDF',
+            'PDF.PdfCtrl',
+            'QuickTime.QuickTime',
+            'rmocx.RealPlayer G2 Control',
+            'rmocx.RealPlayer G2 Control.1',
+            'RealPlayer.RealPlayer(tm) ActiveX Control (32-bit)',
+            'RealVideo.RealVideo(tm) ActiveX Control (32-bit)',
+            'RealPlayer',
+            'SWCtl.SWCtl',
+            'WMPlayer.OCX',
+            'AgControl.AgControl', // Silverlight
+            'Skype.Detection'];
+
+          return this.map(names, function(name){
+            try{
+              new ActiveXObject(name);
+              return name;
+            } catch(e){
+              return null;
+            }
+          }).join(';');
+        } else {
+          return "";
+        }
+      },
+
+      getScreenResolution: function () {
+        return (screen.height > screen.width) ? [screen.height, screen.width] : [screen.width, screen.height];
+      },
+
+      getCanvasFingerprint: function () {
+        var canvas = document.createElement('canvas');
+        var ctx = canvas.getContext('2d');
+        // https://www.browserleaks.com/canvas#how-does-it-work
+        var txt = 'CANVAS_FINGERPRINT';
+        ctx.textBaseline = "top";
+        ctx.font = "14px 'Arial'";
+        ctx.textBaseline = "alphabetic";
+        ctx.fillStyle = "#f60";
+        ctx.fillRect(125,1,62,20);
+        ctx.fillStyle = "#069";
+        ctx.fillText(txt, 2, 15);
+        ctx.fillStyle = "rgba(102, 204, 0, 0.7)";
+        ctx.fillText(txt, 4, 17);
+        return canvas.toDataURL();
+      }
+    };
+    var withCanvasDrawing = new Fingerprint({canvas: true});
+    var withoutCanvasDrawing = new Fingerprint({canvas: false});
+    var javaHashFunction = new Fingerprint({hasher: javaHashCode});
+
+    document.getElementById('withCanvasDrawing').innerHTML = withCanvasDrawing.get();
+    document.getElementById('withoutCanvasDrawing').innerHTML = withoutCanvasDrawing.get();
+    document.getElementById('fingerPrintWithJavaHashCode').innerHTML = javaHashFunction.get();
+  })
+
 </script>
 </body>
 </html>
