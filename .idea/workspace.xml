@@ -5,18 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="74ef02f7-95ca-48e0-907d-4806ba4c500d" name="Changes" comment="uuid v4">
-      <change afterPath="$PROJECT_DIR$/canvas/LICENSE" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/canvas/README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/canvas/assets/images/0.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/canvas/assets/images/1.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/canvas/assets/images/2.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/canvas/assets/images/3.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/canvas/assets/images/4.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/canvas/fingerprinting/fingerprint.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/canvas/hash/java_hashcode.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/canvas/hash/murmurhash3.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/canvas/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/canvas/index.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,22 +37,22 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "DefaultHtmlFileTemplate": "HTML File",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "master",
-    "last_opened_file_path": "/Users/dangtinhvu/Documents/code/me/dangtinh97.github.io/canvas",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/dangtinhvu/Documents/code/me/dangtinh97.github.io/canvas&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/canvas" />
@@ -97,7 +86,8 @@
       <workItem from="1705114052185" duration="1204000" />
       <workItem from="1705115786132" duration="162000" />
       <workItem from="1705116252912" duration="623000" />
-      <workItem from="1705120524587" duration="143000" />
+      <workItem from="1705120524587" duration="859000" />
+      <workItem from="1705304481157" duration="5000" />
     </task>
     <task id="LOCAL-00001" summary="update">
       <option name="closed" value="true" />
@@ -187,7 +177,15 @@
       <option name="project" value="LOCAL" />
       <updated>1705116276898</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="uuid v4">
+      <option name="closed" value="true" />
+      <created>1705120677204</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1705120677204</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
