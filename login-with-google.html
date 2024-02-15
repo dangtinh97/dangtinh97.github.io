@@ -12,11 +12,12 @@
     data-callback="handleCredentialResponse">
 </div>
 <div class="g_id_signin" data-type="standard"></div>
-
+<textarea readonly type="text" id="token" cols="100"></textarea>
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 <script>
     function handleCredentialResponse(value){
       console.log(value)
+      document.getElementById('token').innerHTML = value.credential
     }
 </script>
 </body>
