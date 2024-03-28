@@ -1,22 +1,23 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-    <script src="https://apis.google.com/js/platform.js" async defer></script>
-    <meta name="google-signin-client_id" content="223191663663-hrrqisj85d8pa934tf1j13ak6vnmddp0.apps.googleusercontent.com">
-<!--    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-->
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
 </head>
 <body>
-<div class="g-signin2" data-onsuccess="onSignIn"></div>
+<div id="g_id_onload"
+    data-client_id="452682557137-htbvfvjib1oa2jab8lduhvrfvgqvu0i7.apps.googleusercontent.com"
+    data-callback="handleCredentialResponse">
+</div>
+<div class="g_id_signin" data-type="standard"></div>
+<textarea readonly type="text" id="token" cols="100"></textarea>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
 <script>
-    function onSignIn(googleUser) {
-        console.log(googleUser)
-        var profile = googleUser.getBasicProfile();
-        console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
-        console.log('Name: ' + profile.getName());
-        console.log('Image URL: ' + profile.getImageUrl());
-        console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+    function handleCredentialResponse(value){
+      console.log(value)
+      document.getElementById('token').innerHTML = value.credential
     }
 </script>
 </body>
