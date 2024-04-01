@@ -1,0 +1,146 @@
+
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="52f54936-ca0f-4e45-ad04-e275ad7de71c" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/iwedding/common/bii.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/iwedding/common/calendar.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/iwedding/common/calendar.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/iwedding/common/emoji-picker/js/init.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/iwedding/common/emoji-picker/js/insertTextAtCursor.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/iwedding/favicon.ico" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/iwedding/favicon.jpeg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/iwedding/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/iwedding/templates/template22/css/libs.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/iwedding/templates/template22/css/style.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/iwedding/templates/template22/fonts/fontawesome-webfont5b62.eot" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/iwedding/templates/template22/fonts/fontawesome-webfont5b62.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/iwedding/templates/template22/fonts/fontawesome-webfont5b62.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/iwedding/templates/template22/fonts/fontawesome-webfont5b62.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/iwedding/templates/template22/fonts/fontawesome-webfont5b62.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/iwedding/templates/template22/fonts/fontawesome-webfontd41d.eot" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/iwedding/templates/template22/fonts/glyphicons-halflings-regular.eot" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/iwedding/templates/template22/fonts/glyphicons-halflings-regular.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/iwedding/templates/template22/fonts/glyphicons-halflings-regular.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/iwedding/templates/template22/fonts/glyphicons-halflings-regular.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/iwedding/templates/template22/fonts/glyphicons-halflings-regular.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/iwedding/templates/template22/fonts/glyphicons-halflings-regulard41d.eot" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/iwedding/templates/template22/fonts/slick.eot" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/iwedding/templates/template22/fonts/slick.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/iwedding/templates/template22/fonts/slick.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/iwedding/templates/template22/fonts/slick.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/iwedding/templates/template22/fonts/slickd41d.eot" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/iwedding/templates/template22/images/1466014460_menu-alt.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/iwedding/templates/template22/images/WEDDING4.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/iwedding/templates/template22/images/blank.gif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/iwedding/templates/template22/images/couple-back.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/iwedding/templates/template22/images/fancybox_loading%402x.gif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/iwedding/templates/template22/images/fancybox_loading.gif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/iwedding/templates/template22/images/fancybox_sprite%402x.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/iwedding/templates/template22/images/fancybox_sprite.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/iwedding/templates/template22/images/gift-back.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/iwedding/templates/template22/images/left-arrow.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/iwedding/templates/template22/images/loading.gif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/iwedding/templates/template22/images/loveline-back.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/iwedding/templates/template22/images/loveline-vector.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/iwedding/templates/template22/images/main-image.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/iwedding/templates/template22/images/people-back.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/iwedding/templates/template22/images/pin.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/iwedding/templates/template22/images/right-arrow.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/iwedding/templates/template22/images/rsvp-back.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/iwedding/templates/template22/images/wedding-back.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/iwedding/templates/template22/js/jquery-plugin-collection.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/iwedding/templates/template22/js/script.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/iwedding/ziiweb/DSC04555-min.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/iwedding/ziiweb/IMG_3367.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/iwedding/ziiweb/bg-music.mp3" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/iwedding/ziiweb/default/template/646f6e3d778825e6f306667f/9efd74b09d7e630e7cfd5d215593f20c.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/iwedding/ziiweb/default/website/15be4c2cfb762806d02a699688cbe2c2.jpeg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/iwedding/ziiweb/default/website/383875f7dbad0c73b240243aeecb74dd.jpeg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/iwedding/ziiweb/default/website/604b9769d7be40d0d5bad7c5265dc849.jpeg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/iwedding/ziiweb/default/website/7744fc9739685fe61c53cd8fe2cf7e52.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/iwedding/ziiweb/default/website/eb13d6af3ecce1c4c852a6b09913bdca.jpeg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/iwedding/ziiweb/default/website/eee1cb36b560f0d80f513c4e9be666db.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/iwedding/ziiweb/images/static/common/searchicon.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/iwedding/ziiweb/website/660564c538d2b6a95c0c579a/53f7d8ee6e6e1ac19623ee79be49cebb.jpeg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/iwedding/ziiweb/website/660564c538d2b6a95c0c579a/87dd206e1a598b28f894a010b3200bb1.jpeg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/iwedding/ziiweb/website/660564c538d2b6a95c0c579a/galleries/66056eae7181c07ad80da7c2/small.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/iwedding/ziiweb/website/660564c538d2b6a95c0c579a/galleries/66056ec36d2002177e0c0247/small.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/iwedding/ziiweb/website/660564c538d2b6a95c0c579a/galleries/66056eec85909f82b906e1f3/small.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/iwedding/ziiweb/website/660564c538d2b6a95c0c579a/galleries/66056f12ca5c1eddea03fa58/small.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/iwedding/ziiweb/website/660564c538d2b6a95c0c579a/galleries/66056f27f87531b7850d7763/small.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/iwedding/ziiweb/website/660564c538d2b6a95c0c579a/galleries/66056f4fbf70d1f98300dea3/small.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/iwedding/ziiweb/website/660564c538d2b6a95c0c579a/galleries/6605764c8a881a96b701a02b/small.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/iwedding/ziiweb/website/660564c538d2b6a95c0c579a/galleries/6605765d3680827ebe0f082b/small.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/iwedding/ziiweb/website/660564c538d2b6a95c0c579a/galleries/66057c453680827ebe0f0838/small.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/iwedding/ziiweb/website/660564c538d2b6a95c0c579a/galleries/66057d2dcb2c576adb02e58a/small.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/iwedding/ziiweb/website/660564c538d2b6a95c0c579a/templates/646f6e3d778825e6f306667f/016e5aea4bc05d9e086c8a91bc796e01.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/iwedding/ziiweb/website/660564c538d2b6a95c0c579a/templates/646f6e3d778825e6f306667f/39be48519f5c0752d060562b7713fc33.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/iwedding/ziiweb/website/660564c538d2b6a95c0c579a/templates/646f6e3d778825e6f306667f/3ffaf3573e26b01d8f39e156fc65e61e.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/iwedding/ziiweb/website/660564c538d2b6a95c0c579a/templates/646f6e3d778825e6f306667f/71df3f3c04ae596046e0a6cb7b8f661f.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/iwedding/ziiweb/website/660564c538d2b6a95c0c579a/templates/646f6e3d778825e6f306667f/d6e1add46bfbf88b6b71b42506e5fdc6.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dangtinh97-github-io.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/watcherTasks.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lixi/index.html" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ComposerSettings">
+    <execution />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 2
+}]]></component>
+  <component name="ProjectId" id="2eKFQK5s4ch0ONG01OrFdN2FWTm" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "master",
+    "last_opened_file_path": "/Users/dangtinh/Documents/code2023/dangtinh97.github.io",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "ssh.settings",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+    </key>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-php-predefined-ba97393d7c68-74080bdb84d3-com.jetbrains.php.sharedIndexes-PS-233.11799.297" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="52f54936-ca0f-4e45-ad04-e275ad7de71c" name="Changes" comment="" />
+      <created>1711645346537</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1711645346537</updated>
+      <workItem from="1711645347648" duration="105000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>
