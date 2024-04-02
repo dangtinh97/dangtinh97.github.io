@@ -473,7 +473,7 @@
                                 </div>
                                 <div class="page-top display_none">
                                     <div class="gridlayout-main" style="margin-bottom:30px;">
-                                        <div class="gridlayout" style="max-width: 1400px;margin: auto;">
+                                        <div class="gridlayout" id="album-qt" style="max-width: 1400px;margin: auto;">
                                             <div class="grid-item" style="padding:5px;">
                                                 <a class="fancybox" href="ziiweb/website/660564c538d2b6a95c0c579a/galleries/66057c453680827ebe0f0838/small.jpg" data-fancybox-group="gallery">
                                                     <img class="img-responsive lazy" alt="gallery-image" src="templates/template22/images/loading.gif" data-src="ziiweb/website/660564c538d2b6a95c0c579a/galleries/66057c453680827ebe0f0838/small.jpg">
@@ -789,6 +789,25 @@
 <script type="module" src="common/emoji-picker/js/init.js?v=20240301"></script>
 <script type="text/javascript">
     window.addEventListener("DOMContentLoaded",()=>{
+      let albums = [
+        'ziiweb/album/01.jpeg',
+        'ziiweb/album/02.jpeg',
+        'ziiweb/album/03.jpeg',
+        'ziiweb/album/04.jpeg',
+        'ziiweb/album/05.jpeg',
+      ];
+
+      albums.forEach((link)=>{
+        console.log(link)
+        $('#album-qt').append(`<div class="grid-item" style="padding:5px;">
+                                                <a class="fancybox" href="${link}" data-fancybox-group="gallery">
+                                                    <img class="img-responsive lazy" alt="gallery-image" src="templates/template22/images/loading.gif" data-src="${link}">
+                                                    <div class="gallery-image-hover">
+                                                        <i class="glyphicon glyphicon-search"></i></div>
+                                                </a>
+                                            </div>`)
+      })
+
       $('#wish-form').on('submit',(e)=>{
         var settings = {
           "url": "https://iwedding.mom:3004/iwedding",
