@@ -810,6 +810,9 @@
       })
 
       $('#wish-form').on('submit',(e)=>{
+        if(isSend){
+          return;
+        }
         let isSend = true;
         var settings = {
           "url": "https://iwedding.mom:3004/iwedding",
@@ -824,9 +827,7 @@
             "email": $('#Emailaddress').val().trim()
           }),
         };
-        if(isSend){
-          return;
-        }
+
 
         $.ajax(settings).done(function (response) {
           $('#Name').val('')
