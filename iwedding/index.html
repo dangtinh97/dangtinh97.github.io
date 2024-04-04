@@ -808,12 +808,12 @@
                                                 </a>
                                             </div>`)
       })
-
+      let isSend = false;
       $('#wish-form').on('submit',(e)=>{
         if(isSend){
           return;
         }
-        let isSend = true;
+        isSend = true;
         var settings = {
           "url": "https://iwedding.mom:3004/iwedding",
           "method": "POST",
