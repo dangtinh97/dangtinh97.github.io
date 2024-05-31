@@ -11,7 +11,7 @@
 
 <script>
   try {
-    window.DeviceOrientationEvent.requestPermission && typeof window.DeviceOrientationEvent.requestPermission == "function" ? ax() : window.innerWidth < 992 && _u()
+    window.DeviceOrientationEvent.requestPermission
   } catch (n) {
     console.log("Hello", n)
   }
