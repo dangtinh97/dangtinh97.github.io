@@ -3,53 +3,78 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <title>AES</title>
 </head>
 <body>
-<div>
-    <textarea cols="100" id="data">{"wallet_address":"0xc0b77d0e2a443654f3bdf60cfbcf26b292c8f470","node_purchased_history_oid":"65eace9615e818da7e212e9f"}</textarea>
-    <p>
-        <label>IV:</label>
-        <input type="text" id="iv" value="2K1QHTuhV5dVBf4Y">
-    </p>
-    <p>
-        <label>Key:</label>
-        <input type="text" id="key" value="FV3hNxhe2u2cSrSF2K1QHTuhV5dVBf4Y">
-    </p>
-    <div>
-        <button id="btn-encrypt">Encrypt</button>
-        <button>Decrypt</button>
-    </div>
-    <textarea readonly cols="100" id="output"></textarea>
+<div class="container mt-5">
+    <div class="row">
+        <p>
+            <label>Data</label>
+            <textarea cols="100" id="data" class="form-control"></textarea>
+        </p>
 
-    <div>
-        <a href="#" id="open-vip-number" target="_blank">OPEN VIP NUMBER</a>
+        <p class="form-group col-3">
+            <label>IV</label>
+            <input type="text" id="iv" value="" class="form-control">
+        </p>
+        <p class="form-group col-3">
+            <label>Key</label>
+            <input type="text" id="key" value="" class="form-control">
+        </p>
+        <div>
+            <button id="btn-encrypt" class="btn btn-dark">Encrypt</button>
+            <button id="btn-decrypt" class="btn btn-info">Decrypt</button>
+        </div>
+        <p>
+            <label>Output</label>
+            <textarea rows="5" readonly cols="100" id="output" class="form-control mt-4" aria-readonly="true"></textarea>
+        </p>
+
     </div>
+
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"></script>
 <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
-        crossorigin="anonymous"></script>
+    crossorigin="anonymous"></script>
 <script>
-
   document.addEventListener('DOMContentLoaded', () => {
-    function encrypt () {
-      var key = CryptoJS.enc.Utf8.parse(document.getElementById('key').value)     // Use Utf8-Encoder.
-      var iv = CryptoJS.enc.Utf8.parse(document.getElementById('iv').value)      // Use Utf8-Encoder
+    let iv = ''
+    let key = ''
+    let data = ''
 
-      var encryptedCP = CryptoJS.AES.encrypt(document.getElementById('data').value.trim(), key, { iv: iv })
+    function encrypt () {
+      getForm()
+      var encryptedCP = CryptoJS.AES.encrypt(data, key, { iv: iv })
       var decryptedWA = CryptoJS.AES.decrypt(encryptedCP, key, { iv: iv })
 
       var encryptedBase64 = encryptedCP.toString()
       document.getElementById('output').value = base64ToHex(encryptedBase64)
     }
 
+    function getForm () {
+      key = CryptoJS.enc.Utf8.parse(document.getElementById('key').value)     // Use Utf8-Encoder.
+      iv = CryptoJS.enc.Utf8.parse(document.getElementById('iv').value)      // Use Utf8-Encoder
+      data = document.getElementById('data').value.trim()
+    }
+
     $('#btn-encrypt').on('click', () => {
       encrypt()
-      $('#open-vip-number').attr('href','https://vip-number.dev.hifriend.site/checkout?sign='+$('#output').val().trim())
+    })
+
+    $('#btn-decrypt').on('click', () => {
+      getForm()
+      var cipherParams = CryptoJS.lib.CipherParams.create({
+        ciphertext: CryptoJS.enc.Hex.parse(data)
+      })
+      var decryptedWA = CryptoJS.AES.decrypt(cipherParams, key, { iv: iv })
+
+      var encryptedBase64 = decryptedWA.toString()
+
+      document.getElementById('output').value = hexToString(encryptedBase64)
     })
 
     function base64ToHex (str) {
@@ -60,6 +85,15 @@
         result += (hex.length === 2 ? hex : '0' + hex)
       }
       return result.toUpperCase()
+    }
+
+    function hexToString (hexValue) {
+      let string = ''
+      for (let i = 0; i < hexValue.length; i += 2) {
+        string += String.fromCharCode(parseInt(hexValue.substr(i, 2), 16))
+      }
+
+      return decodeURIComponent(escape(string));
     }
   })
 </script>
