@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+<video id="fakeCamera" playsinline></video>
+<button type="button" id="open-c">OPEN</button>
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+<script>
+  document.addEventListener("DOMContentLoaded",()=>{
+    $('#open-c').on('click',()=>{
+      try {
+        window.DeviceOrientationEvent.requestPermission
+      } catch (n) {
+        console.log("Hello", n)
+      }
+      try {
+        var i = document.getElementById("fakeCamera")
+          , e = {
+          audio: !1,
+          video: {
+            facingMode: "environment"
+          }
+        };
+        navigator.mediaDevices.getUserMedia(e).then(function(s) {
+          i.srcObject = s;
+          i.play();
+        })
+      } catch (n) {
+        console.log(n)
+      }
+    })
+
+  })
+
+  // navigator.mediaDevices
+  //   .getUserMedia({
+  //     audio: !1,
+  //     video: {
+  //       facingMode: "environment"
+  //     }
+  //   })
+  //   .then((localMediaStream) => {
+  //     const video = document.querySelector("video");
+  //     video.srcObject = localMediaStream;
+  //   })
+  //   .catch((error) => {
+  //     console.log("Rejected!", error);
+  //   });
+</script>
+</body>
+</html>
