@@ -49,8 +49,6 @@
     function encrypt () {
       getForm()
       var encryptedCP = CryptoJS.AES.encrypt(data, key, { iv: iv })
-      var decryptedWA = CryptoJS.AES.decrypt(encryptedCP, key, { iv: iv })
-
       var encryptedBase64 = encryptedCP.toString()
       document.getElementById('output').value = base64ToHex(encryptedBase64)
     }
