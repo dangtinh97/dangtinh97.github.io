@@ -34,7 +34,33 @@
       console.log(res)
     })
   }
-  verifyData({})
+  // verifyData({})
+
+  const corsFix = ()=>{
+    var settings = {
+      "url": "https://api-locago.dev.locamos.com/login",
+      "method": "POST",
+      "timeout": 0,
+      "headers": {
+        "lang": "vi",
+        "os-name": "IOS",
+        "os-version": "1.2",
+        "app-version": "1.2",
+        "uuid": "11111",
+        "gmt": "420",
+        "Content-Type": "application/json"
+      },
+      "data": JSON.stringify({
+        "access_token": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjBlMzQ1ZmQ3ZTRhOTcyNzFkZmZhOTkxZjVhODkzY2QxNmI4ZTA4MjciLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJhenAiOiI0NTI2ODI1NTcxMzctaWFqa2JtbGVpZHQyaDJpZ25kaDhlMXRhNW90b2M1Z2ouYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJhdWQiOiI0NTI2ODI1NTcxMzctaWFqa2JtbGVpZHQyaDJpZ25kaDhlMXRhNW90b2M1Z2ouYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJzdWIiOiIxMDg4MTE2MjE5ODM5OTAwMzU3NzAiLCJlbWFpbCI6ImRhbmd0aW5oYTJAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsIm5iZiI6MTcyMTM2NDY0NSwibmFtZSI6IsSQxINuZyBUw61uaCBPZmZpY2lhbCIsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BQ2c4b2NJTXZQSC1VZERDanlxZm1ab3dpMEtBSG5Ec0g3cW5Pd3RnSjVNbVl2UFJ2eHk5T3g1ZD1zOTYtYyIsImdpdmVuX25hbWUiOiLEkMSDbmcgVMOtbmgiLCJmYW1pbHlfbmFtZSI6Ik9mZmljaWFsIiwiaWF0IjoxNzIxMzY0OTQ1LCJleHAiOjE3MjEzNjg1NDUsImp0aSI6IjY1YTM0ZDMxZmIyODc1M2QxNzU4MGI4MDE2YWZlZjUxMDUzZTQ5NjkifQ.qgbMkwpnkBlvAozZ4VUJktiG_ULxlWXpcSKnz6baRnYUDZr0gsSCqoJ6lkcLX-JjuKA_GHV-i8LEk7O3_c-dbOPgZjk2qUKXOPq5Mc1ZaZtiXyjPltzNwFe8k68D3K5i7phJZS1x6hGxWnxNirlStf2-pSKGATeiuv72UKgy5jKbo4oarwu14f29QC7AFLDgy0WxjhdUnfV5MLQyISW7OPUu2CeF8ZAmMGIyqAh8ldPordmbSUwIby302WogVR2-CtgEOHJYcqXn36TYDg7ThH7AOsiuHHeUFm-l0bKE9Ng-RtYKkRl8XJCded90Rl8qAtWnhesINtUhgQd9ur_5vg",
+        "type_account": "GOOOGLE_ID"
+      }),
+    };
+
+    $.ajax(settings).done(function (response) {
+      console.log(response);
+    });
+  }
+  corsFix();
 </script>
 </body>
 </html>
