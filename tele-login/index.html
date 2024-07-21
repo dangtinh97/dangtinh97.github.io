@@ -44,16 +44,16 @@
   }
 
   verifyData  = (user)=>{
-    fetch(URL_VERIFY, {
-      headers:{
-        'Content-Type':'application/json'
+    $.ajax({
+      url: URL_VERIFY,
+      type:"POST",
+      headers: {
+        "Content-Type": "application/json"
       },
-      method:"POST",
-      data:JSON.stringify(user)
-    }).then((res)=>{
-      console.log(res)
-    }).catch((e)=>{
-      console.info(e)
+      data:user,
+      success:(res)=>{
+        console.log(res)
+      }
     })
   }
   // verifyData({})
