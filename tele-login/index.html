@@ -40,7 +40,7 @@
   const URL_VERIFY = 'https://api-locago.dev.locamos.com/mini-app/telegram-verify';
   // const URL_VERIFY = 'https://b7f6-116-96-45-144.ngrok-free.app/mini-app/telegram-verify';
   function onTelegramAuth(user) {
-
+    verifyData(user)
   }
 
   verifyData  = (user)=>{
@@ -49,10 +49,12 @@
         'Content-Type':'application/json'
       },
       method:"POST",
-      data:JSON.stringify({})
+      data:JSON.stringify(user)
     }).then((res)=>{
       console.log(res)
-    })
+    }).catch(e){
+      console.log(e);
+    }
   }
   // verifyData({})
 
