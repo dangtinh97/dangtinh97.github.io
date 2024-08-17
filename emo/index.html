@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Emo WEB</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="content">
+    <img src="" id="face">
+</div>
+
+<script
+    src="https://code.jquery.com/jquery-3.7.1.js"
+    integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+    crossorigin="anonymous"></script>
+<script>
+  document.addEventListener("DOMContentLoaded",()=>{
+    let emotions = {};
+
+    $.ajax({
+      url: './emotions.json',
+      type:"GET",
+      dataType:"JSON",
+      success:async (res)=>{
+        emotions = res;
+        const allFile = Object.values(res)
+        for(j=0;j< allFile.length;j++){
+          for (let i=0;i<allFile[j].length;i++){
+            await sleep(100)
+            console.log(allFile[j][i])
+            $('#face').attr('src',allFile[j][i])
+          }
+        }
+      }
+    })
+
+    const sleep = async (time)=>{
+      return new Promise((resolve)=>{
+        setTimeout(()=>{
+          return resolve(true)
+        },time)
+      })
+    }
+
+
+
+  })
+</script>
+</body>
+</html>

@@ -1,0 +1,25 @@
+html, body {
+    color: white; /* Sets the text color to white */
+    background-color: black; /* Sets the background color to black */
+    height: 100%;
+    margin: 0; /* Ensures no default margin around the page */
+}
+
+html {
+    display: table;
+    margin: auto;
+}
+
+body {
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center; /* Centers the content horizontally */
+}
+/* Styles for landscape orientation */
+@media screen and (orientation: landscape) {
+    body {
+        background-color: black;
+        color: white;
+        text-align: center;
+    }
+}
