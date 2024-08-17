@@ -29,9 +29,12 @@
         const allFile = Object.values(res)
         for (j = 0; j < allFile.length; j++) {
           for (let i = 0; i < allFile[j].length; i++) {
+            const first = new Date().getTime();
             const file = allFile[j][i];
             await preLoad(file);
-            // await sleep(100)
+            const second = new Date().getTime();
+            const delay = second - first;
+            await sleep(delay<100? 100-delay : 0)
           }
         }
       }
