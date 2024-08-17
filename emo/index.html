@@ -31,7 +31,7 @@
           for (let i=0;i<allFile[j].length;i++){
             await sleep(100)
             console.log(allFile[j][i])
-            $('#face').attr('src',allFile[j][i])
+            $('#face').attr('src',`.${allFile[j][i]}`)
           }
         }
       }
