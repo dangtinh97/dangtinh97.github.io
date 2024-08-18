@@ -75,7 +75,6 @@ export const detect = (obj,value)=>{
         key: 'no_answer'
       }
     }
-
     return {
       voice: answer[detectData[0]][langDefault] || answer['no_answer'][langDefault],
       key: detectData[0] || 'no_answer'
