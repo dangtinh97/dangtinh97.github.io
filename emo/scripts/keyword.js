@@ -27,6 +27,10 @@ export const answer = {
   'what_is_your_name':{
     'en':'I am robot vector',
     'vi':'Tôi là robot vector '
+  },
+  hello:{
+    'en':'Hello, can i help you',
+    'vi':'Xin chào, tôi có thể giúp gì cho bạn?'
   }
 }
 
