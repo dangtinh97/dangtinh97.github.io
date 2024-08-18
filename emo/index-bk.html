@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Emo WEB</title>
+    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="content">
+    <img src="" id="face">
+</div>
+<script
+    src="https://code.jquery.com/jquery-3.7.1.js"
+    integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+    crossorigin="anonymous"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    let voices = [];
+
+    window.speechSynthesis.onvoiceschanged = () => {
+      voices = window.speechSynthesis.getVoices();
+      console.log(voices); // Xem danh sách giọng nói
+    };
+    if(window.SpeechRecognition){
+      console.log("record support")
+      const recognition = new SpeechRecognition();
+      recognition.lang = 'en-US'; // Thiết lập ngôn ngữ
+      // recognition.lang = 'vi-VN'; // Thiết lập ngôn ngữ
+      recognition.interimResults = false; // Không hiển thị kết quả tạm thời
+      recognition.maxAlternatives = 1; // Số lượng kết quả tối đa
+      recognition.continuous = true;
+      recognition.start();
+      console.log('Listening continuously...');
+      // setTimeout(()=>{
+      //   recognition.stop();
+      //   console.log('Stopped listening.');
+      // },3000)
+      recognition.onresult = (event) => {
+        const transcript = event.results[event.results.length - 1][0].transcript.trim().toLowerCase();
+        // transcriptElement.textContent = transcript;
+        console.log('Transcript:', transcript);
+      };
+    }
+
+    const playAudio =async (text)=>{
+      console.log(text)
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'en-US'; // Thiết lập ngôn ngữ thành tiếng Việt
+      // Thiết lập các thuộc tính khác nếu cần
+      utterance.rate = 1; // Tốc độ nói (0.1 đến 10)
+      utterance.pitch = 1; // Độ cao giọng nói (0 đến 2)
+      // Phát âm thanh
+      window.speechSynthesis.speak(utterance);
+      console.log('ssss')
+    }
+    const check = setInterval(()=>{
+      const voices = window.speechSynthesis.getVoices();
+      if(voices.length===0){
+        return;
+      }
+      playAudio('Speech synthesis finished.')
+      return  clearInterval(check);
+    },2000)
+    window.speechSynthesis.onend = () => {
+      console.log('Speech synthesis finished.');
+    };
+
+// Xử lý lỗi phát sinh
+    window.speechSynthesis.onerror = (event) => {
+      console.error('Speech synthesis error:', event);
+    };
+
+    let images = []
+    let emotions = {}
+    $.ajax({
+      url: './emotions.json',
+      type: 'GET',
+      dataType: 'JSON',
+      success: async (res) => {
+        emotions = res
+        await viewFace()
+      }
+    })
+
+    const viewFace =async ()=>{
+      const allFile = Object.values(emotions)
+      for (j = 0; j < allFile.length; j++) {
+        for (let i = 0; i < allFile[j].length; i++) {
+          const first = new Date().getTime();
+          const file = allFile[j][i];
+          await preLoad(file);
+          const second = new Date().getTime();
+          const delay = second - first;
+          await sleep(delay<100? 100-delay : 0)
+        }
+      }
+      await viewFace()
+    }
+
+    const preLoad =async (link)=>{
+      return new Promise((resolve)=>{
+        const img = new Image()
+        img.src = link
+        $(img).on('load',async function() {
+          $('#face').attr('src', img.src);  // Hiển thị hình ảnh đã preload
+          return resolve(true)
+        });
+      })
+    }
+
+    const sleep = async (time) => {
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          return resolve(true)
+        }, time)
+      })
+    }
+
+  })
+</script>
+</body>
+</html>

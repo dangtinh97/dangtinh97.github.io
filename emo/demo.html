@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<button id="click">Click</button>
+<script
+    src="https://code.jquery.com/jquery-3.7.1.js"
+    integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+    crossorigin="anonymous"></script>
+<script>
+    document.addEventListener("DOMContentLoaded",()=>{
+      function timeToVietnamese(time) {
+        const hours = time.getHours();
+        const minutes = time.getMinutes();
+        console.log(hours,minutes);
+        const hourWords = [
+          'mười hai', 'một', 'hai', 'ba', 'bốn', 'năm', 'sáu', 'bảy', 'tám', 'chín', 'mười', 'mười một'
+        ];
+        const minuteWords = [
+          'không', 'mười', 'hai mươi', 'ba mươi', 'bốn mươi', 'năm mươi'
+        ];
+
+        let hourWord = hours >= 12 ? hourWords[hours % 12] : hourWords[hours];
+        let minuteWord = minutes === 0 ? 'không phút' :
+          (minutes < 10 ? 'lẻ ' + minuteWords[1] + ' ' + hourWords[minutes] : minuteWords[Math.floor(minutes / 10)] + (minutes % 10 > 0 ? ' ' + hourWords[minutes % 10] : ''));
+
+        // Special case for 12-hour
+        if (hours === 0) hourWord = 'mười hai';
+
+        return `Bây giờ là: ${hourWord} giờ ${minuteWord} phút`;
+      }
+
+      function timeToEnglish(time) {
+        const hours = time.getHours();
+        const minutes = time.getMinutes();
+
+        const hourWords = [
+          'twelve', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven'
+        ];
+
+        const minuteWords = [
+          'o\'clock', 'five', 'ten', 'quarter past', 'twenty', 'twenty-five', 'half past', 'twenty-five to', 'twenty', 'quarter to', 'ten', 'five'
+        ];
+
+        let hourWord = hourWords[hours % 12];
+        let minuteWord;
+
+        if (minutes === 0) {
+          minuteWord = 'o\'clock';
+        } else if (minutes === 15) {
+          minuteWord = 'quarter past';
+        } else if (minutes === 30) {
+          minuteWord = 'half past';
+        } else if (minutes === 45) {
+          minuteWord = 'quarter to';
+        } else if (minutes < 30) {
+          minuteWord = minuteWords[Math.floor(minutes / 5)];
+          minuteWord += ' past';
+        } else {
+          minuteWord = minuteWords[Math.floor((60 - minutes) / 5)];
+          minuteWord += ' to';
+          hourWord = hourWords[(hours + 1) % 12];
+        }
+
+        return `It is ${hourWord} ${minuteWord}`;
+      }
+
+      const now = new Date('1997-03-12 23:29');
+      $('#click').on('click',()=>{
+        playAudio(timeToEnglish(now))
+      })
+      const playAudio = (text)=>{
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'en-GB'; // Thiết lập ngôn ngữ thành tiếng Việt
+        utterance.rate = 0.8; // Tốc độ nói (0.1 đến 10)
+        utterance.pitch = 1; // Độ cao giọng nói (0 đến 2)
+        // Phát âm thanh
+        window.speechSynthesis.speak(utterance);
+      }
+    })
+</script>
+</body>
+</html>
