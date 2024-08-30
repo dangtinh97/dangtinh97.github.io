@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Audio</title>
+    <style>
+        #form{
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<div id="form">
+    <input id="text" value="đây là âm thanh mẫu">
+    <button id="play">Play</button>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+<script>
+    document.addEventListener("DOMContentLoaded",()=>{
+      let time = setInterval(()=>{
+        const voices = window.speechSynthesis.getVoices();
+        if(voices.length>0){
+          clearInterval(time)
+          $('#form').show()
+          return resolve(true)
+        }
+      },100)
+
+      $('#play').on('click',()=>{
+        const utterance = new SpeechSynthesisUtterance($('#text').val());
+        utterance.lang = 'vi-VN'; // Thiết lập ngôn ngữ thành tiếng Việt
+        utterance.rate = 1; // Tốc độ nói (0.1 đến 10)
+        utterance.pitch = 1; // Độ cao giọng nói (0 đến 2)
+        // Phát âm thanh
+        window.speechSynthesis.speak(utterance);
+      })
+    })
+</script>
+</body>
+</html>
