@@ -16,16 +16,16 @@
     <input id="text" value="đây là âm thanh mẫu">
     <button id="play">Play</button>
 </div>
-
+<textarea id="google support"></textarea>
 <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 <script>
     document.addEventListener("DOMContentLoaded",()=>{
       let time = setInterval(()=>{
         const voices = window.speechSynthesis.getVoices();
+        console.log(voices)
         if(voices.length>0){
           clearInterval(time)
           $('#form').show()
-          return resolve(true)
         }
       },100)
 
