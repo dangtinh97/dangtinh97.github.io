@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Translation Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 20px;
+            color: #555;
+        }
+
+        textarea {
+            width: -webkit-fill-available;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-top: 10px;
+            font-size: 16px;
+            height: 120px;
+        }
+
+        button {
+            display: block;
+            width: 100%;
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            margin-top: 20px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .output {
+            background-color: #f1f1f1;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+            font-size: 16px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Gemini Page</h1>
+<!--    <label for="input-text">Enter text to translate:</label>-->
+    <select id="type">
+        <option value="translate-vi-en">Vi - En</option>
+        <option value="translate-en-vi">En - Vi</option>
+        <option value="summary">Tóm tắt</option>
+    </select>
+    <textarea id="input-text" placeholder="Type something..."></textarea>
+
+    <button id="submit">Submit</button>
+
+    <div class="output" id="output-text">...</div>
+</div>
+<script
+    src="https://code.jquery.com/jquery-3.7.1.js"
+    integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+    crossorigin="anonymous"></script>
+<script>
+  document.addEventListener("DOMContentLoaded",()=>{
+    const url ='http://localhost:3004/gemini/test';
+    url ='https://ws-v2-translate.dev.locago.tech/gemini/test';
+    $('#submit').on('click',async ()=>{
+      const source = $('#type').val()
+      const text = $('#input-text').val().trim();
+      $('#output-text').html('sending...')
+      const response = await send(source,text);
+      $('#output-text').html(response || '')
+    })
+
+    const send = (source,text)=>{
+      return new Promise((resolve)=>{
+        $.ajax({
+          url:url,
+          type:"POST",
+          dataType:"JSON",
+          data:{
+            type:source,
+            text: text,
+          },
+          success:(res)=>{
+            const text = res.text;
+            resolve(text)
+          },
+        }).catch((error)=>{
+          console.log(error)
+          resolve(null)
+        })
+      })
+
+    }
+  })
+
+</script>
+</body>
+</html>
