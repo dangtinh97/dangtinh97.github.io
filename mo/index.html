@@ -4,59 +4,89 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        /* Đảm bảo không có margin hoặc padding không mong muốn */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        /* Thiết lập trang với chiều cao và chiều rộng 100% */
         html, body {
             height: 100%;
             display: flex;
             justify-content: center;
             align-items: center;
+            position: relative;
         }
 
-        /* Kiểm soát container */
         .center-image-container {
             display: flex;
             justify-content: center;
             align-items: center;
             width: 100%;
             height: 100%;
+            position: relative;
         }
         #frame {
-            max-width: 100%;  /* Chiều rộng tối đa là 100% để phù hợp với màn hình */
-            height: auto;      /* Chiều cao tự động theo tỷ lệ gốc */
-            max-height: 100vh; /* Giới hạn chiều cao để không vượt quá màn hình */
+            max-width: 100%;
+            height: auto;
+            max-height: 100vh;
+        }
+
+        #number {
+            position: absolute;
+            top: 25% !important;
+            left: 61%;
+            transform: translate(-50%, -50%);
+            font-size: 3em;
+            color: red;
+            font-weight: bold;
+            user-select: none;
+        }
+
+        .number-up {
+            top: 1% !important;
         }
     </style>
-    <title>Centered Image</title>
+    <title>Centered Image with Number</title>
 </head>
 <body>
 <div class="center-image-container">
-    <img src="images/frame_up.png" alt="Centered Image" id="frame">
+    <img src="images/frame_up_1.png" alt="Centered Image" id="frame">
+    <div id="number">000</div>
 </div>
 <script
         src="https://code.jquery.com/jquery-3.7.1.js"
         integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
         crossorigin="anonymous"></script>
 <script>
-    document.addEventListener("DOMContentLoaded",()=>{
-      const audio = new Audio('./sound/bonk1.mp3');
-      const imageUp = 'images/frame_up.png' //origin
-      const imageDown = 'images/frame_down.png'
-      $('#frame').on('click',()=>{
-        $('#frame').attr('src',imageDown)
-        audio.play();
-      })
+  document.addEventListener("DOMContentLoaded", () => {
+    const audio = new Audio('./sound/bonk1.mp3');
+    const imageUp = 'images/frame_up_1.png';
+    const imageDown = 'images/frame_down_2.png';
+    let count = 0;
 
-      audio.addEventListener('ended',()=>{
-        $('#frame').attr('src',imageUp)
-      })
-    })
+    $('#frame').on('click', () => {
+      $('#frame').attr('src', imageDown);
+      audio.play();
+      count++;
+      $('#number').text(count.toString().padStart(3, '0'));
+
+      // Hiệu ứng nhảy lên và hạ xuống cho #number
+      $('#number').animate({
+        top: '-=30px',   // Nhảy lên 30px
+        opacity: 0.5     // Giảm độ mờ
+      }, 200, function () {
+        $(this).animate({
+          top: '+=30px',   // Hạ xuống lại
+          opacity: 1       // Trở về độ mờ ban đầu
+        }, 200);
+      });
+    });
+
+    audio.addEventListener('ended', () => {
+      $('#frame').attr('src', imageUp);
+    });
+  });
 </script>
 </body>
 </html>
