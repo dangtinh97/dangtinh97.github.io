@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generate SQL</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2, h3 {
+            text-align: center;
+            color: #333;
+        }
+
+        label {
+            font-weight: bold;
+            margin-top: 10px;
+            display: block;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0 20px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 32%;
+            margin: 5px 1%;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .copyBtn {
+            background-color: #008CBA;
+            padding: 5px 10px;
+            font-size: 14px;
+        }
+
+        .copyBtn:hover {
+            background-color: #007BB5;
+        }
+
+        pre {
+            background-color: #f4f4f9;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .copy-container {
+            text-align: right;
+            margin-top: 5px;
+        }
+
+        .error {
+            color: red;
+            text-align: center;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Generate SQL</h2>
+    <form id="sqlForm">
+        <label for="userA">User A (ID):</label>
+        <input type="number" min="1" id="userA" name="userA" placeholder="Enter user A ID">
+
+        <label for="userB">User B (ID):</label>
+        <input type="number" id="userB" name="userB" placeholder="Enter user B ID" min="1" max="9">
+
+        <label for="so_lcg">Số LCG:</label>
+        <input type="number" id="so_lcg" name="so_lcg" placeholder="Enter LCG amount">
+
+        <label for="desc">Mô tả:</label>
+        <textarea id="desc" name="desc" placeholder="Enter description" rows="4"></textarea>
+
+        <div style="text-align: center;">
+            <button type="button" onclick="generateSQL()">Generate SQL</button>
+        </div>
+        <div id="error" class="error"></div>
+    </form>
+
+    <h3>Generated SQL:</h3>
+    <pre id="output">Your generated SQL will appear here...</pre>
+    <div class="copy-container">
+        <button type="button" class="copyBtn" onclick="copyToClipboard()">Copy SQL</button>
+    </div>
+
+    <h3>Check Query:</h3>
+    <pre id="checkOutput">Your check query will appear here...</pre>
+    <div class="copy-container">
+        <button type="button" class="copyBtn" onclick="copyCheckQuery()">Copy Check Query</button>
+    </div>
+</div>
+
+<script>
+  function generateSQL() {
+    var userA = document.getElementById('userA').value;
+    var userB = document.getElementById('userB').value;
+    var soLCG = document.getElementById('so_lcg').value;
+    var description = document.getElementById('desc').value;
+    var errorDiv = document.getElementById('error');
+    errorDiv.textContent = ''; // Clear previous error message
+
+    // Validation
+    if (userB === userA) {
+      errorDiv.textContent = 'Error A=B';
+      return;
+    }
+
+    var sql = `INSERT INTO public."transaction_lcg_history" (user_id, affect, amount, amount_2, type, transfer_amount, status, "desc")\n` +
+      `VALUES (${userA}, false, 0, ${soLCG}, 'TRANSFER_P2P', ${soLCG}, 'COMPLETE', '${description}');\n` +
+      `INSERT INTO public."transaction_lcg_history" (user_id, sender_id, affect, amount, amount_2, type, transfer_amount, status, "desc")\n` +
+      `VALUES (${userB}, ${userA}, true, 0, ${soLCG}, 'TRANSFER_P2P', ${soLCG}, 'COMPLETE', '${description}');`;
+
+    document.getElementById('output').textContent = sql;
+
+    // Generate check query
+    var checkQuery = `SELECT \n` +
+      ` (SUM(CASE WHEN affect = TRUE THEN amount_2 ELSE 0 END) -\n` +
+      `   SUM(CASE WHEN affect = FALSE THEN amount_2 ELSE 0 END)) AS sum_package_nft\n` +
+      `FROM transaction_lcg_history\n` +
+      `WHERE "user_id" = ${userA};`;
+
+    document.getElementById('checkOutput').textContent = checkQuery;
+  }
+
+  function copyToClipboard() {
+    var copyText = document.getElementById('output').textContent;
+    navigator.clipboard.writeText(copyText).then(function() {
+      alert('SQL copied to clipboard!');
+    }, function(err) {
+      console.error('Error copying text: ', err);
+    });
+  }
+
+  function copyCheckQuery() {
+    var copyText = document.getElementById('checkOutput').textContent;
+    navigator.clipboard.writeText(copyText).then(function() {
+      alert('Check query copied to clipboard!');
+    }, function(err) {
+      console.error('Error copying text: ', err);
+    });
+  }
+</script>
+
+</body>
+</html>
