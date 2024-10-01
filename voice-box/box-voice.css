@@ -1,0 +1,75 @@
+body, html{
+    background: #f4f4f9;
+    padding: 20px;
+}
+
+.main{
+    background: white;
+    height: 100%;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.btn-rec{
+    background-color: #4CAF50; /* Green background */
+    border: none; /* Remove borders */
+    color: white; /* White text color */
+    text-align: center; /* Centered text */
+    display: inline-block; /* Inline block element */
+    font-size: 16px; /* Font size */
+    width: 60px; /* Width of the button */
+    height: 60px; /* Height of the button */
+    border-radius: 50%; /* Circular shape */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s; /* Transition for hover effect */
+}
+
+.btn-rec:hover {
+    background-color: #45a049; /* Darker green on hover */
+}
+.rec{
+    display: flex; /* Use Flexbox */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+}
+/* Pulse effect */
+.pulse {
+    position: absolute; /* Position for the pulse effect */
+    border: 4px solid rgba(76, 175, 80, 0.5); /* Pulse color */
+    border-radius: 50%; /* Make it circular */
+    width: 60px; /* Width of the pulse */
+    height: 60px; /* Height of the pulse */
+    animation: pulse-animation 1s infinite; /* Animation */
+    opacity: 0; /* Start hidden */
+}
+
+/* Keyframes for pulse animation */
+@keyframes pulse-animation {
+    0% {
+        transform: scale(1);
+        opacity: 0.5; /* Start with some opacity */
+    }
+    50% {
+        transform: scale(1.5); /* Scale up */
+        opacity: 0; /* Fade out */
+    }
+    100% {
+        transform: scale(1); /* Scale back down */
+        opacity: 0; /* Fade out */
+    }
+}
+
+/* Show pulse effect on button press */
+.btn-rec:active + .pulse {
+    animation: pulse-animation 1s infinite; /* Activate the pulse effect */
+    opacity: 1; /* Show the pulse */
+}
+
+.output > pre{
+    white-space: -moz-pre-wrap;
+    white-space: -o-pre-wrap;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    max-height: 300px;
+    overflow-y: auto;
+}
