@@ -32,9 +32,9 @@ body, html{
     background-color: #45a049; /* Darker green on hover */
 }
 .rec{
-    display: flex; /* Use Flexbox */
-    justify-content: center; /* Center horizontally */
-    align-items: center; /* Center vertically */
+    position: fixed;
+    bottom: 5%;
+    display: flex;
 }
 /* Pulse effect */
 .pulse {
