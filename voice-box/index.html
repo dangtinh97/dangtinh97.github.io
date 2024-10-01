@@ -10,7 +10,7 @@
 </head>
 <body>
 <div class="main container">
-  <div class="status mb-5">
+  <div class="status mb-2">
     <strong></strong>
     <i id="time-stop"></i>
   </div>
@@ -68,10 +68,11 @@
       // Event handler for results
       recognition.onresult = (event) => {
         let transcript = '';
+        console.log(event);
         for (let i = event.resultIndex; i < event.results.length; i++) {
+          console.log(event.results[i][0].transcript);
           transcript += event.results[i][0].transcript;
         }
-        console.log(transcript)
         var preTag = $('.output > pre');
         preTag.append(transcript + ' ')
         preTag.scrollTop(preTag[0].scrollHeight);
@@ -86,16 +87,17 @@
       recognition.onstart = ()=>{
         isStart = true;
         timeStart = new Date()
-        $('.btn-rec').html('Stop')
+        $('.btn-rec').addClass('is-stop').html('Stop')
         $('.status > strong').html('Starting...')
       }
 
       // When recognition ends
       recognition.onend = () => {
         isStart = false;
-        $('.btn-rec').html('REC')
+        $('.btn-rec').removeClass('is-stop').html('REC')
         console.log(`Stop is: ${Math.round((new Date().getTime() - timeStart.getTime()) / 1000)} (s)`)
-        $('.status > strong').html('Speech recognition has stopped.')
+        $('.status > strong').html('Speech recognition '+${Math.round((new Date().getTime() - timeStart.getTime()) / 1000)} (s))
+        $('.status > strong').html('Speech recognition '+``)
         console.log('Speech recognition has stopped.');
       };
     } else {

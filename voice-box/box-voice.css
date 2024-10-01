@@ -24,6 +24,10 @@ body, html{
     transition: background-color 0.3s; /* Transition for hover effect */
 }
 
+.btn-rec.is-stop:hover {
+    background-color: #a43434; /* Darker green on hover */
+}
+
 .btn-rec:hover {
     background-color: #45a049; /* Darker green on hover */
 }
@@ -72,4 +76,9 @@ body, html{
     word-wrap: break-word;
     max-height: 300px;
     overflow-y: auto;
+}
+
+
+.is-stop{
+    background: #670c11;
 }
