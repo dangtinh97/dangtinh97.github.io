@@ -96,8 +96,7 @@
         isStart = false;
         $('.btn-rec').removeClass('is-stop').html('REC')
         console.log(`Stop is: ${Math.round((new Date().getTime() - timeStart.getTime()) / 1000)} (s)`)
-        $('.status > strong').html('Speech recognition '+${Math.round((new Date().getTime() - timeStart.getTime()) / 1000)} (s))
-        $('.status > strong').html('Speech recognition '+``)
+        $('.status > strong').html('Speech recognition '+`${Math.round((new Date().getTime() - timeStart.getTime()) / 1000)} (s)`)
         console.log('Speech recognition has stopped.');
       };
     } else {
