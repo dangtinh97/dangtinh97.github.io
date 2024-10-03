@@ -92,7 +92,7 @@
         console.log(transcript);
         isProcessing = false;
         var preTag = $('.output > pre');
-        preTag.append(transcript + ' ')
+        preTag.html(transcript + ' ')
         preTag.scrollTop(preTag[0].scrollHeight);
         // document.getElementById('result').innerText = `You said: ${transcript}`;
       };
