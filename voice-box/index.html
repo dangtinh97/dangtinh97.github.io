@@ -31,12 +31,14 @@
   </div>
   <div class="rec">
     <button class="btn-rec" type="button">REC</button>
+    <button class="btn btn-outline-info ms-3" type="button" id="remove-text">RESET</button>
   </div>
 </div>
 <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 <script>
   document.addEventListener("DOMContentLoaded",()=>{
     let lang = 'vi-VN'
+    let cB = null;
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     let isStart = false;
     let recognition = null;
@@ -47,11 +49,16 @@
         recognition.stop();
       }
     })
+
+    $('#remove-text').on('click',()=>{
+      $('.output > pre').html('')
+    })
     $('.btn-rec').on('click',()=>{
       if(!recognition){
         return;
       }
       if(!isStart){
+        cB = new Date().getTime();
         recognition.lang = lang;
         recognition.start();
       }else {
@@ -64,15 +71,26 @@
       // Set properties
       // recognition.lang = lang; // Language for recognition
       recognition.continuous = true; // Recognize speech in a single run
-      recognition.interimResults = true; // Only return final results
+      recognition.interimResults = true; // Only return final results'
+
+      let isProcessing = false;
       // Event handler for results
       recognition.onresult = (event) => {
+        if(isProcessing){
+          return;
+        }
+        isProcessing = true;
         let transcript = '';
-        console.log(event);
+        // console.log(event);
         for (let i = event.resultIndex; i < event.results.length; i++) {
-          console.log(event.results[i][0].transcript);
+          if(event.results[i].isFinal){
+            //console.log("===>isFinal:"+event.results[i].isFinal)
+          }
+
           transcript += event.results[i][0].transcript;
         }
+        console.log(transcript);
+        isProcessing = false;
         var preTag = $('.output > pre');
         preTag.append(transcript + ' ')
         preTag.scrollTop(preTag[0].scrollHeight);
@@ -85,6 +103,9 @@
       };
 
       recognition.onstart = ()=>{
+        if(cB){
+          console.log(`time started: ${new Date().getTime() - cB }`)
+        }
         isStart = true;
         timeStart = new Date()
         $('.btn-rec').addClass('is-stop').html('Stop')
@@ -93,6 +114,7 @@
 
       // When recognition ends
       recognition.onend = () => {
+        recognition.start();
         isStart = false;
         $('.btn-rec').removeClass('is-stop').html('REC')
         console.log(`Stop is: ${Math.round((new Date().getTime() - timeStart.getTime()) / 1000)} (s)`)
