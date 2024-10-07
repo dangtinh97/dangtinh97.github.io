@@ -16,6 +16,10 @@ document.addEventListener("DOMContentLoaded",()=>{
     $('.output > pre').html('')
   })
   $('.btn-rec').on('click',()=>{
+    autoStart();
+  })
+
+  const autoStart = ()=>{
     if(!recognition){
       return;
     }
@@ -26,7 +30,12 @@ document.addEventListener("DOMContentLoaded",()=>{
     }else {
       recognition.stop();
     }
-  })
+  }
+
+  let timeAutoStart = setInterval(()=>{
+    autoStart();
+  },100)
+
   if (SpeechRecognition) {
     let lastText = '';
     recognition = new SpeechRecognition();
@@ -67,6 +76,10 @@ document.addEventListener("DOMContentLoaded",()=>{
     };
 
     recognition.onstart = ()=>{
+      if(timeAutoStart){
+        clearInterval(timeAutoStart);
+      }
+
       if(cB){
         console.log(`time started: ${new Date().getTime() - cB }`)
       }

@@ -70,10 +70,10 @@ document.addEventListener("DOMContentLoaded", () => {
   })
 
   $('#send-test').on('click',async ()=>{
-    const values = TEXT_DEMO.split(' ')
+    const values = TEXT_DEMO.trim().split(' ')
     console.log(values)
     for(let i=0;i<values.length;i++){
-      await sleep(10)
+      await sleep(Math.floor(Math.random() * 90) + 10)
       socket.emit('REALTIME_MESSAGE',{
         content: values.slice(0,i+1).join(' '),
         time: new Date().getTime()
