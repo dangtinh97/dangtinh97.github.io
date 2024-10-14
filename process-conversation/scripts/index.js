@@ -42,15 +42,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const dataLog = logs[step]
     const from = dataLog.from
     const to = dataLog.to
-    console.log(from, to)
     let dataNeedProcess = findData(from, to)
-    console.log(dataNeedProcess, 'dataNeedProcess')
     const lastProcess = getLastMessage()
     if (lastProcess) {
       const dataRemaining = lastProcess.data_remaining
       dataNeedProcess = dataRemaining.concat(dataNeedProcess)
+      let times = [];
+      dataNeedProcess = dataNeedProcess.filter((item)=>{
+        const process= times.indexOf(item.time)===-1;
+        times.push(item.time);
+        return process;
+      })
     }
-    console.log(dataNeedProcess)
+    console.log({dataNeedProcess})
     processData(dataNeedProcess).then(() => {
       step++
       window.localStorage.setItem(KEY_STEP, step)
@@ -59,15 +63,28 @@ document.addEventListener('DOMContentLoaded', () => {
     })
   })
 
+  function lastWordAndDuration (res){
+    const lastAndDuration = res.map((item)=>{
+      const textSp = item.content.split(' ');
+      return {
+        text_last: textSp[textSp.length - 1],
+        duration: item.duration
+      }
+    })
+    return lastAndDuration;
+  }
+
   async function processData (data) {
     let lastMessage = messageFromArray(data)
     lastMessage = removeMessageDuplicate(lastMessage)
     let textAddPun = await curlAddPunctuation(lastMessage)
+    const resultPredict = predict(textAddPun)
+    let resultLastWordAndDuration = lastWordAndDuration(data)
+    textAddPun = getMessage(resultPredict, resultLastWordAndDuration);
     let spFromTextAddPun = splitAddPunctuation(textAddPun)
     let textRemaining = spFromTextAddPun[spFromTextAddPun.length - 1]['text']
 
     const pos = textAddPun.lastIndexOf(textRemaining);
-    console.log(textAddPun,textRemaining)
     const dataRemaining = findTimeFromMessage(textRemaining, data)
     setLastMessage({
       text: lastMessage,
@@ -84,6 +101,51 @@ document.addEventListener('DOMContentLoaded', () => {
     $('#history > tbody').append(`<tr><td colspan="3" class="text-center text-danger">${textAddPun.slice(0, pos)}</td>}</td>></tr>`)
   }
 
+  const predict = (text)=>{
+    const words = text.match(/([^\s.,!?]+|[.,!?])/gu);
+    const result = [];
+    for (let i = 0; i < words.length; i++) {
+      // Nếu từ tiếp theo là dấu câu, thêm dấu câu vào từ hiện tại
+      if (/[.,!?]/.test(words[i + 1])) {
+        result.push({ text: words[i], punctuation: words[i + 1] });
+        i++; // Bỏ qua dấu câu đã được xử lý
+      } else {
+        result.push({ text: words[i], punctuation: "" });
+      }
+    }
+    return result;
+  }
+
+  function getMessage(predict, wordDuration){
+    console.log({predict, wordDuration})
+    let process = predict;
+    let setPos = -1;
+    for (let i=0; i< wordDuration.length;i++){
+      let itemPredict = process[i];
+      let itemWordDuration = wordDuration[i];
+      if(itemPredict.punctuation!==''){
+        try{
+          if(wordDuration[i+2].duration > wordDuration[i+1].duration && setPos===-1){
+            process[i+1]['punctuation'] = process[i]['punctuation']
+            process[i]['punctuation'] = ''
+            setPos = i+2;
+          }
+        }catch (e) {
+
+        }
+
+      }
+    }
+    return process.map((item)=>{
+      return `${item.text}${item.punctuation}`
+    }).join(' ')
+    // predict.forEach((item)=>{
+    //   if(item.punctuation===''){
+    //     return item;
+    //   }
+    // })
+  }
+
   function removeMessageDuplicate(content){
     let dataEnd = getLastMessage();
     if(!dataEnd){
@@ -97,7 +159,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function findTimeFromMessage (text, data) {
     const spText = text.split(' ')
-    console.log(spText)
     let result = []
     for (let i = 1; i <= spText.length; i++) {
       result.push(data[data.length - i])
