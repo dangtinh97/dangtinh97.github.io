@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<script>
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  const languages = ['en-US']; // Example: English and Vietnamese
+  const recognizers = [];
+  setTimeout(()=>{
+    languages.forEach(language => {
+      const recognition = new SpeechRecognition();
+      recognition.lang = language;
+      recognition.continuous = true;
+      recognition.interimResults = true;
+
+      recognition.onresult = (event) => {
+        const transcript = event.results[0][0].transcript;
+        console.log(`Language (${language}): ${transcript}`);
+      };
+
+      recognition.onerror = (event) => {
+        console.error(`Error in ${language}:`, event.error);
+      };
+
+      recognizers.push(recognition);
+    });
+
+    // Start recognition for all languages
+    recognizers.forEach(recognizer => recognizer.start());
+  },2000)
+
+</script>
+</body>
+</html>

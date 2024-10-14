@@ -1,3 +1,3 @@
 const EVENT_VOICE = 'VOICE'
 const EVENT_SOCKET = 'SOCKET'
-const TEXT_DEMO = 'trong một xã ấp chính tiêu chuẩn 8 yếu tố Bảy đặc điểm đối với nhà tư duy phản biện';
+const TEXT_DEMO = 'Hiện tại thì sang gần kết thúc cái khóa học thạc sĩ của mình Tại anh Sơn đang ngồi ở trong một cái phòng ký túc xá rộng khoảng 14 mét vuông nó còn nhỏ hơn cả cái phòng ngủ bé ở trong cái căn hộ 2 phòng ngủ mà San ở một mình tại thành phố Hồ Chí Minh đây chính là cái Sự mạo hiểm của mình từ bỏ một cuộc sống rất thoải mái để để sang đây và sống cuộc sống nói chung là khá là khổ đấy các bạn mà các bạn biết không giây phút năm ngoái khoảng tháng 7 tháng 8 khi mà sang cầm cái Visa trên tay là mình đã khóc cái khóc đấy nó là hai cảm xúc vừa vui vừa vừa sợ mình cảm thấy hơi run lẩy bẩy ở trong người tại vì mình vẫn cảm thấy là tôi tôi có đang làm đúng không ';

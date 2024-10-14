@@ -8,6 +8,7 @@
   <title>Box Voice</title>
   <link rel="stylesheet" href="box-voice.css">
   <script src="config.js"></script>
+  <script src="message-process.js"></script>
 </head>
 <body>
 <div class="main container-fluid">
@@ -29,17 +30,25 @@
       <option value="zh-CN">中文 (简体)</option>
     </select>
   </div>
-  <div class="input">
-
+  <div class="conversation">
+    <div class="input">
+      <pre></pre>
+    </div>
+    <div class="output">
+      <pre id="message-sync"></pre>
+    </div>
   </div>
-  <div class="output">
-    <pre></pre>
-  </div>
+  <audio id="audioPlayer" controls>
+    <source src="audio2.mp3" type="audio/mpeg">
+    Your browser does not support the audio tag.
+  </audio>
   <div class="rec">
     <button class="btn-rec" type="button">REC</button>
     <button class="btn btn-outline-info ms-3" type="button" id="remove-text">RESET</button>
     <button class="btn btn-outline-primary ms-3" type="button" id="send-test">Send Text</button>
     <button class="btn btn-outline-primary ms-3" type="button" id="send-a-word">Send a word</button>
+    <button class="btn btn-outline-primary ms-3" type="button" id="test">Test.js</button>
+    <button class="btn btn-dark ms-3" type="button" id="reload">Reload</button>
   </div>
 </div>
 <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
@@ -49,8 +58,11 @@
 <script src="index.js"></script>
 <script src="voice.js"></script>
 <script src="socket.js"></script>
+<script src="test.js"></script>
 <script>
-
+  document.addEventListener("DOMContentLoaded",()=>{
+    $('#reload').on('click',()=>{window.location.reload()})
+  })
 </script>
 </body>
 </html>

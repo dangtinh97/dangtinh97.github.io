@@ -17,6 +17,13 @@ document.addEventListener("DOMContentLoaded",()=>{
   })
   $('.btn-rec').on('click',()=>{
     autoStart();
+    if(!isStart){
+      setTimeout(()=>{
+        playFromSecond(13)
+      },300)
+    }else {
+      stopAudio()
+    }
   })
 
   const autoStart = ()=>{
@@ -33,7 +40,8 @@ document.addEventListener("DOMContentLoaded",()=>{
   }
 
   let timeAutoStart = setInterval(()=>{
-    autoStart();
+    clearInterval(timeAutoStart);
+    // autoStart();
   },100)
 
   if (SpeechRecognition) {
@@ -50,17 +58,14 @@ document.addEventListener("DOMContentLoaded",()=>{
     // Event handler for results
     recognition.onresult = (event) => {
       let transcript = '';
-      // console.log(event);
+      let isFinals = [];
       for (let i = event.resultIndex; i < event.results.length; i++) {
-        if(event.results[i].isFinal){
-          //console.log("===>isFinal:"+event.results[i].isFinal)
-        }
-
+        isFinals.push(event.results[i].isFinal);
         transcript += event.results[i][0].transcript;
         // console.log(event.results[i]);
       }
-
-      var preTag = $('.output > pre');
+      transcript = transcript.trim()
+      var preTag = $('.input > pre');
       preTag.html(transcript + ' ')
       preTag.scrollTop(preTag[0].scrollHeight);
       if(lastText.toLowerCase() === transcript.toLowerCase()){
@@ -91,6 +96,7 @@ document.addEventListener("DOMContentLoaded",()=>{
 
     // When recognition ends
     recognition.onend = () => {
+      timeEnd = 0;
       // recognition.start();
       isStart = false;
       $('.btn-rec').removeClass('is-stop').html('REC')
@@ -102,8 +108,20 @@ document.addEventListener("DOMContentLoaded",()=>{
     console.log('SpeechRecognition API is not supported in this browser.');
   }
 
-  function sendToSocket(message){
-    const event = new CustomEvent(EVENT_VOICE, {detail: {message}});
+  let timeEnd = 0;
+  function sendToSocket(content){
+    const now = new Date().getTime();
+    const duration = timeEnd===0 ? 0:  now - timeEnd;
+    timeEnd = now;
+    const event = new CustomEvent(EVENT_VOICE, {detail: {content: content.trim(),duration}});
     window.dispatchEvent(event);
+  }
+  const audio = document.getElementById('audioPlayer');
+  function playFromSecond(seconds) {
+    audio.currentTime = seconds; // Set the start time
+    audio.play(); // Start playing
+  }
+  function stopAudio(){
+    audio.pause();
   }
 })

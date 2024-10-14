@@ -74,11 +74,38 @@ body, html{
     white-space: -o-pre-wrap;
     white-space: pre-wrap;
     word-wrap: break-word;
-    max-height: 300px;
-    overflow-y: auto;
+}
+.input > pre{
+    white-space: -moz-pre-wrap;
+    white-space: -o-pre-wrap;
+    white-space: pre-wrap;
+    word-wrap: break-word;
 }
 
 
 .is-stop{
     background: #670c11;
+}
+
+#message-sync{
+    white-space: -moz-pre-wrap;
+    white-space: -o-pre-wrap;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    max-height: 300px;
+    overflow-y: auto;
+}
+.conversation{
+    display: flex;
+}
+.output, .input{
+    flex: 1;
+    max-height: 300px;
+    overflow-y: auto;
+}
+.output{
+    margin-left: 10px;
+}
+.input{
+    margin-right: 10px;
 }
