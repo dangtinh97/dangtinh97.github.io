@@ -56,7 +56,7 @@ const findMessage = (from, to, messages)=>{
 }
 const curlAddPunctuation =async (text)=>{
   return new Promise((resolve, reject)=>{
-    $.ajax('https://text-processing.dev.cabiz.ai/api/completion/',{
+    $.ajax('https://text-processing.dev.cabiz.ai/api/punctuation/',{
       type:"POST",
       dataType:"JSON",
       data: {
