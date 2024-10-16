@@ -1,68 +1,58 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-  <title>Box Voice</title>
-  <link rel="stylesheet" href="box-voice.css">
-  <script src="config.js"></script>
-  <script src="message-process.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <title>Cabiz</title>
+    <script>
+        let global = {
+          uid_device: '',
+          box_config: '',
+          socket_is_connect:false,
+          auto_restart : false,
+        };
+    </script>
+    <script src="scripts/contains.js"></script>
+    <script src="scripts/common.js"></script>
+    <script src="scripts/config.js"></script>
 </head>
 <body>
-<div class="main container-fluid">
-  <div>
-    <label>Socket</label>
-    <p id="socket-id">socketId: <strong></strong></p>
-    <p id="meeting_oid">meetingOid: <strong></strong></p>
-  </div>
-  <div class="status mb-2">
-    <strong></strong>
-    <i id="time-stop"></i>
-  </div>
-  <div class="language mb-4">
-    <label for="lang">
-      Languages
-    </label><select id="lang" class="form-control">
-      <option value="vi-VN">vi-VN</option>
-      <option value="en-US">en-US</option>
-      <option value="zh-CN">中文 (简体)</option>
-    </select>
-  </div>
-  <div class="conversation">
-    <div class="input">
-      <pre></pre>
+<div class="container px-4 text-center">
+    <div class="row gx-5">
+        <div class="system col text-start">
+            <div>Uid device: <strong id="uid-device"></strong></div>
+            <div>Socket id: <strong id="socket-id"></strong></div>
+            <div>Meeting oid: <strong id="meeting-oid"></strong></div>
+        </div>
+        <div class="col log">
+            <div class="p-3">Custom column padding</div>
+        </div>
     </div>
-    <div class="output">
-      <pre id="message-sync"></pre>
+    <div class="row gx-5">
+        <div class="recognition">
+
+        </div>
+        <div class="result">
+            <p>Content realtime: <strong id="content-realtime"></strong></p>
+            <p>Speaker: <strong id="content-speak"></strong></p>
+        </div>
     </div>
-  </div>
-  <audio id="audioPlayer" controls>
-    <source src="audio2.mp3" type="audio/mpeg">
-    Your browser does not support the audio tag.
-  </audio>
-  <div class="rec">
-    <button class="btn-rec" type="button">REC</button>
-    <button class="btn btn-outline-info ms-3" type="button" id="remove-text">RESET</button>
-    <button class="btn btn-outline-primary ms-3" type="button" id="send-test">Send Text</button>
-    <button class="btn btn-outline-primary ms-3" type="button" id="send-a-word">Send a word</button>
-    <button class="btn btn-outline-primary ms-3" type="button" id="test">Test.js</button>
-    <button class="btn btn-dark ms-3" type="button" id="reload">Reload</button>
-  </div>
+    <div class="test">
+        <audio id="audioPlayer" controls>
+            <source src="trash/audio2.mp3" type="audio/mpeg">
+            Your browser does not support the audio tag.
+        </audio>
+    </div>
 </div>
 <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 <script src="https://cdn.socket.io/4.7.5/socket.io.min.js" integrity="sha384-2huaZvOR9iDzHqslqwpR87isEmrfxqyWOF7hr7BY6KG0+hVKLoEXMPUJw3ynWuhO" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
-<script src="index.js"></script>
-<script src="voice.js"></script>
-<script src="socket.js"></script>
-<script src="test.js"></script>
-<script>
-  document.addEventListener("DOMContentLoaded",()=>{
-    $('#reload').on('click',()=>{window.location.reload()})
-  })
-</script>
+<script type="module" src="scripts/index.js"></script>
+<script type="module" src="scripts/socket.js"></script>
+<script type="module" src="scripts/voice.js"></script>
 </body>
 </html>

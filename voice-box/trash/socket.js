@@ -69,7 +69,6 @@ document.addEventListener('DOMContentLoaded', () => {
   let timeLast = 0
   window.addEventListener(EVENT_VOICE, (e) => {
     const {content} = e.detail
-    //console.log(new Date().getTime() - timeLast, content)
     timeLast = new Date().getTime()
     socket.emit('REALTIME_MESSAGE', {
       ...e.detail,

@@ -57,12 +57,12 @@ document.addEventListener("DOMContentLoaded",()=>{
     let isProcessing = false;
     // Event handler for results
     recognition.onresult = (event) => {
+      console.log(recognition.supportedLanguages);
       let transcript = '';
       let isFinals = [];
       for (let i = event.resultIndex; i < event.results.length; i++) {
         isFinals.push(event.results[i].isFinal);
         transcript += event.results[i][0].transcript;
-        // console.log(event.results[i]);
       }
       transcript = transcript.trim()
       var preTag = $('.input > pre');
@@ -72,7 +72,7 @@ document.addEventListener("DOMContentLoaded",()=>{
         return;
       }
       lastText = transcript;
-      sendToSocket(lastText);
+      sendToSocket(lastText, isFinals.indexOf(true)!==-1);
     };
 
     // Handle errors
@@ -109,11 +109,11 @@ document.addEventListener("DOMContentLoaded",()=>{
   }
 
   let timeEnd = 0;
-  function sendToSocket(content){
+  function sendToSocket(content, isFinal){
     const now = new Date().getTime();
     const duration = timeEnd===0 ? 0:  now - timeEnd;
     timeEnd = now;
-    const event = new CustomEvent(EVENT_VOICE, {detail: {content: content.trim(),duration}});
+    const event = new CustomEvent(EVENT_VOICE, {detail: {content: content.trim(),duration, isFinal}});
     window.dispatchEvent(event);
   }
   const audio = document.getElementById('audioPlayer');
