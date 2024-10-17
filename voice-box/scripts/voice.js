@@ -52,10 +52,11 @@ export class Voice {
   }
 
   onError (event) {
-    if (event.error === 'no-speech') {
-      return
-    }
-    console.log('error', event)
+    console.log('microphone - error', event.error)
+    $('.log > #microphone').html(event.error)
+    // if (event.error === 'no-speech') {
+    //   return
+    // }
   }
 
   onResult (event) {

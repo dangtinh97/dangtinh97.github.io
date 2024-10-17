@@ -30,6 +30,7 @@ export class Socket {
     global.box_config = data;
     $('#meeting-oid').html(data.meeting_oid)
     this.sendLocal(socketEvents.config,data)
+    this.removeDataOldBefore()
   }
 
   handlerMessageSync(data){
@@ -54,5 +55,9 @@ export class Socket {
 
   voiceStop(data){
     this.socket.emit(socketEvents.realtime_stop,data)
+  }
+
+  removeDataOldBefore(){
+    this.socket.emit(socketEvents.delete_cache,{})
   }
 }
