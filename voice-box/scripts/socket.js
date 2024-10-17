@@ -10,7 +10,8 @@ export class Socket {
     const socket = io(SOCKET_URL,{
       auth: {
         uid_device: uidDevice
-      }
+      },
+      transports:['websocket','polling']
     })
     socket.on('connect',()=>{
       this.socket = socket;
@@ -33,6 +34,10 @@ export class Socket {
 
   handlerMessageSync(data){
     const message = data.message;
+    console.log(`%c ${message} `, 'background: #222; color: #bada55');
+    this.socket.emit(socketEvents.message,{
+      content: message,
+    })
     $('.result > p > #content-realtime').html(message)
   }
 
@@ -45,5 +50,9 @@ export class Socket {
 
   sendContent(data){
     this.socket.emit(socketEvents.realtime_message,data)
+  }
+
+  voiceStop(data){
+    this.socket.emit(socketEvents.realtime_stop,data)
   }
 }

@@ -5,6 +5,7 @@ export class Voice {
   configBox = {}
   transcript = null
   waitStop = null;
+  message_before_stop = ''
   timestampVoice = {
     start: 0,
     end: 0,
@@ -72,10 +73,17 @@ export class Voice {
     if (this.transcript === transcript) {
       return
     }
+    // transcript = transcript.replace(this.message_before_stop,'').trim()
+    // if(this.message_before_stop!==''){
+    //   console.log({
+    //     transcript: transcript,
+    //     remove: this.message_before_stop
+    //   });
+    // }
     this.transcript = transcript
     this.sendLocal(voiceEvents.content,
       {
-        content: transcript,
+        content: transcript.replace(this.message_before_stop,'').trim(),
         duration: event.timeStamp,
         is_final: isFinals.indexOf(true) !== -1
       });
@@ -84,6 +92,11 @@ export class Voice {
     }
     this.waitStop = setTimeout(()=>{
       this.sendLocal(voiceEvents.time_wait_send,this.timestampVoice)
+      this.message_before_stop = transcript;
+      // this.stopVoice();
+      // setTimeout(()=>{
+      //   this.startVoice();
+      // },10)
     },TIME_WAIT_SEND)
   }
 
@@ -113,7 +126,7 @@ export class Voice {
     this.setLang(data.input_language.code_global.replace('_', '-'))
     setTimeout(() => {
       this.startVoice()
-    }, 100)
+    }, 10)
   }
 
   stopVoice () {
@@ -123,7 +136,8 @@ export class Voice {
   }
 
   startVoice () {
-    if (!this.isStart && this.configBox.input === statusInputVoice.on) {
+    console.log(global.page)
+    if (!this.isStart && this.configBox.input === statusInputVoice.on && global.page!=='OUTPUT') {
       this.recognition.start()
     }
   }
