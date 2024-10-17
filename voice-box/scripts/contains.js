@@ -8,7 +8,7 @@ const socketEvents = {
   'realtime_message':'REALTIME_MESSAGE',
   'realtime_stop':'REALTIME_MESSAGE_STOP',
   'message':'MESSAGE',
-  'delete_cache':'DELETE_CACHE'
+  'delete_cache':'DELETE_CACHE',
 }
 
 const voiceEvents = {

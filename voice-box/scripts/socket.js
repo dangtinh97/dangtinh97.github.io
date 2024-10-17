@@ -24,6 +24,15 @@ export class Socket {
     global.socket_is_connect = true;
     socket.on(socketEvents.config,this.handlerConfig.bind(this))
     socket.on(socketEvents.realtime_message,this.handlerMessageSync.bind(this))
+    socket.on(socketEvents.message,this.handlerMessageOutput.bind(this))
+  }
+
+  handlerMessageOutput(data){
+    if(global.page!=='OUTPUT'){
+      return;
+    }
+    console.log(data,'output')
+    this.sendLocal(socketEvents.message,data)
   }
 
   handlerConfig(data){
@@ -34,6 +43,9 @@ export class Socket {
   }
 
   handlerMessageSync(data){
+    if(global.page==='OUTPUT'){
+      return;
+    }
     const message = data.message;
     console.log(`%c ${message} `, 'background: #222; color: #bada55');
     this.socket.emit(socketEvents.message,{
@@ -50,14 +62,23 @@ export class Socket {
   }
 
   sendContent(data){
+    if(global.page==='OUTPUT'){
+      return;
+    }
     this.socket.emit(socketEvents.realtime_message,data)
   }
 
   voiceStop(data){
+    if(global.page==='OUTPUT'){
+      return;
+    }
     this.socket.emit(socketEvents.realtime_stop,data)
   }
 
   removeDataOldBefore(){
+    if(global.page==='OUTPUT'){
+      return;
+    }
     this.socket.emit(socketEvents.delete_cache,{})
   }
 }
