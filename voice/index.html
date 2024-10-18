@@ -71,7 +71,7 @@
           isFinalsLast = item.isFinal;
         }
         transcript = transcript.toLowerCase().trim();
-        transcript = transcript.replace(transcriptLast,'').trim()
+        // transcript = transcript.replace(transcriptLast,'').trim()
         tmp = transcript;
         if(isFinals.indexOf(true)!==-1){
           console.log({
@@ -82,7 +82,7 @@
           return;
         }
         $('#result').append(JSON.stringify({
-          transcript,
+          transcript: transcript.replace(transcriptLast,'').trim(),
           time: new Date().getTime() - timeEnd,
           'isFinals': isFinals.join(' - ')
         },null, 4)+',\n')
