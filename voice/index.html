@@ -33,7 +33,7 @@
             </label>
         </div>
     </div>
-    <textarea id="result" class="form-control" rows="20" readonly></textarea>
+    <textarea id="result" class="form-control" rows="15" readonly></textarea>
 </div>
 <script
     src="https://code.jquery.com/jquery-3.7.1.js"
@@ -41,6 +41,7 @@
     crossorigin="anonymous"></script>
 <script>
   document.addEventListener('DOMContentLoaded', () => {
+    const textarea = document.getElementById('result');
     let isStart = false;
     let SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     let recognition;
@@ -60,7 +61,7 @@
         for(let i=0; i< results.length; i++){
           let item = results[i];
           isFinals.push(item.isFinal);
-          transcript+=' '+item[0].transcript
+          transcript+=' '+item[0].transcript.trim()
           isFinalsLast = item.isFinal;
         }
         transcript = transcript.toLowerCase().replace("  ","");
@@ -70,15 +71,17 @@
             transcript
           })
         }
-
-        if(transcript!==transcriptLast){
-          $('#result').append(JSON.stringify({
-            transcript,
-            time: new Date().getTime() - timeEnd
-          },null, 4))
-          transcriptLast = transcript
-          timeEnd = new Date().getTime();
+        if(transcript!==transcriptLast || transcript.trim() === ""){
+          return;
         }
+        $('#result').append(JSON.stringify({
+          transcript,
+          time: new Date().getTime() - timeEnd,
+          'isFinals': isFinals.join(' - ')
+        },null, 4)+',\n')
+        transcriptLast = transcript
+        timeEnd = new Date().getTime();
+        textarea.scrollTop = textarea.scrollHeight;
       }
 
       recognition.start();
