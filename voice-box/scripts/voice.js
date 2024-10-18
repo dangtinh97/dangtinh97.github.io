@@ -58,29 +58,26 @@ export class Voice {
     this.tmp = '';
     console.log('microphone - error', event.error)
     $('.log > #microphone').html(event.error)
-    // if (event.error === 'no-speech') {
-    //   return
-    // }
   }
 
   onResult (event) {
     let newTranscript = '';
+    let transcript = ''
+    let isFinals = []
     this.timestampVoice = {
       ...this.timestampVoice,
       send_last: event.timeStamp
     }
-    let transcript = ''
-    let isFinals = []
     for (let i = 0; i < event.results.length; i++) {
       isFinals.push(event.results[i].isFinal)
-      transcript += (event.results[i][0].transcript).trim()+" "
+      transcript += (event.results[i][0].transcript).trim() + " "
     }
-    transcript = transcript.trim().toLowerCase()
+    transcript = transcript.toLowerCase().trim()
     newTranscript = transcript;
     if(global.user_agent.includes('android')){
       newTranscript = transcript.replace(this.transcript,'').trim();
     }
-    if (this.transcript === transcript || newTranscript === this.tmp) {
+    if (this.transcript === transcript || newTranscript === this.tmp || newTranscript.trim()==="") {
       return
     }
     this.tmp = newTranscript;
@@ -96,7 +93,7 @@ export class Voice {
     }
     this.waitStop = setTimeout(()=>{
       this.sendLocal(voiceEvents.time_wait_send,this.timestampVoice)
-      this.message_before_stop = transcript;
+      this.message_before_stop = this.tmp;
       // this.stopVoice();
       // setTimeout(()=>{
       //   this.startVoice();
