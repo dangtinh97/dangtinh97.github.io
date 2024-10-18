@@ -8,3 +8,10 @@
     left: 50%;
     transform: translateX(-50%);
 }
+.recognition{
+    overflow-y: auto;
+    max-height: 300px;
+    border: 1px red solid;
+    padding: 10px;
+    border-radius: 10px;
+}
