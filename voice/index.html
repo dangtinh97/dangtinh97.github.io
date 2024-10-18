@@ -73,7 +73,7 @@
             transcript
           })
         }
-        if(transcript!==transcriptLast || transcript.trim() === ""){
+        if(transcript===transcriptLast || transcript.trim() === ""){
           return;
         }
         $('#result').append(JSON.stringify({
