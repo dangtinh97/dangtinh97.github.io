@@ -6,6 +6,7 @@ export class Voice {
   transcript = null
   waitStop = null;
   message_before_stop = ''
+  tmp = '';
   timestampVoice = {
     start: 0,
     end: 0,
@@ -60,6 +61,7 @@ export class Voice {
   }
 
   onResult (event) {
+    let newTranscript = '';
     this.timestampVoice = {
       ...this.timestampVoice,
       send_last: event.timeStamp
@@ -71,9 +73,14 @@ export class Voice {
       transcript += event.results[i][0].transcript
     }
     transcript = transcript.trim().toLowerCase()
-    if (this.transcript === transcript) {
+    newTranscript = transcript;
+    if(global.user_agent.includes('android')){
+      newTranscript = transcript.replace(this.transcript,'').trim();
+    }
+    if (this.transcript === transcript || newTranscript === this.tmp) {
       return
     }
+    this.tmp = newTranscript;
     // transcript = transcript.replace(this.message_before_stop,'').trim()
     // if(this.message_before_stop!==''){
     //   console.log({
@@ -84,7 +91,7 @@ export class Voice {
     this.transcript = transcript
     this.sendLocal(voiceEvents.content,
       {
-        content: transcript.replace(this.message_before_stop,'').trim(),
+        content: newTranscript,
         duration: event.timeStamp,
         is_final: isFinals.indexOf(true) !== -1
       });

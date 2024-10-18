@@ -6,6 +6,7 @@ let voice;
 let socket;
 let audioOutput;
 document.addEventListener("DOMContentLoaded",()=>{
+  global.user_agent = (navigator.userAgent || navigator.vendor || window.opera).toLowerCase();
   let uidDevice = getUidDevice('uid-device');
   global.uid_device = uidDevice;
   $('#uid-device').html(uidDevice);
