@@ -1,0 +1,10 @@
+.test{
+    position: absolute;
+    width: 100%;
+}
+.test > #audioPlayer{
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+}

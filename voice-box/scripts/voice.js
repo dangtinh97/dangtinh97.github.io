@@ -42,6 +42,7 @@ export class Voice {
   }
 
   onEnd (event) {
+    this.tmp = '';
     console.log('end', event)
     if (global.auto_restart) {
       this.startVoice()
@@ -53,6 +54,7 @@ export class Voice {
   }
 
   onError (event) {
+    this.tmp = '';
     console.log('microphone - error', event.error)
     $('.log > #microphone').html(event.error)
     // if (event.error === 'no-speech') {
@@ -70,7 +72,7 @@ export class Voice {
     let isFinals = []
     for (let i = 0; i < event.results.length; i++) {
       isFinals.push(event.results[i].isFinal)
-      transcript += event.results[i][0].transcript
+      transcript += event.results[i][0].transcript.trim()+" "
     }
     transcript = transcript.trim().toLowerCase()
     newTranscript = transcript;
