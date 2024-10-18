@@ -12,6 +12,7 @@
     <link rel="icon" type="image/x-icon" href="./images/favicon.ico">
     <script>
       let global = {
+        version:'1.0.2',
         uid_device: '',
         box_config: '',
         socket_is_connect: false,
@@ -26,7 +27,7 @@
 </head>
 <body>
 <div class="container px-4 text-center">
-    <div class="m-3"><strong class="text-danger ">Version: 1.0.1</strong></div>
+    <div class="m-3"><strong class="text-danger ">Version: <span id="version"></span></strong></div>
     <div class="row gx-5">
         <div class="system col text-start">
             <div>Uid device: <strong id="uid-device"></strong></div>

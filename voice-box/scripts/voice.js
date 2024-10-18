@@ -35,6 +35,7 @@ export class Voice {
 
   onStart (event) {
     console.log('start', event)
+    $('.log > #microphone').html('Recording...')
     this.timestampVoice = {
       ...this.timestampVoice,
       start: event.timeStamp
@@ -72,7 +73,7 @@ export class Voice {
     let isFinals = []
     for (let i = 0; i < event.results.length; i++) {
       isFinals.push(event.results[i].isFinal)
-      transcript += event.results[i][0].transcript.trim()+" "
+      transcript += (event.results[i][0].transcript).trim()+" "
     }
     transcript = transcript.trim().toLowerCase()
     newTranscript = transcript;
@@ -83,13 +84,6 @@ export class Voice {
       return
     }
     this.tmp = newTranscript;
-    // transcript = transcript.replace(this.message_before_stop,'').trim()
-    // if(this.message_before_stop!==''){
-    //   console.log({
-    //     transcript: transcript,
-    //     remove: this.message_before_stop
-    //   });
-    // }
     this.transcript = transcript
     this.sendLocal(voiceEvents.content,
       {

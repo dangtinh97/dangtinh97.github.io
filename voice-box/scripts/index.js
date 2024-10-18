@@ -8,6 +8,7 @@ let audioOutput;
 document.addEventListener("DOMContentLoaded",()=>{
   global.user_agent = (navigator.userAgent || navigator.vendor || window.opera).toLowerCase();
   $('.log #user-agent').html(global.user_agent);
+  $('#version').html(global.version)
   let uidDevice = getUidDevice('uid-device');
   global.uid_device = uidDevice;
   $('#uid-device').html(uidDevice);
