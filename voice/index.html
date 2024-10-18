@@ -71,6 +71,7 @@
           isFinalsLast = item.isFinal;
         }
         transcript = transcript.toLowerCase().trim();
+        transcript = transcript.replace(transcriptLast,'').trim()
         tmp = transcript;
         if(isFinals.indexOf(true)!==-1){
           console.log({
