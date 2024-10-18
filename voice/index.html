@@ -63,7 +63,7 @@
         for(let i=0; i< results.length; i++){
           let item = results[i];
           isFinals.push(item.isFinal);
-          transcript+=' '+item[0].transcript.trim()
+          transcript+=item[0].transcript.trim()+" "
           isFinalsLast = item.isFinal;
         }
         transcript = transcript.toLowerCase().replace("  ","");
