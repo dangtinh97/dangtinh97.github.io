@@ -18,6 +18,7 @@
 </head>
 <body>
 <div class="container">
+    <div id="user-agent"></div>
     <div id="log" class="border-1">
         <ul>
             <li id="error"></li>
@@ -47,6 +48,8 @@
     crossorigin="anonymous"></script>
 <script>
   document.addEventListener('DOMContentLoaded', () => {
+    var userAgent = navigator.userAgent || navigator.vendor || window.opera;
+    $('#user-agent').html(userAgent)
     const textarea = document.getElementById('result');
     let isStart = false;
     let SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -71,18 +74,18 @@
           isFinalsLast = item.isFinal;
         }
         transcript = transcript.toLowerCase().trim();
-        // transcript = transcript.replace(transcriptLast,'').trim()
-        tmp = transcript;
+        const transcriptNew = transcript.replace(transcriptLast,'').trim();
         if(isFinals.indexOf(true)!==-1){
           console.log({
             transcript
           })
         }
-        if(transcript===transcriptLast || transcript.trim() === ""){
+        if(transcriptNew === tmp || transcript===transcriptLast || transcript.trim() === ""){
           return;
         }
+        tmp = transcriptNew;
         $('#result').append(JSON.stringify({
-          transcript: transcript.replace(transcriptLast,'').trim(),
+          transcript: transcriptNew,
           time: new Date().getTime() - timeEnd,
           'isFinals': isFinals.join(' - ')
         },null, 4)+',\n')
