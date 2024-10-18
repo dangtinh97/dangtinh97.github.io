@@ -4,14 +4,15 @@ export class Voice {
   lang = null
   configBox = {}
   transcript = null
-  waitStop = null;
+  waitStop = null
   message_before_stop = ''
-  tmp = '';
+  tmp = ''
   timestampVoice = {
     start: 0,
     end: 0,
     send_last: 0,
   }
+
   constructor () {
     this.setup()
   }
@@ -43,7 +44,8 @@ export class Voice {
   }
 
   onEnd (event) {
-    this.tmp = '';
+    this.tmp = ''
+    this.transcript = ''
     console.log('end', event)
     if (global.auto_restart) {
       this.startVoice()
@@ -55,13 +57,14 @@ export class Voice {
   }
 
   onError (event) {
-    this.tmp = '';
+    this.tmp = ''
+    this.transcript = ''
     console.log('microphone - error', event.error)
     $('.log > #microphone').html(event.error)
   }
 
   onResult (event) {
-    let newTranscript = '';
+    let newTranscript = ''
     let transcript = ''
     let isFinals = []
     this.timestampVoice = {
@@ -70,35 +73,31 @@ export class Voice {
     }
     for (let i = 0; i < event.results.length; i++) {
       isFinals.push(event.results[i].isFinal)
-      transcript += (event.results[i][0].transcript).trim() + " "
+      transcript += (event.results[i][0].transcript).trim() + ' '
     }
     transcript = transcript.toLowerCase().trim()
-    newTranscript = transcript;
-    if(global.user_agent.includes('android')){
-      newTranscript = transcript.replace(this.transcript,'').trim();
+    newTranscript = transcript
+    if (global.user_agent.includes('android')) {
+      newTranscript = transcript.replace(this.transcript, '').trim()
     }
-    if (this.transcript === transcript || newTranscript === this.tmp || newTranscript.trim()==="") {
+    if (this.transcript === transcript || newTranscript === this.tmp || newTranscript.trim() === '') {
       return
     }
-    this.tmp = newTranscript;
+    this.tmp = newTranscript
     this.transcript = transcript
     this.sendLocal(voiceEvents.content,
       {
         content: newTranscript,
         duration: event.timeStamp,
         is_final: isFinals.indexOf(true) !== -1
-      });
-    if(this.waitStop!=null){
-      clearTimeout(this.waitStop);
+      })
+    if (this.waitStop != null) {
+      clearTimeout(this.waitStop)
     }
-    this.waitStop = setTimeout(()=>{
-      this.sendLocal(voiceEvents.time_wait_send,this.timestampVoice)
-      this.message_before_stop = this.tmp;
-      // this.stopVoice();
-      // setTimeout(()=>{
-      //   this.startVoice();
-      // },10)
-    },TIME_WAIT_SEND)
+    this.waitStop = setTimeout(() => {
+      this.sendLocal(voiceEvents.time_wait_send, this.timestampVoice)
+      this.message_before_stop = this.tmp
+    }, TIME_WAIT_SEND)
   }
 
   setLang (lang) {
@@ -138,7 +137,7 @@ export class Voice {
 
   startVoice () {
     console.log(global.page)
-    if (!this.isStart && this.configBox.input === statusInputVoice.on && global.page!=='OUTPUT') {
+    if (!this.isStart && this.configBox.input === statusInputVoice.on && global.page !== 'OUTPUT') {
       this.recognition.start()
     }
   }
