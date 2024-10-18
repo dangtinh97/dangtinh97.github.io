@@ -24,8 +24,16 @@
     <div class="form-group my-3">
         <button id="clear-log" class="btn btn-sm btn-danger">Clear Log</button>
         <button id="clear-result" class="btn btn-sm btn-danger">Clear Result</button>
+        <button id="action" class="btn btn-sm btn-outline-danger">Action</button>
+        <div>
+
+            <label>
+                <span>Auto restart: </span>
+                <input type="checkbox" id="auto-restart">
+            </label>
+        </div>
     </div>
-    <textarea id="result" class="form-control" rows="50" readonly></textarea>
+    <textarea id="result" class="form-control" rows="20" readonly></textarea>
 </div>
 <script
     src="https://code.jquery.com/jquery-3.7.1.js"
@@ -33,6 +41,7 @@
     crossorigin="anonymous"></script>
 <script>
   document.addEventListener('DOMContentLoaded', () => {
+    let isStart = false;
     let SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     let recognition;
     let transcriptLast = '';
@@ -74,17 +83,26 @@
 
       recognition.start();
       recognition.onerror = (error)=>{
+        isStart = false;
         log(`Error: ${error.error}`)
+        $('#action').html('REC')
       }
 
       recognition.onend = (error)=>{
+        isStart = false;
         console.log(error)
         log(`Ended: ${error.timeStamp}`)
-        recognition.start();
+        if($('#auto-restart').is(':checked')){
+          recognition.start();
+        }
+        $('#action').html('REC')
+        // recognition.start();
       }
 
       recognition.onstart = ()=>{
         log('Start')
+        isStart = true;
+        $('#action').html('Stop')
       }
     }
 
@@ -97,7 +115,13 @@
     })
 
     $('#clear-result').on('click',()=>{
+      recognition.abort()
+      // recognition.start();
       $('#result').html('')
+    })
+
+    $('#action').on('click',()=>{
+      isStart? recognition.abort() : recognition.start()
     })
   })
 </script>
