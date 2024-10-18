@@ -52,7 +52,7 @@
     if(SpeechRecognition){
       recognition = new SpeechRecognition()
       recognition.continuous = true // Recognize speech in a single run
-      recognition.interimResults = true // Only return final results'
+      recognition.interimResults = false // Only return final results'
       recognition.maxAlternatives = 1 // Only return final results'
       recognition.lang = 'vi-Vn'
       recognition.onresult = ({results})=>{
