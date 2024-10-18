@@ -29,9 +29,13 @@
         <button id="clear-result" class="btn btn-sm btn-danger">Clear Result</button>
         <button id="action" class="btn btn-sm btn-outline-danger">Action</button>
         <div class="mt-2">
-            <label>
+            <label class="d-block">
                 <span>Auto restart: </span>
                 <input type="checkbox" id="auto-restart">
+            </label>
+            <label class="d-block">
+                <span>interimResults: </span>
+                <input type="checkbox" id="interimResults">
             </label>
         </div>
     </div>
@@ -129,6 +133,11 @@
 
     $('#action').on('click',()=>{
       isStart? recognition.abort() : recognition.start()
+    })
+
+    $('#interimResults').on('change',()=>{
+      recognition.interimResults = $('#interimResults').is(':checked')
+      recognition.stop()
     })
   })
 </script>
