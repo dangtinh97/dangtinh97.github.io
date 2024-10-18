@@ -91,7 +91,7 @@
         isStart = false;
         log(`Error: ${error.error}`)
         $('#action').html('REC')
-        $('#log > ul > #error').html(error.error)
+        $('#log > ul > #error').html(error.error+' - '+ new Date())
       }
 
       recognition.onend = (error)=>{
@@ -102,7 +102,7 @@
           recognition.start();
         }
         $('#action').html('REC')
-        $('#log > ul > #ended').html(error.timeStamp)
+        $('#log > ul > #ended').html(error.timeStamp +' - '+ new Date())
         // recognition.start();
       }
 
