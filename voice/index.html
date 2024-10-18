@@ -60,10 +60,10 @@
         for(let i=0; i< results.length; i++){
           let item = results[i];
           isFinals.push(item.isFinal);
-          transcript+= item[0].transcript
+          transcript+=' '+item[0].transcript
           isFinalsLast = item.isFinal;
         }
-        transcript = transcript.toLowerCase();
+        transcript = transcript.toLowerCase().replace("  ","");
         tmp = transcript;
         if(isFinals.indexOf(true)!==-1){
           console.log({
@@ -107,7 +107,7 @@
     }
 
     const log = (text)=>{
-      $('#log > ul').append(`<li>${text} - ${new Date()}</li>`)
+      $('#log > ul').html(`<li>${text} - ${new Date()}</li>`)
     }
 
     $("#clear-log").on('click',()=>{
