@@ -62,11 +62,11 @@
       recognition.interimResults = false // Only return final results'
       recognition.maxAlternatives = 1 // Only return final results'
       recognition.lang = 'vi-Vn'
+      let tmp = '';
       recognition.onresult = ({results})=>{
         let isFinals = [];
         let transcript = '';
         let isFinalsLast = false;
-        let tmp = '';
         for(let i=0; i< results.length; i++){
           let item = results[i];
           isFinals.push(item.isFinal);
