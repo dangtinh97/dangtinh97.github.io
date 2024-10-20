@@ -24,7 +24,7 @@ window.addEventListener(documentEvent.voice,({detail})=>{
   const {type, data} = detail;
   console.log(detail)
   if(type===voiceEvents.content){
-    $('.recognition').append(data.content + '\n')
+    $('.recognition').html(data.content)
     return socket.sendContent({
       ...data,
       time: new Date().getTime()
