@@ -37,6 +37,7 @@ export class Voice {
   onStart (event) {
     console.log('start', event)
     $('.log > #microphone').html('Recording...')
+    $('#audioPlayer').show()
     this.timestampVoice = {
       ...this.timestampVoice,
       start: event.timeStamp
@@ -44,6 +45,7 @@ export class Voice {
   }
 
   onEnd (event) {
+    $('#audioPlayer').hide()
     this.tmp = ''
     this.transcript = ''
     console.log('end', event)
@@ -57,6 +59,7 @@ export class Voice {
   }
 
   onError (event) {
+    $('#audioPlayer').hide()
     this.tmp = ''
     this.transcript = ''
     console.log('microphone - error', event.error)
