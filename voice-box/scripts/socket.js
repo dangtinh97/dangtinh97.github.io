@@ -48,10 +48,10 @@ export class Socket {
     }
     const message = data.message;
     console.log(`%c ${message} `, 'background: #222; color: #bada55');
-    this.socket.emit(socketEvents.message,{
-      content: message,
-    })
-    $('.result > p > #content-realtime').html(message)
+    // this.socket.emit(socketEvents.message,{
+    //   content: message,
+    // })
+    $('.result > div > #content-realtime').append('-'+message+'</br>')
   }
 
   sendLocal(type,data={}){

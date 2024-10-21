@@ -8,7 +8,8 @@
     left: 50%;
     transform: translateX(-50%);
 }
-.recognition{
+.recognition, .result{
+    margin-bottom: 4px;
     overflow-y: auto;
     max-height: 300px;
     border: 1px red solid;

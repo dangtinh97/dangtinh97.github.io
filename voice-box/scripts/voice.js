@@ -98,6 +98,7 @@ export class Voice {
       clearTimeout(this.waitStop)
     }
     this.waitStop = setTimeout(() => {
+      this.recognition.abort()
       this.sendLocal(voiceEvents.time_wait_send, this.timestampVoice)
       this.message_before_stop = this.tmp
     }, TIME_WAIT_SEND)
@@ -139,7 +140,6 @@ export class Voice {
   }
 
   startVoice () {
-    console.log(global.page)
     if (!this.isStart && this.configBox.input === statusInputVoice.on && global.page !== 'OUTPUT') {
       this.recognition.start()
     }

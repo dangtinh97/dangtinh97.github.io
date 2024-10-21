@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded",()=>{
 })
 window.addEventListener(documentEvent.voice,({detail})=>{
   const {type, data} = detail;
-  console.log(detail)
+  console.log(data.content)
   if(type===voiceEvents.content){
     $('.recognition').html(data.content)
     return socket.sendContent({
