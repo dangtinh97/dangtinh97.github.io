@@ -48,10 +48,14 @@ export class Socket {
     }
     const message = data.message;
     console.log(`%c ${message} `, 'background: #222; color: #bada55');
-    // this.socket.emit(socketEvents.message,{
-    //   content: message,
-    // })
+    this.socket.emit(socketEvents.message,{
+      content: message,
+    })
     $('.result > div > #content-realtime').append('-'+message+'</br>')
+
+    const scrollableDiv = document.querySelector('.result');
+
+    scrollableDiv.scrollTop = scrollableDiv.scrollHeight;
   }
 
   sendLocal(type,data={}){
