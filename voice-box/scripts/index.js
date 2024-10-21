@@ -19,6 +19,10 @@ document.addEventListener("DOMContentLoaded",()=>{
   $('#audio-start').on('click',(event)=>{
     $('#audio-start').remove()
   })
+
+  $('#clear-content-realtime').on('click',()=>{
+    $('.result > div > #content-realtime').html('')
+  })
 })
 window.addEventListener(documentEvent.voice,({detail})=>{
   const {type, data} = detail;
