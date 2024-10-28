@@ -22,6 +22,10 @@
     }, 500); // thời gian (ms) để xác định là nhấn giữ
   });
 
+  button.addEventListener('touchstart', (event) => {
+    event.preventDefault(); // Ngăn chặn kính lúp trên iOS
+  });
+
   button.addEventListener('mouseup', () => {
     // Khi thả nút ra
     clearTimeout(holdTimeout);
