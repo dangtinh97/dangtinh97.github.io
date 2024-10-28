@@ -55,6 +55,9 @@
   button.addEventListener('touchend', () => {
     // Khi thả nút ra
     clearTimeout(holdTimeout);
+    setTimeout(()=>{
+      log.innerText = ('Please click is record2.');
+    },2000)
   });
 
   button.addEventListener('click', () => {
