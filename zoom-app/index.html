@@ -13,7 +13,7 @@
     </style>
 </head>
 <body>
-<div>version: 1.0.0</div>
+<div>version: 1.0.1</div>
 <button id="myButton">Click or Hold Me</button>
 <div id="log"></div>
 <script>
@@ -32,6 +32,11 @@
 
   button.addEventListener('touchstart', (event) => {
     event.preventDefault(); // Ngăn chặn kính lúp trên iOS
+    holdTimeout = setTimeout(() => {
+      console.log('Button is held down');
+      log.innerText = ('Button is held down');
+      // Xử lý khi nhấn giữ
+    }, 500);
   });
 
   button.addEventListener('mouseup', () => {
