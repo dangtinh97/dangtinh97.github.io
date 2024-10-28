@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Button Hold or Click</title>
+</head>
+<body>
+<button id="myButton">Click or Hold Me</button>
+<div id="log"></div>
+<script>
+  const button = document.getElementById('myButton');
+  const log = document.getElementById('log');
+  let holdTimeout;
+
+  button.addEventListener('mousedown', () => {
+    // Khi bắt đầu nhấn, thiết lập thời gian chờ để xác định là nhấn giữ
+    holdTimeout = setTimeout(() => {
+      console.log('Button is held down');
+      log.innerText = ('Button is held down');
+      // Xử lý khi nhấn giữ
+    }, 500); // thời gian (ms) để xác định là nhấn giữ
+  });
+
+  button.addEventListener('mouseup', () => {
+    // Khi thả nút ra
+    clearTimeout(holdTimeout);
+  });
+
+  button.addEventListener('click', () => {
+    console.log('Button is clicked');
+    log.innerText = ('Button is clicked');
+    // Xử lý khi chỉ click
+  });
+</script>
+</body>
+</html>
