@@ -21,14 +21,14 @@
   const log = document.getElementById('log');
   let holdTimeout;
 
-  button.addEventListener('mousedown', () => {
-    // Khi bắt đầu nhấn, thiết lập thời gian chờ để xác định là nhấn giữ
-    holdTimeout = setTimeout(() => {
-      console.log('Button is held down');
-      log.innerText = ('Button is held down');
-      // Xử lý khi nhấn giữ
-    }, 500); // thời gian (ms) để xác định là nhấn giữ
-  });
+  // button.addEventListener('mousedown', () => {
+  //   // Khi bắt đầu nhấn, thiết lập thời gian chờ để xác định là nhấn giữ
+  //   holdTimeout = setTimeout(() => {
+  //     console.log('Button is held down');
+  //     log.innerText = ('Button is held down');
+  //     // Xử lý khi nhấn giữ
+  //   }, 500); // thời gian (ms) để xác định là nhấn giữ
+  // });
 
   button.addEventListener('touchstart', (event) => {
     event.preventDefault(); // Ngăn chặn kính lúp trên iOS
@@ -39,7 +39,7 @@
     }, 500);
   });
 
-  button.addEventListener('mouseup', () => {
+  button.addEventListener('touchend', () => {
     // Khi thả nút ra
     clearTimeout(holdTimeout);
   });
