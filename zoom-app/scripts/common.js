@@ -38,3 +38,13 @@ function showToast(text){
     text: text
   })
 }
+
+
+function sendLocal (typeEvent, type, data = {}) {
+  const event = new CustomEvent(typeEvent, {
+    detail: {
+      type, data
+    }
+  })
+  window.dispatchEvent(event)
+}

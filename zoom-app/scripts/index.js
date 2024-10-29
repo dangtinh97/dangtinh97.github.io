@@ -2,10 +2,10 @@ import { SocketModule } from './socket.js'
 import { SpeechRecognitionModule } from './speech-recognition.js'
 
 let SpeechRecognition
-let Socket
+let socket
 document.addEventListener('DOMContentLoaded', () => {
-  global.user_agent = (navigator.userAgent || navigator.vendor || window.opera).toLowerCase();
-  Socket = new SocketModule()
+  global.user_agent = (navigator.userAgent || navigator.vendor || window.opera).toLowerCase()
+  socket = new SocketModule()
   SpeechRecognition = new SpeechRecognitionModule()
 
   $('#connect').on('click', () => {
@@ -19,12 +19,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
   })
   $('#circleImage').on('touchstart', () => {
-    global.is_hold = true;
+    global.is_hold = true
     addAnimation()
     SpeechRecognition.startRec()
   }).on('touchend', () => {
     $('.ripple').remove()
-    global.is_hold = false;
+    global.is_hold = false
     SpeechRecognition.stopRec()
   })
 
@@ -41,19 +41,23 @@ document.addEventListener('DOMContentLoaded', () => {
     })
   }
 
-  $('#audio-input').on('change', (event) => {
-    let value = event.currentTarget.value
+  $('#circleImage').on('click', () => {
+    SpeechRecognition.startRec()
+  })
+})
+
+window.addEventListener(documentEvent.audioConfig, (event) => {
+  const { type, data } = event.detail
+  console.log(type, data)
+  if (type === 'audio-input') {
+    let value = data.audioInput
     let btnRec = $('.btn-rec')
     let tutorial = $('.tutorial-rec')
     value === '' ? btnRec.hide() : btnRec.show()
-    value === '' ? tutorial.css('display','none') : tutorial.css('display','flex')
+    value === '' ? tutorial.css('display', 'none') : tutorial.css('display', 'flex')
     if (value === '') {
       return
     }
     SpeechRecognition.changeLangInput(value)
-  })
-
-  $('#circleImage').on('click',()=>{
-    SpeechRecognition.startRec()
-  })
+  }
 })
