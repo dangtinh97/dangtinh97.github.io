@@ -13,16 +13,31 @@ document.addEventListener("DOMContentLoaded",()=>{
   image.addEventListener("click", function (e) {
     let find = $('.btn-rec').find('.ripple')
     if(find.length===0){
-      const ripple = document.createElement("span");
-      ripple.classList.add("ripple");
-      // Thêm ripple vào container
-      image.parentElement.appendChild(ripple);
-
-      // Xóa ripple sau khi animation kết thúc
-      ripple.addEventListener("animationend", () => {
-        ripple.remove();
-      });
+      //addAnimation()
     }
 
   });
+
+
+  $('#circleImage').on('touchstart',()=>{
+    addAnimation();
+  })
+
+  // document.addEventListener('touchstart', function(e) {
+  //   if (e.target.id === 'IMG') {
+  //     e.preventDefault();
+  //   }
+  // });
+
+  function addAnimation(){
+    const ripple = document.createElement("span");
+    ripple.classList.add("ripple");
+    // Thêm ripple vào container
+    image.parentElement.appendChild(ripple);
+
+    // Xóa ripple sau khi animation kết thúc
+    ripple.addEventListener("animationend", () => {
+      ripple.remove();
+    });
+  }
 })
