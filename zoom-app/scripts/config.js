@@ -18,3 +18,4 @@ const getUrlSocket = ()=>{
 }
 
 const SOCKET_URL = `${SOCKET_URL_ENV[getUrlSocket()]}/zoom-app`;
+const URL_LANG_CONFIG = `${SOCKET_URL_ENV[getUrlSocket()]}/config/lang`

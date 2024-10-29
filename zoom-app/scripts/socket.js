@@ -1,4 +1,4 @@
-export class Socket{
+export class SocketModule{
   socket;
   constructor () {
     this.connect()

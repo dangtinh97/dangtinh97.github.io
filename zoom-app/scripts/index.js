@@ -1,47 +1,55 @@
-let socket;
-import { Socket } from './socket.js'
-document.addEventListener("DOMContentLoaded",()=>{
-  socket = new Socket()
+import { SocketModule } from './socket.js'
+import { SpeechRecognitionModule } from './speech-recognition.js'
 
-  $('#connect').on('click',()=>{
+let SpeechRecognition
+let Socket
+document.addEventListener('DOMContentLoaded', () => {
+  global.user_agent = (navigator.userAgent || navigator.vendor || window.opera).toLowerCase();
+  Socket = new SocketModule()
+  SpeechRecognition = new SpeechRecognitionModule()
+
+  $('#connect').on('click', () => {
     let roomId = $('#room-id').val().trim()
-    if(roomId!==''){
+    if (roomId !== '') {
       socket.joinRoom(roomId)
     }
   })
-  const image = document.getElementById("circleImage");
-  image.addEventListener("click", function (e) {
+  const image = document.getElementById('circleImage')
+  image.addEventListener('click', function (e) {
 
-
-  });
-
-
-  $('#circleImage').on('touchstart',()=>{
-    addAnimation();
-  }).on('touchend',()=>{
-    alert('touchend')
+  })
+  $('#circleImage').on('touchstart', () => {
+    addAnimation()
+    SpeechRecognition.startRec()
+  }).on('touchend', () => {
     $('.ripple').remove()
+    SpeechRecognition.stopRec()
   })
 
-  // document.addEventListener('touchstart', function(e) {
-  //   if (e.target.id === 'IMG') {
-  //     e.preventDefault();
-  //   }
-  // });
-
-  function addAnimation(){
+  function addAnimation () {
     let find = $('.btn-rec').find('.ripple')
-    if(find.length!==0){
+    if (find.length !== 0) {
       return
     }
-    const ripple = document.createElement("span");
-    ripple.classList.add("ripple");
-    // Thêm ripple vào container
-    image.parentElement.appendChild(ripple);
-
-    // Xóa ripple sau khi animation kết thúc
-    ripple.addEventListener("animationend", () => {
-      ripple.remove();
-    });
+    const ripple = document.createElement('span')
+    ripple.classList.add('ripple')
+    image.parentElement.appendChild(ripple)
+    ripple.addEventListener('animationend', () => {
+      ripple.remove()
+    })
   }
+
+  $('#audio-input').on('change', (event) => {
+    let value = event.currentTarget.value
+    let btnRec = $('.btn-rec')
+    value === '' ? btnRec.hide() : btnRec.show()
+    if (value === '') {
+      return
+    }
+    SpeechRecognition.changeLangInput(value)
+  })
+
+  $('#circleImage').on('click',()=>{
+    SpeechRecognition.startRec()
+  })
 })
