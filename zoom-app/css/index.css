@@ -63,3 +63,9 @@
 .btn-rec{
     display: none;
 }
+.total-rec{
+    top: -30%;
+    left: 15%;
+    transform: translateX(-50%);
+    position: relative;
+}
