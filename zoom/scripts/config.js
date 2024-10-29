@@ -5,16 +5,17 @@ const SOCKET_URL_ENV = {
 }
 
 const getUrlSocket = ()=>{
+  return 'dev'
   const host = window.location.host;
   if(host.includes('localhost')){
-    return SOCKET_URL_ENV['local']
+    return 'local'
   }
 
   if(host.includes('.dev')){
-    return SOCKET_URL_ENV['dev']
+    return 'dev'
   }
 
-  return SOCKET_URL_ENV['prod']
+  return 'prod';
 }
 
-const SOCKET_URL = `${getUrlSocket()}/zoom`;
+const SOCKET_URL = `${SOCKET_URL_ENV[getUrlSocket()]}/zoom`;
