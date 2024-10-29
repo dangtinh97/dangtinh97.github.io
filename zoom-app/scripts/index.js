@@ -21,6 +21,8 @@ document.addEventListener("DOMContentLoaded",()=>{
 
   $('#circleImage').on('touchstart',()=>{
     addAnimation();
+  }).on('touchend',()=>{
+    $('.ripple').remove()
   })
 
   // document.addEventListener('touchstart', function(e) {
