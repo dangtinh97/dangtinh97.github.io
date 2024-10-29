@@ -44,7 +44,9 @@ document.addEventListener('DOMContentLoaded', () => {
   $('#audio-input').on('change', (event) => {
     let value = event.currentTarget.value
     let btnRec = $('.btn-rec')
+    let tutorial = $('.tutorial-rec')
     value === '' ? btnRec.hide() : btnRec.show()
+    value === '' ? tutorial.css('display','none') : tutorial.css('display','flex')
     if (value === '') {
       return
     }
