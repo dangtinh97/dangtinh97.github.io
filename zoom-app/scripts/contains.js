@@ -24,4 +24,4 @@ const documentEvent = {
   checking: 'CHECKING'
 }
 
-const TIME_WAIT_SEND = 2000;
+const TIME_WAIT_SEND = 4000;

@@ -40,7 +40,6 @@ export class SpeechRecognitionModule {
 
   onEnd () {
     this.isStart = false
-    //showToast(`onEnd`)
     if(!global.is_hold){
       return false;
     }
@@ -50,13 +49,6 @@ export class SpeechRecognitionModule {
   onError (event) {
     this.errorEnd = event.error.trim()
     this.isStart = false
-    showToast(`onError: ${event.error}`)
-    console.log(event.error)
-    // $('#audioPlayer').hide()
-    // this.tmp = ''
-    // this.transcript = ''
-    // console.log('microphone - error', event.error)
-    // $('.log > #microphone').html(event.error)
   }
 
   onResult (event) {
