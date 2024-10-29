@@ -2,6 +2,7 @@ export class SpeechRecognitionModule {
   isStart = false
   errorHasRestart = ['no-speech', 'abort']
   errorEnd = ''
+  waitStop = null
   constructor () {
     this.setup()
   }
