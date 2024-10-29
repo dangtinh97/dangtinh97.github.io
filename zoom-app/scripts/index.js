@@ -19,10 +19,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
   })
   $('#circleImage').on('touchstart', () => {
+    global.is_hold = true;
     addAnimation()
     SpeechRecognition.startRec()
   }).on('touchend', () => {
     $('.ripple').remove()
+    global.is_hold = false;
     SpeechRecognition.stopRec()
   })
 

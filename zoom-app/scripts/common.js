@@ -31,3 +31,10 @@ function generateUUID () { // Public Domain/MIT
     return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16)
   })
 }
+
+function showToast(text){
+  $.toast({
+    position:'top-left',
+    text: text
+  })
+}

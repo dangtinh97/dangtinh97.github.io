@@ -39,11 +39,12 @@ export class SpeechRecognitionModule {
 
   onEnd () {
     this.isStart = false
+    showToast(`onEnd`)
   }
 
   onError (event) {
     this.isStart = false
-    $.toast(`onError: ${event.error}`)
+    showToast(`onError: ${event.error}`)
     console.log(event.error)
     // $('#audioPlayer').hide()
     // this.tmp = ''
