@@ -1,7 +1,7 @@
 export class SpeechRecognitionModule {
   isStart = false
   errorHasRestart = ['no-speech', 'abort']
-
+  errorEnd = ''
   constructor () {
     this.setup()
   }
@@ -39,10 +39,15 @@ export class SpeechRecognitionModule {
 
   onEnd () {
     this.isStart = false
-    showToast(`onEnd`)
+    //showToast(`onEnd`)
+    if(!global.is_hold){
+      return false;
+    }
+    this.startRec();
   }
 
   onError (event) {
+    this.errorEnd = event.error.trim()
     this.isStart = false
     showToast(`onError: ${event.error}`)
     console.log(event.error)
