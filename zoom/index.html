@@ -12,6 +12,7 @@
     <title>Cabiz Zoom</title>
     <script src="scripts/contains.js"></script>
     <script src="scripts/config.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
 <div class="container">
@@ -29,10 +30,12 @@
             <div class="modal-body">
                 <p id="content"></p>
                 <div id="qrcode" class="d-flex justify-content-center p-5"></div>
+                <div id="qrcode-success" class="d-none">
+                    <p>Connection successful, please press <strong>Continue</strong> to proceed.</p>
+                </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+            <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-success " data-bs-dismiss="modal" aria-label="Close">Continue</button>
             </div>
         </div>
     </div>

@@ -9,6 +9,7 @@ const socketEvents = {
   'realtime_stop':'REALTIME_MESSAGE_STOP',
   'message':'MESSAGE',
   'delete_cache':'DELETE_CACHE',
+  'join':'JOIN',
   'app_connected':'ZOOM_APP_CONNECTED'
 }
 

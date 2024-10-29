@@ -17,4 +17,4 @@ const getUrlSocket = ()=>{
   return 'prod';
 }
 
-const SOCKET_URL = `${SOCKET_URL_ENV[getUrlSocket()]}/zoom`;
+const SOCKET_URL = `${SOCKET_URL_ENV[getUrlSocket()]}/zoom-app`;

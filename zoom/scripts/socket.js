@@ -12,9 +12,16 @@ export class Socket{
       transports:['websocket','polling']
     })
     this.socket.on('connect',this.socketConnected.bind(this))
+
   }
 
   socketConnected(){
     showQrCode(this.session)
+    this.socket.on(socketEvents.app_connected,this.handleAppJoinRoom.bind(this))
+  }
+
+  handleAppJoinRoom(data){
+    $('#qrcode-success').removeClass('d-none')
+    $('.modal-footer').show()
   }
 }
