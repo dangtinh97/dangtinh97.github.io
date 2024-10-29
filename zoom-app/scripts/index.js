@@ -11,10 +11,7 @@ document.addEventListener("DOMContentLoaded",()=>{
   })
   const image = document.getElementById("circleImage");
   image.addEventListener("click", function (e) {
-    let find = $('.btn-rec').find('.ripple')
-    if(find.length===0){
-      //addAnimation()
-    }
+
 
   });
 
@@ -22,6 +19,7 @@ document.addEventListener("DOMContentLoaded",()=>{
   $('#circleImage').on('touchstart',()=>{
     addAnimation();
   }).on('touchend',()=>{
+    alert('touchend')
     $('.ripple').remove()
   })
 
@@ -32,6 +30,10 @@ document.addEventListener("DOMContentLoaded",()=>{
   // });
 
   function addAnimation(){
+    let find = $('.btn-rec').find('.ripple')
+    if(find.length!==0){
+      return
+    }
     const ripple = document.createElement("span");
     ripple.classList.add("ripple");
     // Thêm ripple vào container
