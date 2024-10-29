@@ -19,6 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   })
   $('#circleImage').on('touchstart', () => {
+    navigator.vibrate(200);
     global.is_hold = true;
     addAnimation()
     SpeechRecognition.startRec()
