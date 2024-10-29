@@ -9,8 +9,8 @@
     user-select: none;         /* Standard */
 }
 .btn-rec{
-    width: 60px;
-    height: 60px;
+    width: 100px;
+    height: 100px;
     left: 50%;
     position: fixed;
     bottom: 5%;
@@ -41,8 +41,8 @@
     z-index: -1;
     position: fixed;
     left: 0;
-    width: 60px;
-    height: 60px;
+    width: 100px;
+    height: 100px;
     transform: translateX(-50%);
     bottom: 0;
     border: 23px solid #af0000; /* Màu sắc của vòng tròn */
