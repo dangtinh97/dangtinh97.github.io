@@ -169,12 +169,6 @@ export class SpeechRecognitionModule {
   }
 
   sendToLocal (data) {
-    console.log({
-      type: 'send_text_realtime',
-      data,
-      dataRec: this.dataRec,
-      time: new Date()
-    })
     sendLocal(documentEvent.voice, 'send_text_realtime', data)
   }
 }

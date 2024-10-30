@@ -50,7 +50,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 window.addEventListener(documentEvent.audioConfig, (event) => {
   const { type, data } = event.detail
-  console.log(type, data)
   let btnRec = $('.btn-rec')
   let tutorial = $('.tutorial-rec')
   if (type === 'audio-input' && data.audioInput) {
@@ -64,4 +63,10 @@ window.addEventListener(documentEvent.audioConfig, (event) => {
   socket.sendConfig(data)
   btnRec.show()
   tutorial.css('display', 'flex')
+})
+
+
+window.addEventListener(documentEvent.voice,(event)=>{
+  const { type, data } = event.detail
+  console.table([data])
 })

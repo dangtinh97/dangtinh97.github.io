@@ -27,4 +27,8 @@ export class SocketModule {
       status: isRec ? 'ON' : 'OFF',
     })
   }
+
+  sendContent(data){
+    this.socket.emit(socketEvents.realtime_message,data)
+  }
 }
