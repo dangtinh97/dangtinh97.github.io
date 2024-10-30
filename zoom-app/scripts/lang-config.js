@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
+  $(ID_LANG_CONFIG).attr('disabled',true)
   $.ajax({
     url: URL_LANG_CONFIG,
     type: 'GET',
@@ -9,11 +10,11 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log(item)
         return `<option value="${item.code_global.replace('_', '-')}" data-short-lang="${item.code}">${item.name}</option>`
       })
-      $('#audio-input , #audio-output, #zoom-output').append(append)
+      $(ID_LANG_CONFIG).append(append)
     })
   })
 
-  $('#audio-input , #audio-output, #zoom-output').on('change', (event) => {
+  $(ID_LANG_CONFIG).on('change', (event) => {
     let audioOutput = $('#audio-output').val().trim()
     let audioInput = $('#audio-input').val().trim()
     let zoomOutput = $('#zoom-output').val().trim()

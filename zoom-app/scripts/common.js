@@ -48,3 +48,26 @@ function sendLocal (typeEvent, type, data = {}) {
   })
   window.dispatchEvent(event)
 }
+
+
+function getSimilarityPercentage(string1, string2) {
+  // Tách các chuỗi thành mảng các từ
+  const words1 = string1.split(' ');
+  const words2 = string2.split(' ');
+
+  // Lấy số lượng từ ngắn hơn để so sánh
+  const minLength = Math.min(words1.length, words2.length);
+  let matchCount = 0;
+
+  // So sánh từng từ theo vị trí
+  for (let i = 0; i < minLength; i++) {
+    if (words1[i] === words2[i]) {
+      matchCount++;
+    }
+  }
+
+  // Tính tỷ lệ phần trăm trùng khớp dựa trên số lượng từ
+  const similarityPercentage = (matchCount / minLength) * 100;
+
+  return Number(similarityPercentage.toFixed(2)); // Trả về tỷ lệ phần trăm với 2 chữ số thập phân
+}

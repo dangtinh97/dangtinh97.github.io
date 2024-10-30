@@ -10,7 +10,8 @@ const socketEvents = {
   'message':'MESSAGE',
   'delete_cache':'DELETE_CACHE',
   'join':'JOIN',
-  'app_connected':'ZOOM_APP_CONNECTED'
+  'app_connected':'ZOOM_APP_CONNECTED',
+  'microphone_status':'MICROPHONE_STATUS'
 }
 
 const voiceEvents = {
@@ -25,4 +26,7 @@ const documentEvent = {
   audioConfig: 'AUDIO_CONFIG'
 }
 
-const TIME_WAIT_SEND = 4000;
+const TIME_WAIT_REALTIME_MIC = 8000;
+const TIME_WAIT_STOP_MIC = 4000;
+
+const ID_LANG_CONFIG = '#audio-input , #audio-output, #zoom-output'

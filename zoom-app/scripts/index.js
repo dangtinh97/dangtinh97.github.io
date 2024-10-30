@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
   $('#connect').on('click', () => {
     let roomId = $('#room-id').val().trim()
     if (roomId !== '') {
-      socket.joinRoom(roomId)
+      socket.connect(roomId)
     }
   })
   const image = document.getElementById('circleImage')
@@ -19,10 +19,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
   })
   $('#circleImage').on('touchstart', () => {
+    socket.statusMicrophone(true)
     global.is_hold = true
     addAnimation()
     SpeechRecognition.startRec()
   }).on('touchend', () => {
+    socket.statusMicrophone(false)
     $('.ripple').remove()
     global.is_hold = false
     SpeechRecognition.stopRec()
@@ -49,15 +51,17 @@ document.addEventListener('DOMContentLoaded', () => {
 window.addEventListener(documentEvent.audioConfig, (event) => {
   const { type, data } = event.detail
   console.log(type, data)
-  if (type === 'audio-input') {
-    let value = data.audioInput
-    let btnRec = $('.btn-rec')
-    let tutorial = $('.tutorial-rec')
-    value === '' ? btnRec.hide() : btnRec.show()
-    value === '' ? tutorial.css('display', 'none') : tutorial.css('display', 'flex')
-    if (value === '') {
-      return
-    }
-    SpeechRecognition.changeLangInput(value)
+  let btnRec = $('.btn-rec')
+  let tutorial = $('.tutorial-rec')
+  if (type === 'audio-input' && data.audioInput) {
+    SpeechRecognition.changeLangInput(data.audioInput)
   }
+  if(!data.audioInput || !data.audioOutput || !data.zoomOutput){
+    btnRec.hide()
+    tutorial.css('display', 'none')
+    return;
+  }
+  socket.sendConfig(data)
+  btnRec.show()
+  tutorial.css('display', 'flex')
 })

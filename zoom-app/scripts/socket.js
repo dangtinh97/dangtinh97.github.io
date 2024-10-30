@@ -1,23 +1,30 @@
-export class SocketModule{
-  socket;
+export class SocketModule {
+  socket
+
   constructor () {
-    this.connect()
   }
 
-  connect(session){
-    this.socket = io(SOCKET_URL,{
-      transports:['websocket','polling']
+  connect (session) {
+    this.socket = io(SOCKET_URL, {
+      auth: {
+        session_id: session
+      },
+      transports: ['websocket', 'polling']
     })
-    this.socket.on('connect',this.socketConnected.bind(this))
+    this.socket.on('connect', this.socketConnected.bind(this))
   }
 
-  socketConnected(){
-
+  socketConnected () {
+    $(ID_LANG_CONFIG).attr('disabled',false)
   }
 
-  joinRoom(roomId){
-    this.socket.emit(socketEvents.join,{
-      'room_id': roomId
+  sendConfig(data){
+    this.socket.emit(socketEvents.config,data)
+  }
+
+  statusMicrophone(isRec){
+    this.socket.emit(socketEvents.microphone_status,{
+      status: isRec ? 'ON' : 'OFF',
     })
   }
 }
