@@ -29,6 +29,7 @@ export class SocketModule {
   }
 
   sendContent(data){
+    console.log(data)
     this.socket.emit(socketEvents.realtime_message,data)
   }
 }

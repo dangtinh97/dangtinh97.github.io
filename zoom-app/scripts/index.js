@@ -69,4 +69,5 @@ window.addEventListener(documentEvent.audioConfig, (event) => {
 window.addEventListener(documentEvent.voice,(event)=>{
   const { type, data } = event.detail
   console.table([data])
+  socket.sendContent(data)
 })
