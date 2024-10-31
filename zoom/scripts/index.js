@@ -1,6 +1,6 @@
 let socket;
 import { Socket } from './socket.js'
-import {SpeechSynthesis} from './speech-synthesis,js'
+import {SpeechSynthesis} from './speech-synthesis.js'
 let speechSynthesis = SpeechSynthesis()
 document.addEventListener("DOMContentLoaded",()=>{
   let session = generateUUID()
