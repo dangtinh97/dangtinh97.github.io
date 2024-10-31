@@ -30,5 +30,5 @@ const checkingVirtual = ({ installed, isDefault, audioDevices }) => {
 
 window.addEventListener(documentEvent.audio,(event)=>{
   const { type, data } = event.detail;
-  speechSynthesis.playAudio(data.result, data.global_code)
+  speechSynthesis.playAudio(data.result, data.code_global)
 })
