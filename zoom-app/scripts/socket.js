@@ -15,21 +15,25 @@ export class SocketModule {
   }
 
   socketConnected () {
-    $(ID_LANG_CONFIG).attr('disabled',false)
+    $(ID_LANG_CONFIG).attr('disabled', false)
+
+    $('#html5-qrcode-button-camera-stop').click()
+    $('#qr-reader').hide()
+    $('#main').removeClass('d-none')
   }
 
-  sendConfig(data){
-    this.socket.emit(socketEvents.config,data)
+  sendConfig (data) {
+    this.socket.emit(socketEvents.config, data)
   }
 
-  statusMicrophone(isRec){
-    this.socket.emit(socketEvents.microphone_status,{
+  statusMicrophone (isRec) {
+    this.socket.emit(socketEvents.microphone_status, {
       status: isRec ? 'ON' : 'OFF',
     })
   }
 
-  sendContent(data){
+  sendContent (data) {
     console.log(data)
-    this.socket.emit(socketEvents.realtime_message,data)
+    this.socket.emit(socketEvents.realtime_message, data)
   }
 }

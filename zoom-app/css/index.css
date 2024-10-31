@@ -75,3 +75,7 @@
     display: none;
     justify-content: center;
 }
+/*qrcode*/
+#html5-qrcode-anchor-scan-type-change{
+    display: none!important;
+}

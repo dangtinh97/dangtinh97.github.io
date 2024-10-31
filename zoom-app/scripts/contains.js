@@ -11,7 +11,8 @@ const socketEvents = {
   'delete_cache':'DELETE_CACHE',
   'join':'JOIN',
   'app_connected':'ZOOM_APP_CONNECTED',
-  'microphone_status':'MICROPHONE_STATUS'
+  'microphone_status':'MICROPHONE_STATUS',
+  'qr_code':'QR_CODE'
 }
 
 const voiceEvents = {

@@ -70,3 +70,9 @@ window.addEventListener(documentEvent.voice, (event) => {
   console.table([data])
   socket.sendContent(data)
 })
+
+
+window.addEventListener(documentEvent.qrcode,(event)=>{
+  const { type, data } = event.detail
+  socket.connect(data.decode)
+})
