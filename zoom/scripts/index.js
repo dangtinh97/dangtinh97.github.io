@@ -10,6 +10,10 @@ document.addEventListener("DOMContentLoaded",()=>{
     getAudioInputDevices().then(r=>checkingVirtual(r));
   }
   getAudioInputDevices().then(r=>checkingVirtual(r));
+
+  $('#playa').on('click',()=>{
+    speechSynthesis.playAudio('しかし、過去79年間、事務総長と大統領は数週間、ホー・チ・ミン大統領に感謝していませんでした。グエン・フー・チョン書記長の前進や、英雄や殉教者への賛辞などが盛り込まれています。','ja-JP')
+  })
 })
 
 const checkingVirtual = ({ installed, isDefault, audioDevices }) => {
