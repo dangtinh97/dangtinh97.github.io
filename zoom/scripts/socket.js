@@ -27,6 +27,7 @@ export class Socket{
   }
 
   handleRealTimeMessage(data){
+    console.log(data);
     sendLocal(documentEvent.audio, 'play_to_zoom',data)
   }
 }
