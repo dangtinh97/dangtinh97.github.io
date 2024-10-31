@@ -20,7 +20,8 @@ const voiceEvents = {
 const documentEvent = {
   socket:'SOCKET',
   voice: 'VOICE',
-  checking: 'CHECKING'
+  checking: 'CHECKING',
+  audio:'AUDIO'
 }
 
 const TIME_WAIT_SEND = 2000;

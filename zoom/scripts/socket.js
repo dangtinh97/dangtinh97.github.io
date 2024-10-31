@@ -12,6 +12,7 @@ export class Socket{
       transports:['websocket','polling']
     })
     this.socket.on('connect',this.socketConnected.bind(this))
+    this.socket.on(socketEvents.realtime_message,this.handleRealTimeMessage.bind(this))
 
   }
 
@@ -23,5 +24,9 @@ export class Socket{
   handleAppJoinRoom(data){
     $('#qrcode-success').removeClass('d-none')
     $('.modal-footer').show()
+  }
+
+  handleRealTimeMessage(data){
+    sendLocal(documentEvent.audio, 'play_to_zoom',data)
   }
 }

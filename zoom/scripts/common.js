@@ -33,3 +33,13 @@ function generateUUID () {
     return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16)
   })
 }
+
+
+function sendLocal (typeEvent, type, data = {}) {
+  const event = new CustomEvent(typeEvent, {
+    detail: {
+      type, data
+    }
+  })
+  window.dispatchEvent(event)
+}

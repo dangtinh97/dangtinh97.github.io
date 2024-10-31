@@ -1,5 +1,7 @@
 let socket;
 import { Socket } from './socket.js'
+import {SpeechSynthesis} from './speech-synthesis,js'
+let speechSynthesis = SpeechSynthesis()
 document.addEventListener("DOMContentLoaded",()=>{
   let session = generateUUID()
   window.localStorage.setItem('session',session)
@@ -25,3 +27,9 @@ const checkingVirtual = ({ installed, isDefault, audioDevices }) => {
   socket.connect()
   return true
 }
+
+window.addEventListener(documentEvent.audio,(event)=>{
+  const { type, data } = event.detail;
+  speechSynthesis.playAudio(data.result, data.global_code)
+
+})
