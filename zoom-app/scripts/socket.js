@@ -16,7 +16,6 @@ export class SocketModule {
 
   socketConnected () {
     $(ID_LANG_CONFIG).attr('disabled', false)
-
     $('#html5-qrcode-button-camera-stop').click()
     $('#qr-reader').hide()
     $('#main').removeClass('d-none')
