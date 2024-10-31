@@ -53,20 +53,19 @@ window.addEventListener(documentEvent.audioConfig, (event) => {
   let btnRec = $('.btn-rec')
   let tutorial = $('.tutorial-rec')
   if (type === 'audio-input' && data.audioInput) {
-    SpeechRecognition.changeLangInput(data.audioInput)
+    SpeechRecognition.changeLangInput(data.audioInput.code_global)
   }
-  if(!data.audioInput || !data.audioOutput || !data.zoomOutput){
+  if (!data.audioInput || !data.audioOutput || !data.zoomOutput) {
     btnRec.hide()
     tutorial.css('display', 'none')
-    return;
+    return
   }
   socket.sendConfig(data)
   btnRec.show()
   tutorial.css('display', 'flex')
 })
 
-
-window.addEventListener(documentEvent.voice,(event)=>{
+window.addEventListener(documentEvent.voice, (event) => {
   const { type, data } = event.detail
   console.table([data])
   socket.sendContent(data)
