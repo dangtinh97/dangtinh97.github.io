@@ -31,7 +31,7 @@
 
       $('#play').on('click',()=>{
         const utterance = new SpeechSynthesisUtterance($('#text').val());
-        utterance.lang = 'vi-VN'; // Thiết lập ngôn ngữ thành tiếng Việt
+        utterance.lang = 'en-US'; // Thiết lập ngôn ngữ thành tiếng Việt
         utterance.rate = 1; // Tốc độ nói (0.1 đến 10)
         utterance.pitch = 1; // Độ cao giọng nói (0 đến 2)
         // Phát âm thanh
