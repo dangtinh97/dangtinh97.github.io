@@ -37,10 +37,12 @@
         utterance.pitch = 1; // Độ cao giọng nói (0 đến 2)
         // Phát âm thanh
         window.speechSynthesis.speak(utterance);
+        $('#status').html('Click Play')
       })
 
       $('#stop').on('click',()=>{
         window.speechSynthesis.cancel()
+        $('#status').html('Click Stop')
       })
     })
 </script>
