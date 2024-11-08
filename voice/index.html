@@ -41,6 +41,8 @@
         </div>
     </div>
     <textarea id="result" class="form-control" rows="15" readonly></textarea>
+
+    <button type="button" id="play-audio">Play Audio</button>
 </div>
 <script
     src="https://code.jquery.com/jquery-3.7.1.js"
@@ -48,15 +50,15 @@
     crossorigin="anonymous"></script>
 <script>
   document.addEventListener('DOMContentLoaded', () => {
-    const utterance = new SpeechSynthesisUtterance("Hello, world!");
-
-// Check if speechSynthesis is available
-    if ('speechSynthesis' in window) {
-      // Use the speak method
-      window.speechSynthesis.speak(utterance);
-    } else {
-      console.log("Speech synthesis not supported in this browser.");
-    }
+    $('#play-audio').on('click',()=>{
+      const utterance = new SpeechSynthesisUtterance("Hello, world!");
+      if ('speechSynthesis' in window) {
+        // Use the speak method
+        window.speechSynthesis.speak(utterance);
+      } else {
+        console.log("Speech synthesis not supported in this browser.");
+      }
+    })
     var userAgent = navigator.userAgent || navigator.vendor || window.opera;
     $('#user-agent').html(userAgent)
     const textarea = document.getElementById('result');
