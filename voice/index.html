@@ -143,6 +143,25 @@
       recognition.interimResults = $('#interimResults').is(':checked')
       recognition.stop()
     })
+
+    function requirePermissionMicrophone () {
+      return new Promise((resolve) => {
+        navigator.mediaDevices.getUserMedia({ audio: true }).then((stream) => {
+          stream.getTracks().forEach(track => track.stop())
+          return resolve(true)
+        }).catch(err => {
+          console.log(err)
+          return resolve(false)
+        })
+      })
+    }
+
+    requirePermissionMicrophone().then((res)=>{
+      if(res){
+        return
+      }
+      return alert("Vui lòng cấp quyền microphone để tiếp tục sử dụng.")
+    })
   })
 </script>
 </body>
