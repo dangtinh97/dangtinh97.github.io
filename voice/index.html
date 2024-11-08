@@ -48,6 +48,8 @@
     crossorigin="anonymous"></script>
 <script>
   document.addEventListener('DOMContentLoaded', () => {
+    const utterance = new SpeechSynthesisUtterance("Hello");
+    window.speechSynthesis.speak(utterance)
     var userAgent = navigator.userAgent || navigator.vendor || window.opera;
     $('#user-agent').html(userAgent)
     const textarea = document.getElementById('result');
