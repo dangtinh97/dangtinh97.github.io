@@ -1,50 +1,233 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Audio</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Demo</title>
     <style>
-        #form{
-            display: none;
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #5a67d8;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        textarea, select {
+            width: 100%;
+            margin-bottom: 15px;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 48%;
+            padding: 10px;
+            font-size: 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 1%;
+            transition: background-color 0.3s;
+        }
+
+        button.speak {
+            background-color: #5a67d8;
+            color: white;
+        }
+
+        button.speak:hover {
+            background-color: #434190;
+        }
+
+        button.stop {
+            background-color: #e53e3e;
+            color: white;
+        }
+
+        button.stop:hover {
+            background-color: #c53030;
+        }
+
+        @media (max-width: 600px) {
+            button {
+                width: 100%;
+                margin-bottom: 10px;
+            }
         }
     </style>
 </head>
 <body>
-<div id="form">
-<div id="status"></div>
+<h1> Demo</h1>
+<div class="container">
+    <label for="text-input">Enter text to speak:</label>
+    <textarea id="text-input" rows="5">Hello! This is a sample text for the  demo.</textarea>
+
+    <label for="language-select">Choose a language:</label>
+    <select id="language-select"></select>
+
+    <label for="voice-select">Choose a voice:</label>
+    <select id="voice-select"></select>
+
+    <div style="display: flex; justify-content: space-between;">
+        <button id="speak-btn" class="speak">Speak</button>
+        <button id="stop-btn" class="stop">Stop</button>
+    </div>
 </div>
-<textarea rows="10" cols="150" id="text">- Control of the House of Representatives, and as with so much, these elections here in the U. S. , the outcome is likely to be decided by just a small number of contests. But it will have, as we were saying, that huge impact on how easily the next president will be able to govern, do the things that they've promised to do during their campaign, at least until the next congressional elections, the midterms in 2026.And actually, it's worth taking a moment to explain how things work here, because the U. S. election is an absolutely huge exercise. Around 240 million people are eligible to vote in total, and a third of them, 82 million, have already voted early, either in person or by post.And the reason we talk about states like this one, states like Pennsylvania, is because it comes down to electoral college votes. You could, as Hillary Clinton did in 2016, than anybody else, but that's not what it's about.</textarea>
-<button id="play">Play</button>
-<button id="stop">Stop</button>
-<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+
 <script>
-    document.addEventListener("DOMContentLoaded",()=>{
-      let time = setInterval(()=>{
-        const voices = window.speechSynthesis.getVoices();
-        console.log(voices)
-        if(voices.length>0){
-          clearInterval(time)
-          $('#form').show()
-        }
-      },100)
+  const demoText = {
+    'en-US': 'Hello! This is a sample text for the  demo.',
+    'it-IT': 'Ciao! Questo è un testo di esempio per la demo .',
+    'sv-SE': 'Hej! Detta är en exempelfras för -demonstrationen.',
+    'fr-CA': 'Bonjour! Ceci est un texte d\'exemple pour la démo .',
+    'ms-MY': 'Hai! Ini adalah teks sampel untuk demo .',
+    'de-DE': 'Hallo! Dies ist ein Beispieltext für die -Demo.',
+    'en-GB': 'Hello! This is a sample text for the  demo.',
+    'he-IL': 'שלום! זהו טקסט לדוגמה להדגמת טקסט לדיבור.',
+    'en-AU': 'Hello! This is a sample text for the  demo.',
+    'id-ID': 'Halo! Ini adalah teks contoh untuk demo .',
+    'fr-FR': 'Bonjour! Ceci est un texte d\'exemple pour la démo .',
+    'bg-BG': 'Здравейте! Това е примерен текст за демонстрация на преобразуване на текст в реч.',
+    'es-ES': '¡Hola! Este es un texto de muestra para la demostración de .',
+    'es-MX': '¡Hola! Este es un texto de muestra para la demostración de .',
+    'fi-FI': 'Hei! Tämä on esimerkkiteksti -demolle.',
+    'ja-JP': 'こんにちは！ これはデモのサンプルテキストです。',
+    'ko-KR': '안녕하세요! 이것은  데모를 위한 샘플 텍스트입니다.',
+    'pt-BR': 'Olá! Este é um texto de exemplo para a demonstração de .',
+    'zh-CN': '你好！这是一个用于语音合成演示的示例文本。',
+    'zh-TW': '你好！這是語音合成演示的範例文字。',
+    'nl-BE': 'Hallo! Dit is een voorbeeldtekst voor de  demo.',
+    'ro-RO': 'Salut! Acesta este un text de exemplu pentru demonstrația .',
+    'pt-PT': 'Olá! Este é um texto de exemplo para a demonstração de .',
+    'th-TH': 'สวัสดี! นี่คือตัวอย่างข้อความสำหรับการสาธิต .',
+    'hr-HR': 'Pozdrav! Ovo je primjer teksta za demonstraciju .',
+    'sk-SK': 'Ahoj! Toto je ukážkový text pre demo .',
+    'hi-IN': 'नमस्ते! यह  डेमो के लिए एक नमूना पाठ है।',
+    'uk-UA': 'Привіт! Це приклад тексту для демонстрації .',
+    'vi-VN': 'Xin chào! Đây là văn bản mẫu cho bản trình diễn .',
+    'ar-001': 'مرحبًا! هذا نص تجريبي لعرض تحويل النص إلى كلام.',
+    'el-GR': 'Γειά σας! Αυτό είναι ένα δείγμα κειμένου για την επίδειξη .',
+    'ru-RU': 'Здравствуйте! Это пример текста для демонстрации .',
+    'en-IE': 'Hello! This is a sample text for the  demo.',
+    'ca-ES': 'Hola! Aquest és un text d\'exemple per a la demostració .',
+    'nb-NO': 'Hei! Dette er en eksempeltekst for -demoen.',
+    'en-IN': 'Hello! This is a sample text for the  demo.',
+    'da-DK': 'Hej! Dette er en prøve på tekst til tale-demoen.',
+    'zh-HK': '你好！這是語音合成演示的示例文本。',
+    'en-ZA': 'Hello! This is a sample text for the  demo.',
+    'sl-SI': 'Pozdravljeni! To je primer besedila za demonstracijo .',
+    'hu-HU': 'Helló! Ez egy minta szöveg a  bemutatóhoz.',
+    'nl-NL': 'Hallo! Dit is een voorbeeldtekst voor de  demo.',
+    'tr-TR': 'Merhaba! Bu,  demosu için örnek bir metindir.',
+    'pl-PL': 'Cześć! To jest przykładowy tekst do demonstracji .',
+    'cs-CZ': 'Ahoj! Toto je ukázkový text pro demonstraci .',
+    'es-US': '¡Hola! Este es un texto de muestra para la demostración de .'
+  }
+  // Initialize variables
+  const textInput = document.getElementById('text-input')
+  const languageSelect = document.getElementById('language-select')
+  const voiceSelect = document.getElementById('voice-select')
+  const speakBtn = document.getElementById('speak-btn')
+  const stopBtn = document.getElementById('stop-btn')
 
-      $('#play').on('click',()=>{
-        const utterance = new SpeechSynthesisUtterance($('#text').val());
-        utterance.lang = 'en-US'; // Thiết lập ngôn ngữ thành tiếng Việt
-        utterance.rate = 1; // Tốc độ nói (0.1 đến 10)
-        utterance.pitch = 1; // Độ cao giọng nói (0 đến 2)
-        // Phát âm thanh
-        window.speechSynthesis.speak(utterance);
-        $('#status').html('Click Play')
-      })
+  let voices = []
+  let utterance
 
-      $('#stop').on('click',()=>{
-        window.speechSynthesis.cancel()
-        $('#status').html('Click Stop')
-      })
+  // Populate the voice options
+  function loadVoices () {
+    voices = speechSynthesis.getVoices()
+    const languageMap = {}
+
+    // Group voices by language
+    voices.forEach(voice => {
+      const lang = voice.lang
+      if (!languageMap[lang]) {
+        languageMap[lang] = []
+      }
+      languageMap[lang].push(voice)
     })
+
+    // Populate language select
+    for (const [lang, langVoices] of Object.entries(languageMap)) {
+      const option = document.createElement('option')
+      option.value = lang
+      option.textContent = `${lang} (${langVoices.length} voices)`
+      languageSelect.appendChild(option)
+    }
+
+    updateVoiceSelect()
+  }
+
+  // Update the voice selection dropdown
+  function updateVoiceSelect () {
+    voiceSelect.innerHTML = ''
+    const selectedLang = languageSelect.value
+    const filteredVoices = voices.filter(voice => voice.lang === selectedLang)
+
+    filteredVoices.forEach(voice => {
+      const option = document.createElement('option')
+      option.value = voice.name
+      option.textContent = `${voice.name} (${voice.lang})`
+      voiceSelect.appendChild(option)
+    })
+
+    const text = demoText[selectedLang];
+    console.log(demoText, selectedLang);
+    textInput.value = text || '';
+
+  }
+
+  // Speak the text
+  function speakText () {
+    // Stop any ongoing speech
+    if (speechSynthesis.speaking) {
+      speechSynthesis.cancel()
+    }
+
+    utterance = new SpeechSynthesisUtterance(textInput.value)
+    const selectedVoiceName = voiceSelect.value
+    const selectedVoice = voices.find(voice => voice.name === selectedVoiceName)
+
+    if (selectedVoice) {
+      utterance.voice = selectedVoice
+    }
+
+    speechSynthesis.speak(utterance)
+  }
+
+  // Stop the speech
+  function stopSpeech () {
+    if (speechSynthesis.speaking) {
+      speechSynthesis.cancel()
+    }
+  }
+
+  // Event listeners
+  languageSelect.addEventListener('change', updateVoiceSelect)
+  speakBtn.addEventListener('click', speakText)
+  stopBtn.addEventListener('click', stopSpeech)
+
+  // Load voices and update UI
+  speechSynthesis.onvoiceschanged = loadVoices
+  loadVoices()
 </script>
 </body>
 </html>
