@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<div>
+    Size: <span id="size-buffer"></span>
+</div>
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/eruda/3.4.0/eruda.min.js"
+        integrity="sha512-/7Y4uCcl4KzbwpY59NKj2a/GH3akyZYzUr304N784k9MRNe6NomNhaqzVr2G3zNewy9ncuS/aqsr9Q19V4f3Kg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+    document.addEventListener("DOMContentLoaded",async ()=>{
+      eruda.init()
+      const mediaStream = await navigator.mediaDevices.getUserMedia({audio:true});
+      const audioContext = new AudioContext();
+      const sampleRate= audioContext.sampleRate
+      const mediaStreamSource = audioContext.createMediaStreamSource(mediaStream);
+      const bufferSize = 4096; // Adjust buffer size as needed
+      const scriptProcessor = audioContext.createScriptProcessor(bufferSize, 1, 1);
+      scriptProcessor.onaudioprocess = (audioProcessingEvent) => {
+        const inputBuffer = audioProcessingEvent.inputBuffer;
+        const channelData = inputBuffer.getChannelData(0);
+        const int16Data = new Int16Array(channelData.length);
+        for (let i = 0; i < channelData.length; i++) {
+          int16Data[i] = channelData[i] * 32767; // Convert to 16-bit PCM
+        }
+        $('#size-buffer').html(int16Data.buffer.byteLength)
+      };
+      // Connect the audio stream to the processor
+      mediaStreamSource.connect(scriptProcessor);
+      scriptProcessor.connect(audioContext.destination);
+    })
+</script>
+</body>
+</html>
