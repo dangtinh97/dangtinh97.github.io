@@ -85,13 +85,14 @@
 
     <label for="voice-select">Choose a voice:</label>
     <select id="voice-select"></select>
-
+    <label for="speed">Speed (<span id="v-speed">1</span>)</label>
+    <input type="range" id="speed" min="0.1" max="2" step="0.1" value="1">
     <div style="display: flex; justify-content: space-between;">
         <button id="speak-btn" class="speak">Speak</button>
         <button id="stop-btn" class="stop">Stop</button>
     </div>
 </div>
-
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 <script>
   const demoText = {
     'en-US': 'Hello! This is a sample text for the  demo.',
@@ -147,7 +148,11 @@
   const voiceSelect = document.getElementById('voice-select')
   const speakBtn = document.getElementById('speak-btn')
   const stopBtn = document.getElementById('stop-btn')
-
+  const speedInput = document.getElementById('speed');
+  const speedValue = document.getElementById('v-speed');
+  speedInput.addEventListener('input', (event) => {
+    speedValue.textContent = parseFloat(event.target.value).toFixed(1); // Display updated speed
+  });
   let voices = []
   let utterance
 
@@ -209,7 +214,8 @@
     if (selectedVoice) {
       utterance.voice = selectedVoice
     }
-
+    console.log(document.getElementById('speed').value);
+    utterance.rate = document.getElementById('speed').value;
     speechSynthesis.speak(utterance)
   }
 
