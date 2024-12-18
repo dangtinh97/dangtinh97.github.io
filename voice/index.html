@@ -28,7 +28,7 @@
     <div class="form-group my-3">
         <button id="clear-log" class="btn btn-sm btn-danger">Clear Log</button>
         <button id="clear-result" class="btn btn-sm btn-danger">Clear Result</button>
-        <button id="action" class="btn btn-sm btn-outline-danger">Action</button>
+        <button id="action" class="btn btn-sm btn-outline-danger">...</button>
         <div class="mt-2">
             <label class="d-block">
                 <span>Auto restart: </span>
@@ -41,6 +41,7 @@
         </div>
     </div>
     <textarea id="result" class="form-control" rows="15" readonly></textarea>
+    <textarea id="result2" class="form-control" rows="15" readonly></textarea>
 
     <button type="button" id="play-audio">Play Audio</button>
 </div>
@@ -50,123 +51,43 @@
     crossorigin="anonymous"></script>
 <script>
   document.addEventListener('DOMContentLoaded', () => {
-    $('#play-audio').on('click',()=>{
-      const utterance = new SpeechSynthesisUtterance("Hello, world!");
-      if ('speechSynthesis' in window) {
-        // Use the speak method
-        window.speechSynthesis.speak(utterance);
-      } else {
-        console.log("Speech synthesis not supported in this browser.");
-      }
-    })
-    var userAgent = navigator.userAgent || navigator.vendor || window.opera;
-    $('#user-agent').html(userAgent)
-    const textarea = document.getElementById('result');
-    let isStart = false;
-    let SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    let recognition;
-    let transcriptLast = '';
-    let timeEnd = 0;
-    if(SpeechRecognition){
-      recognition = new SpeechRecognition()
-      recognition.continuous = true // Recognize speech in a single run
-      recognition.interimResults = false // Only return final results'
-      recognition.maxAlternatives = 1 // Only return final results'
-      recognition.lang = 'en-US'
-      let tmp = '';
-      recognition.onresult = ({results})=>{
-        let isFinals = [];
-        let transcript = '';
-        let isFinalsLast = false;
-        console.log(results);
-        for(let i=0; i< results.length; i++){
-          let item = results[i];
-          transcript+=item[0].transcript.trim()+" "
-        }
-        transcript = transcript.toLowerCase().trim();
-        const transcriptNew = transcript.replace(transcriptLast,'').trim();
-        if(transcriptNew === tmp || transcript===transcriptLast || transcript.trim() === ""){
+    let final_transcript = '';
+    if('webkitSpeechRecognition' in window){
+      $('#action').html('REC')
+      let recognition = new webkitSpeechRecognition();
+      recognition.continuous = true;
+      recognition.interimResults = true;
+      recognition.lang = 'en-US';
+      recognition.onresult = (event) => {
+        var interim_transcript = '';
+        if (typeof(event.results) == 'undefined') {
+          recognition.onend = null;
+          recognition.stop();
+          upgrade();
           return;
         }
-        tmp = transcriptNew;
-        $('#result').append(JSON.stringify({
-          transcript: transcriptNew,
-          time: new Date().getTime() - timeEnd,
-          'isFinals': isFinals.join(' - ')
-        },null, 4)+',\n')
-        transcriptLast = transcript
-        timeEnd = new Date().getTime();
-        textarea.scrollTop = textarea.scrollHeight;
-      }
-
-      recognition.start();
-      recognition.onerror = (error)=>{
-        isStart = false;
-        log(`Error: ${error.error}`)
-        $('#action').html('REC')
-        $('#log > ul > #error').html(error.error+' - '+ new Date())
-      }
-
-      recognition.onend = (error)=>{
-        isStart = false;
-        console.log(error)
-        log(`Ended: ${error.timeStamp}`)
-        if($('#auto-restart').is(':checked')){
-          recognition.start();
+        for (var i = event.resultIndex; i < event.results.length; ++i) {
+          if (event.results[i].isFinal) {
+            final_transcript += event.results[i][0].transcript;
+          } else {
+            interim_transcript += event.results[i][0].transcript;
+          }
         }
-        $('#action').html('REC')
-        $('#log > ul > #ended').html(error.timeStamp +' - '+ new Date())
-        // recognition.start();
+        final_transcript = capitalize(final_transcript);
+        if(final_transcript){
+          $('#result2').html(final_transcript)
+        }
+        $('#result').html(interim_transcript)
       }
-
-      recognition.onstart = ()=>{
-        log('Start')
-        isStart = true;
-        $('#action').html('Stop')
-      }
-    }
-
-    const log = (text)=>{
-      $('#log > ul').html(`<li>${text} - ${new Date()}</li>`)
-    }
-
-    $("#clear-log").on('click',()=>{
-      $('#log > ul').html('')
-    })
-
-    $('#clear-result').on('click',()=>{
-      recognition.abort()
-      // recognition.start();
-      $('#result').html('')
-    })
-
-    $('#action').on('click',()=>{
-      isStart? recognition.abort() : recognition.start()
-    })
-
-    $('#interimResults').on('change',()=>{
-      recognition.interimResults = $('#interimResults').is(':checked')
-      recognition.stop()
-    })
-
-    function requirePermissionMicrophone () {
-      return new Promise((resolve) => {
-        navigator.mediaDevices.getUserMedia({ audio: true }).then((stream) => {
-          stream.getTracks().forEach(track => track.stop())
-          return resolve(true)
-        }).catch(err => {
-          console.log(err)
-          return resolve(false)
-        })
+      $('#action').on('click',()=>{
+        recognition.start();
       })
-    }
-
-    requirePermissionMicrophone().then((res)=>{
-      if(res){
-        return
+      var first_char = /\S/;
+      function capitalize(s) {
+        return s.replace(first_char, function(m) { return m.toUpperCase(); });
       }
-      return alert("Vui lòng cấp quyền microphone để tiếp tục sử dụng.")
-    })
+
+    }
   })
 </script>
 </body>
