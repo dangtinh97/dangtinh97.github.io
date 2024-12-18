@@ -72,25 +72,19 @@
       recognition.continuous = true // Recognize speech in a single run
       recognition.interimResults = false // Only return final results'
       recognition.maxAlternatives = 1 // Only return final results'
-      recognition.lang = 'vi-Vn'
+      recognition.lang = 'en-US'
       let tmp = '';
       recognition.onresult = ({results})=>{
         let isFinals = [];
         let transcript = '';
         let isFinalsLast = false;
+        console.log(results);
         for(let i=0; i< results.length; i++){
           let item = results[i];
-          isFinals.push(item.isFinal);
           transcript+=item[0].transcript.trim()+" "
-          isFinalsLast = item.isFinal;
         }
         transcript = transcript.toLowerCase().trim();
         const transcriptNew = transcript.replace(transcriptLast,'').trim();
-        if(isFinals.indexOf(true)!==-1){
-          console.log({
-            transcript
-          })
-        }
         if(transcriptNew === tmp || transcript===transcriptLast || transcript.trim() === ""){
           return;
         }
