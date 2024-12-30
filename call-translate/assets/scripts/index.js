@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded",()=>{
 
     socket.emit('DATA',{
       type: 'answer',
-      sdp: answer,
+      sdp: answer.localDescription.sdp,
       key: keyOfMe,
     })
     console.log("Answer sent:", answer);
@@ -63,7 +63,7 @@ document.addEventListener("DOMContentLoaded",()=>{
       await peerConnection.setLocalDescription(offer);
       socket.emit('DATA',{
         type: 'offer',
-        sdp: offer,
+        sdp: offer.localDescription.sdp,
         key: keyOfMe,
       });
     });
