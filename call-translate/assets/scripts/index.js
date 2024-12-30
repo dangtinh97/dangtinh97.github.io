@@ -16,16 +16,14 @@ document.addEventListener("DOMContentLoaded",()=>{
       callNotification.style.display = "block";
     })
     socket.on('DATA',async (data)=>{
-      console.log(data);
+      console.log('DATA===>',data);
       if(data.type==='answer'){
         await peerConnection.setRemoteDescription(new RTCSessionDescription(data));
       }
       if(data.type==='offer'){
         handleOffer(data).then()
       }
-
       if(data.type==='iceCandidate'){
-        console.log('iceCandidate',data.candidate);
         handleNewICECandidate(data.candidate).then()
       }
     })
@@ -34,7 +32,6 @@ document.addEventListener("DOMContentLoaded",()=>{
   async function  handleOffer(offer) {
     await getLocalStream();
     createPeerConnection();
-
     await peerConnection.setRemoteDescription(new RTCSessionDescription(offer));
 
     const answer = await peerConnection.createAnswer();
@@ -79,13 +76,10 @@ document.addEventListener("DOMContentLoaded",()=>{
 
   function createPeerConnection() {
     peerConnection = new RTCPeerConnection(configuration);
-
     // Khi nhận được stream từ đối tác
     peerConnection.ontrack = (event) => {
-      console.log("New remote stream received", event.streams[0]);
       remoteStream = event.streams[0];
       remoteVideo.srcObject = remoteStream;
-      console.log('remoteVideo',remoteVideo.srcObject);
 
     };
 
