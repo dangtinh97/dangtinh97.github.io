@@ -104,6 +104,8 @@ document.addEventListener("DOMContentLoaded",()=>{
   }
 
   async function handleNewICECandidate(candidate) {
-    await peerConnection.addIceCandidate(new RTCIceCandidate(candidate));
+    if(peerConnection){
+      await peerConnection.addIceCandidate(new RTCIceCandidate(candidate));
+    }
   }
 })
