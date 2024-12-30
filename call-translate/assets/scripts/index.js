@@ -102,6 +102,9 @@ document.addEventListener("DOMContentLoaded",()=>{
         });
       }
     };
+    peerConnection.oniceconnectionstatechange = () => {
+      console.log("ICE state:", peerConnection.iceConnectionState);
+    };
   }
 
   async function handleNewICECandidate(candidate) {
