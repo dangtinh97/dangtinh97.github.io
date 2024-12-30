@@ -18,10 +18,10 @@ document.addEventListener("DOMContentLoaded",()=>{
     socket.on('DATA',async (data)=>{
       console.log(data);
       if(data.type==='answer'){
-        await peerConnection.setRemoteDescription(new RTCSessionDescription(data));
+        await peerConnection.setRemoteDescription(new RTCSessionDescription(data.sdp));
       }
       if(data.type==='offer'){
-        handleOffer(data).then()
+        handleOffer(data.sdp).then()
       }
 
       if(data.type==='iceCandidate'){
@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded",()=>{
     })
   })
 
-  async function handleOffer(offer) {
+  async function  handleOffer(offer) {
     await getLocalStream();
     createPeerConnection();
 
