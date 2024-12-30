@@ -82,7 +82,7 @@ document.addEventListener("DOMContentLoaded",()=>{
 
     // Khi nhận được stream từ đối tác
     peerConnection.ontrack = (event) => {
-      console.log("New remote stream received");
+      console.log("New remote stream received", event.streams[0]);
       remoteStream = event.streams[0];
       remoteVideo.srcObject = remoteStream;
     };
