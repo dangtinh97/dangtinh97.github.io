@@ -143,4 +143,24 @@ document.addEventListener('DOMContentLoaded', () => {
 // Bắt đầu nhận dạng giọng nói
     recognition.start()
   }
+  let isMuted = false;
+  function toggleMute() {
+    // Lấy các track âm thanh từ stream
+    const audioTracks = localStream.getAudioTracks();
+
+    // Nếu microphone đang bật, tắt nó
+    if (isMuted) {
+      audioTracks.forEach(track => track.enabled = true); // Bật lại microphone
+      document.getElementById('muteButton').innerText = 'Mute Microphone';
+    } else {
+      audioTracks.forEach(track => track.enabled = false); // Tắt microphone
+      document.getElementById('muteButton').innerText = 'Unmute Microphone';
+    }
+
+    // Đổi trạng thái mute
+    isMuted = !isMuted;
+  }
+
+// Lắng nghe sự kiện click để tắt/bật microphone
+  document.getElementById('muteButton').addEventListener('click', toggleMute);
 })
