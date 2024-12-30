@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
+  let roomId = null;
   const callNotification = document.getElementById('call-notification')
   const localVideo = document.getElementById('localVideo')
   const remoteVideo = document.getElementById('remoteVideo')
@@ -13,6 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
   socket.on('connect', () => {
     console.log('socket connected: ' + socket.id)
     socket.on('RINGING', (data) => {
+      roomId = keyOfMe;
       callNotification.style.display = 'block'
     })
     socket.on('DATA', async (data) => {
@@ -40,14 +42,15 @@ document.addEventListener('DOMContentLoaded', () => {
     socket.emit('DATA', {
       type: 'answer',
       sdp: answer,
-      key: keyOfMe,
+      key: roomId,
     })
   }
 
   $('#joinRoomButton').on('click', () => {
     const keyJoin = $('#roomInput').val()
+    roomId = keyJoin
     socket.emit('CONNECT_WITH_GUEST', {
-      key: keyJoin,
+      key: roomId,
     })
   })
 
@@ -60,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
       socket.emit('DATA', {
         type: 'offer',
         sdp: offer,
-        key: keyOfMe,
+        key: roomId,
       })
     })
   })
@@ -85,7 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
         socket.emit('DATA', {
           type: 'candidate',
           candidate: event.candidate,
-          key: keyOfMe,
+          key: roomId,
         })
       }
     }
