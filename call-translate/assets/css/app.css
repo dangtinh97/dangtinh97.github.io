@@ -1,0 +1,108 @@
+/* styles.css */
+
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f3f4f6;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+/* App Container */
+#app {
+    text-align: center;
+    width: 80%;
+    max-width: 600px;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+h1 {
+    margin-bottom: 20px;
+}
+
+#call-interface {
+    margin-bottom: 20px;
+}
+
+#call-interface input {
+    padding: 10px;
+    width: 60%;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-right: 10px;
+}
+
+#call-interface button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#call-interface button:hover {
+    background-color: #ddd;
+}
+
+/* Video Container */
+#video-container {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+}
+
+video {
+    width: 45%;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+/* Call Notification */
+#call-notification {
+    position: fixed;
+    top: 20%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    z-index: 1000;
+}
+
+#call-notification button {
+    margin: 10px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#call-notification button#acceptCallButton {
+    background: #28a745;
+    color: white;
+}
+
+#call-notification button#rejectCallButton {
+    background: #dc3545;
+    color: white;
+}
+
+#call-notification button:hover {
+    opacity: 0.9;
+}
+#key-room{
+    margin-top: 10px;
+    font-size: 16pt;
+}
