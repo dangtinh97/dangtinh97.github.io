@@ -18,10 +18,10 @@ document.addEventListener("DOMContentLoaded",()=>{
     socket.on('DATA',async (data)=>{
       console.log(data);
       if(data.type==='answer'){
-        await peerConnection.setRemoteDescription(data.sdp);
+        await peerConnection.setRemoteDescription(data);
       }
       if(data.type==='offer'){
-        handleOffer(data.sdp).then()
+        handleOffer(data).then()
       }
 
       if(data.type==='iceCandidate'){
@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded",()=>{
 
     socket.emit('DATA',{
       type: 'answer',
-      sdp: answer.localDescription.sdp,
+      sdp: answer,
       key: keyOfMe,
     })
     console.log("Answer sent:", answer);
@@ -63,7 +63,7 @@ document.addEventListener("DOMContentLoaded",()=>{
       await peerConnection.setLocalDescription(offer);
       socket.emit('DATA',{
         type: 'offer',
-        sdp: offer.localDescription.sdp,
+        sdp: offer,
         key: keyOfMe,
       });
     });
