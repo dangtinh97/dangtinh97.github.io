@@ -16,9 +16,12 @@ document.addEventListener("DOMContentLoaded",()=>{
       callNotification.style.display = "block";
     })
     socket.on('DATA',async (data)=>{
-      console.log('DATA===>',data);
+      console.log('DATA===>',data.type,data);
       if(data.type==='answer'){
-        await peerConnection.setRemoteDescription(new RTCSessionDescription(data));
+        await peerConnection.setRemoteDescription(new RTCSessionDescription({
+          type: data.type,
+          sdp: data.sdp,
+        }));
       }
       if(data.type==='offer'){
         handleOffer(data).then()
@@ -42,7 +45,6 @@ document.addEventListener("DOMContentLoaded",()=>{
       sdp: peerConnection.localDescription.sdp,
       key: keyOfMe,
     })
-    console.log("Answer sent:", answer);
   }
 
   $('#joinRoomButton').on('click',()=>{
