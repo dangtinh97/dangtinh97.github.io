@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded",()=>{
       }
 
       if(data.type==='iceCandidate'){
-        console.log(data.candidate);
+        console.log('iceCandidate',data.candidate);
         handleNewICECandidate(data.candidate).then()
       }
     })
