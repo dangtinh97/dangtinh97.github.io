@@ -23,6 +23,10 @@ document.addEventListener("DOMContentLoaded",()=>{
       if(data.type==='offer'){
         handleOffer(data.sdp).then()
       }
+
+      if(data.type==='iceCandidate'){
+        handleNewICECandidate(data.candidate).then()
+      }
     })
   })
 
@@ -89,7 +93,16 @@ document.addEventListener("DOMContentLoaded",()=>{
       if (event.candidate) {
         // Gửi ICE candidate tới signaling server (gửi qua WebSocket)
         console.log("New ICE Candidate:", event.candidate);
+        socket.emit('DATA',{
+          type: 'iceCandidate',
+          candidate: event.candidate,
+          key: keyOfMe,
+        });
       }
     };
+  }
+
+  async function handleNewICECandidate(candidate) {
+    await peerConnection.addIceCandidate(new RTCIceCandidate(candidate));
   }
 })
