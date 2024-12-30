@@ -85,6 +85,8 @@ document.addEventListener("DOMContentLoaded",()=>{
       console.log("New remote stream received", event.streams[0]);
       remoteStream = event.streams[0];
       remoteVideo.srcObject = remoteStream;
+      console.log('remoteVideo',remoteVideo.srcObject);
+
     };
 
     // Gửi các luồng media cục bộ tới đối tác
