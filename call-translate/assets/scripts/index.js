@@ -111,7 +111,11 @@ document.addEventListener("DOMContentLoaded",()=>{
 
   async function handleNewICECandidate(candidate) {
     if(peerConnection){
-      await peerConnection.addIceCandidate(new RTCIceCandidate(candidate));
+      await peerConnection.addIceCandidate(new RTCIceCandidate(candidate)).then(()=>{
+        console.log("ICE Candidate added")
+      }).catch(()=>{
+        console.log("ICE Candidate failed to add: ", candidate.candidate.replace(/[\n\r]/g, ""))
+      });
     }
   }
 })
