@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded",()=>{
         await peerConnection.setRemoteDescription(new RTCSessionDescription(data));
       }
       if(data.type==='offer'){
-        handleOffer(data.sdp).then()
+        handleOffer(data).then()
       }
 
       if(data.type==='iceCandidate'){
