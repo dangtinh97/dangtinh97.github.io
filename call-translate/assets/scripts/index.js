@@ -20,9 +20,11 @@ document.addEventListener('DOMContentLoaded', () => {
     socket.on('DATA', async (data) => {
       console.log('DATA===>', data.type, data)
       if (data.type === 'answer') {
+        $('#call-interface').remove()
         await peerConnection.setRemoteDescription(new RTCSessionDescription(data.sdp))
       }
       if (data.type === 'offer') {
+        $('#call-interface').remove()
         handleOffer(data.sdp).then()
       }
       if (data.type === 'candidate') {
