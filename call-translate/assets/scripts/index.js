@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded",()=>{
     socket.on('DATA',async (data)=>{
       console.log(data);
       if(data.type==='answer'){
-        await peerConnection.setRemoteDescription(data);
+        await peerConnection.setRemoteDescription(new RTCSessionDescription(data));
       }
       if(data.type==='offer'){
         handleOffer(data).then()
