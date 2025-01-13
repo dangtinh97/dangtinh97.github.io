@@ -53,6 +53,7 @@
 
     $('#start').on('click',()=>{
       setTimeout(()=>{
+        audio.pause()
         audio.remove()
         audio.play()
       })
