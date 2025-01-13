@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<div>
+  <div>
+    <span id="transcript"></span>
+  </div>
+  <button type="button" id="start">Start</button>
+</div>
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+<script>
+  document.addEventListener("DOMContentLoaded",()=>{
+    let audioIsPlay = false;
+    let audio = new Audio()
+    audio.src = 'https://storage.googleapis.com/cabiz-data-live/text-to-speech-meeting/1735097012770.mp3';
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
+    let transcript = '';
+    if (!SpeechRecognition) {
+      alert('NOT SUPPORT!')
+      return
+    }
+
+    const recognition = new SpeechRecognition()
+    recognition.lang = 'vi-VN'
+    recognition.continuous = true // Recognize speech in a single run
+    recognition.interimResults = true // Only return final results'
+    recognition.maxAlternatives = 1 // Only return final results'
+    recognition.onend = (event)=>{
+      console.log(event)
+      audio.pause();
+      recognition.start()
+      setTimeout(()=>{
+        audio.remove()
+        audio.play()
+      })
+    }
+    recognition.onresult = (event)=>{
+      for (let i = 0; i < event.results.length; i++) {
+        transcript = (event.results[i][0].transcript).trim() + ' '
+      }
+      $('#transcript').html(transcript)
+    }
+
+    $('#start').on('click',()=>{
+      audio.play();
+      recognition.start()
+    })
+  })
+</script>
+</body>
+</html>

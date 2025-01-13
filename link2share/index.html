@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Call & Chat</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f0f2f5;
+        }
+
+        .container {
+            display: flex;
+            height: 100vh;
+            flex-direction: column;
+        }
+
+        .header {
+            background: #4267b2;
+            color: white;
+            text-align: center;
+            padding: 1rem;
+            font-size: 1.5rem;
+            font-weight: bold;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        .video-call-section {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            background: #000;
+            margin-top: 60px;
+        }
+
+        video {
+            width: 80%;
+            height: auto;
+            border-radius: 8px;
+        }
+
+        .small-video {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            width: 150px;
+            height: 100px;
+            border: 2px solid white;
+            border-radius: 8px;
+            background: black;
+        }
+
+        .controls {
+            position: absolute;
+            bottom: 20px;
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            gap: 10px;
+        }
+
+        .controls button {
+            background: #4267b2;
+            color: white;
+            border: none;
+            padding: 0.75rem 1rem;
+            font-size: 1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .controls button:hover {
+            background: #365899;
+        }
+
+        .chat-section {
+            height: 30%;
+            background: white;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            padding: 1rem;
+            overflow-y: auto;
+        }
+
+        .chat-box {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        textarea {
+            flex: 1;
+            resize: none;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            padding: 0.5rem 1rem;
+            font-size: 1rem;
+            outline: none;
+            margin-right: 10px;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        label.upload-btn {
+            background: #4267b2;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        label.upload-btn:hover {
+            background: #365899;
+        }
+
+        .send-btn {
+            background: #42b72a;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .send-btn:hover {
+            background: #36a420;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        Video Call & Chat
+    </div>
+    <div class="video-call-section">
+        <video id="remoteVideo" autoplay></video>
+        <video id="localVideo" class="small-video" autoplay muted></video>
+        <div class="controls">
+            <button onclick="startCall()">Start Call</button>
+            <button onclick="endCall()">End Call</button>
+        </div>
+    </div>
+    <div class="chat-section">
+        <div id="messages"></div>
+        <div class="chat-box">
+            <textarea id="messageInput" placeholder="Type a message..."></textarea>
+            <label for="fileInput" class="upload-btn">📎</label>
+            <input type="file" id="fileInput" onchange="sendFile()">
+            <button class="send-btn" onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+</div>
+
+<script>
+  // Video Call Mock Functions
+  function startCall() {
+    alert("Video call started!");
+    // Here you would integrate WebRTC or a similar API
+  }
+
+  function endCall() {
+    alert("Video call ended!");
+  }
+
+  // Chat Functionality
+  const messagesDiv = document.getElementById('messages');
+
+  function sendMessage() {
+    const message = document.getElementById('messageInput').value.trim();
+    if (!message) {
+      alert("Please type a message!");
+      return;
+    }
+
+    const messageElement = document.createElement('p');
+    messageElement.textContent = `You: ${message}`;
+    messagesDiv.appendChild(messageElement);
+    document.getElementById('messageInput').value = '';
+  }
+
+  function sendFile() {
+    const fileInput = document.getElementById('fileInput');
+    if (!fileInput.files.length) {
+      alert("Please select a file!");
+      return;
+    }
+
+    const file = fileInput.files[0];
+    const messageElement = document.createElement('p');
+    messageElement.textContent = `You sent a file: ${file.name}`;
+    messagesDiv.appendChild(messageElement);
+  }
+</script>
+</body>
+</html>
