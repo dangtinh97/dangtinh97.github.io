@@ -49,7 +49,10 @@
     }
 
     $('#start').on('click',()=>{
-      audio.play();
+      setTimeout(()=>{
+        audio.remove()
+        audio.play()
+      })
       recognition.start()
     })
   })
