@@ -10,7 +10,7 @@
 <body>
 <div>
   <div>
-    Version: 1.0.5
+    Version: 1.0.6
   </div>
   <div>
     <span id="transcript"></span>
@@ -35,6 +35,9 @@
     recognition.continuous = true // Recognize speech in a single run
     recognition.interimResults = true // Only return final results'
     recognition.maxAlternatives = 1 // Only return final results'
+    recognition.error = (event)=>{
+      console.log(event)
+    }
     recognition.onend = (event)=>{
       console.log(event)
       audio.pause();
@@ -52,12 +55,9 @@
     }
 
     $('#start').on('click',()=>{
-      recognition.start()
       setTimeout(()=>{
-        audio.pause()
-        audio.remove()
-        audio.play()
-      },10)
+        recognition.start()
+      },100)
       audio.play()
     })
   })
