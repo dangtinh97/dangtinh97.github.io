@@ -10,7 +10,7 @@
 <body>
 <div>
   <div>
-    Version: 1.0.4
+    Version: 1.0.5
   </div>
   <div>
     <span id="transcript"></span>
@@ -52,13 +52,13 @@
     }
 
     $('#start').on('click',()=>{
+      recognition.start()
       setTimeout(()=>{
         audio.pause()
         audio.remove()
         audio.play()
       },10)
       audio.play()
-      recognition.start()
     })
   })
 </script>
