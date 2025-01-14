@@ -90,6 +90,7 @@
   // Detect media devices
   async function detectMediaDevices() {
     try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       const devices = await navigator.mediaDevices.enumerateDevices();
       const mediaInfo = devices.map(device => `
           <b>Kind:</b> ${device.kind}<br>
