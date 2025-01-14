@@ -49,6 +49,7 @@
 <div class="container">
     <h2>Media Devices</h2>
     <button onclick="requestUSBDevice()">Detect USB Devices</button>
+    <button onclick="showUSBDevice()">Show USB PERMISSION</button>
     <div id="device-usb" class="output"></div>
 </div>
 
@@ -58,7 +59,7 @@
     <button onclick="startCamera()">Start Camera</button>
     <video id="camera-preview" autoplay playsinline></video>
 </div>
-
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 <script>
   // Display screen and browser information
   function updateScreenInfo() {
@@ -128,6 +129,15 @@
     } catch (error) {
       console.error('Không chọn thiết bị hoặc bị lỗi:', error);
     }
+  }
+
+  async function showUSBDevice(){
+    const devices = await navigator.usb.getDevices();
+    console.log(devices)
+    devices.forEach((device)=>{
+      $('#device-usb').append(device.productName+"</br>")
+    })
+
   }
 
 </script>
