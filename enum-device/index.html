@@ -46,6 +46,11 @@
     <button onclick="detectMediaDevices()">Detect Media Devices</button>
     <div id="media-devices" class="output"></div>
 </div>
+<div class="container">
+    <h2>Media Devices</h2>
+    <button onclick="requestUSBDevice()">Detect USB Devices</button>
+    <div id="device-usb" class="output"></div>
+</div>
 
 <!-- Camera Preview -->
 <div class="container">
@@ -124,8 +129,6 @@
       console.error('Không chọn thiết bị hoặc bị lỗi:', error);
     }
   }
-
-  requestUSBDevice();
 
 </script>
 </body>
