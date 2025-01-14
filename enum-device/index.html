@@ -113,6 +113,20 @@
       alert(`Unable to access camera: ${error.message}`);
     }
   }
+
+  async function requestUSBDevice() {
+    try {
+      const device = await navigator.usb.requestDevice({
+        filters: [] // Có thể để trống hoặc thêm bộ lọc cụ thể
+      });
+      console.log('Thiết bị được cấp quyền:', device);
+    } catch (error) {
+      console.error('Không chọn thiết bị hoặc bị lỗi:', error);
+    }
+  }
+
+  requestUSBDevice();
+
 </script>
 </body>
 </html>
