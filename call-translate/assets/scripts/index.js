@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-  let roomId = null;
+  let roomId = null
   const callNotification = document.getElementById('call-notification')
   const localVideo = document.getElementById('localVideo')
   const remoteVideo = document.getElementById('remoteVideo')
@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
   socket.on('connect', () => {
     console.log('socket connected: ' + socket.id)
     socket.on('RINGING', (data) => {
-      roomId = keyOfMe;
+      roomId = keyOfMe
       callNotification.style.display = 'block'
     })
     socket.on('DATA', async (data) => {
@@ -35,6 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   async function handleOffer (offer) {
     await getLocalStream()
+    speechToText()
     createPeerConnection()
     await peerConnection.setRemoteDescription(new RTCSessionDescription(offer))
 
@@ -73,7 +74,12 @@ document.addEventListener('DOMContentLoaded', () => {
   let peerConnection
   let remoteStream
   const getLocalStream = async () => {
-    const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+    const stream = await navigator.mediaDevices.getUserMedia({
+      video: true, audio: {
+        echoCancellation: true, // Giảm hiện tượng echo
+        autoGainControl: true   // Điều chỉnh âm lượng tự động
+      }
+    })
     localStream = stream
     localVideo.srcObject = stream
   }
@@ -108,4 +114,53 @@ document.addEventListener('DOMContentLoaded', () => {
       })
     }
   }
+
+  function speechToText () {
+    const recognition = new webkitSpeechRecognition()
+    recognition.lang = 'vi-VN'
+    recognition.continuous = true
+    recognition.interimResults = true
+    recognition.onstart = function () {
+      console.log('Speech recognition started')
+    }
+
+    recognition.onresult = function (event) {
+      let transcript = ''
+      for (let i = event.resultIndex; i < event.results.length; i++) {
+        transcript += event.results[i][0].transcript
+      }
+      $('#speechText').html(transcript)
+    }
+
+    recognition.onerror = function (event) {
+      console.error('Speech recognition error:', event.error)
+    }
+    recognition.onend = function () {
+      console.log('Speech recognition ended')
+      recognition.start() // Restart recognition if needed
+    }
+
+// Bắt đầu nhận dạng giọng nói
+    recognition.start()
+  }
+  let isMuted = false;
+  function toggleMute() {
+    // Lấy các track âm thanh từ stream
+    const audioTracks = localStream.getAudioTracks();
+
+    // Nếu microphone đang bật, tắt nó
+    if (isMuted) {
+      audioTracks.forEach(track => track.enabled = true); // Bật lại microphone
+      document.getElementById('muteButton').innerText = 'Mute Microphone';
+    } else {
+      audioTracks.forEach(track => track.enabled = false); // Tắt microphone
+      document.getElementById('muteButton').innerText = 'Unmute Microphone';
+    }
+
+    // Đổi trạng thái mute
+    isMuted = !isMuted;
+  }
+
+// Lắng nghe sự kiện click để tắt/bật microphone
+  document.getElementById('muteButton').addEventListener('click', toggleMute);
 })

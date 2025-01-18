@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Device and Media Detection</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .container {
+            margin-bottom: 20px;
+        }
+        .output {
+            margin-top: 10px;
+            padding: 10px;
+            background: #f4f4f4;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        video {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<h1>Device and Media Detection</h1>
+
+<!-- Screen Information -->
+<div class="container">
+    <h2>Screen and Browser Information</h2>
+    <p id="screen-info" class="output"></p>
+</div>
+
+<!-- User Agent and Other Details -->
+<div class="container">
+    <h2>User Agent and System Information</h2>
+    <p id="user-info" class="output"></p>
+</div>
+
+<!-- Media Input/Output -->
+<div class="container">
+    <h2>Media Devices</h2>
+    <button onclick="detectMediaDevices()">Detect Media Devices</button>
+    <div id="media-devices" class="output"></div>
+</div>
+<div class="container">
+    <h2>Media Devices</h2>
+    <button onclick="requestUSBDevice()">Detect USB Devices</button>
+    <button onclick="showUSBDevice()">Show USB PERMISSION</button>
+    <div id="device-usb" class="output"></div>
+</div>
+
+<!-- Camera Preview -->
+<div class="container">
+    <h2>Camera Preview</h2>
+    <button onclick="startCamera()">Start Camera</button>
+    <video id="camera-preview" autoplay playsinline></video>
+</div>
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+<script>
+  // Display screen and browser information
+  function updateScreenInfo() {
+    const screenInfo = `
+        <b>Screen Width:</b> ${window.screen.width}px<br>
+        <b>Screen Height:</b> ${window.screen.height}px<br>
+        <b>Window Width:</b> ${window.innerWidth}px<br>
+        <b>Window Height:</b> ${window.innerHeight}px<br>
+        <b>Device Pixel Ratio:</b> ${window.devicePixelRatio}<br>
+        <b>Browser Language:</b> ${navigator.language || navigator.userLanguage}<br>
+        <b>Online Status:</b> ${navigator.onLine ? "Online" : "Offline"}<br>
+        <b>Cookies Enabled:</b> ${navigator.cookieEnabled}<br>
+        <b>Platform:</b> ${navigator.platform}<br>
+      `;
+    document.getElementById('screen-info').innerHTML = screenInfo;
+  }
+  updateScreenInfo();
+  window.onresize = updateScreenInfo;
+
+  // Display user agent and additional details
+  function updateUserInfo() {
+    const userInfo = `
+        <b>User Agent:</b> ${navigator.userAgent}<br>
+        <b>App Name:</b> ${navigator.appName}<br>
+        <b>App Version:</b> ${navigator.appVersion}<br>
+        <b>Vendor:</b> ${navigator.vendor}<br>
+        <b>Hardware Concurrency:</b> ${navigator.hardwareConcurrency || "N/A"}<br>
+        <b>Max Touch Points:</b> ${navigator.maxTouchPoints || "N/A"}<br>
+      `;
+    document.getElementById('user-info').innerHTML = userInfo;
+  }
+  updateUserInfo();
+
+  // Detect media devices
+  async function detectMediaDevices() {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const devices = await navigator.mediaDevices.enumerateDevices();
+      const mediaInfo = devices.map(device => `
+          <b>Kind:</b> ${device.kind}<br>
+          <b>Label:</b> ${device.label || 'N/A'}<br>
+          <b>Device ID:</b> ${device.deviceId}<br>
+        `).join('<hr>');
+      document.getElementById('media-devices').innerHTML = mediaInfo;
+    } catch (error) {
+      document.getElementById('media-devices').textContent = `Error: ${error.message}`;
+    }
+  }
+
+  // Start camera preview
+  async function startCamera() {
+    const videoElement = document.getElementById('camera-preview');
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      videoElement.srcObject = stream;
+    } catch (error) {
+      alert(`Unable to access camera: ${error.message}`);
+    }
+  }
+
+  async function requestUSBDevice() {
+    try {
+      const device = await navigator.usb.requestDevice({
+        filters: [] // Có thể để trống hoặc thêm bộ lọc cụ thể
+      });
+      console.log('Thiết bị được cấp quyền:', device);
+    } catch (error) {
+      console.error('Không chọn thiết bị hoặc bị lỗi:', error);
+    }
+  }
+
+  async function showUSBDevice(){
+    const devices = await navigator.usb.getDevices();
+    console.log(devices)
+    devices.forEach((device)=>{
+      $('#device-usb').append(device.productName+"</br>")
+    })
+
+  }
+
+</script>
+</body>
+</html>
