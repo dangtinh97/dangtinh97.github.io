@@ -30,7 +30,7 @@
       addLog("Click to body is starting record")
       addLog(new Date().toString())
       addLog(lang)
-      recognition.lang = lang;
+      recognition.lang = 'vi-VN';
       recognition.onresult = (event) => {
         const transcript = event.results[0][0].transcript.trim();
         if(transcript!==textOld){
