@@ -39,6 +39,9 @@
       recognition.onend = (e)=>{
         console.log(e)
       }
+      recognition.onerror = (event)=>{
+        addLog(event.error)
+      }
       document.body.addEventListener("click",() => {
         recognition.start();
         addLog("recognition starting....");
