@@ -9,13 +9,16 @@
 </head>
 <body style="height: 100vh;width: 100vw">
 <div>
-    <p>Version 1.5</p>
+    <p>Version 1.6</p>
     <div id="logs"></div>
     <p id=""></p>
 </div>
 <script>
     document.addEventListener("DOMContentLoaded",()=>{
       const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if(!SpeechRecognition){
+        alert("not support")
+      }
       const recognition = new SpeechRecognition();
       recognition.continuous = true;
       recognition.interimResults = true;
