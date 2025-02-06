@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>TTS_EMBED</title>
 </head>
-<body style="height: 100vh;width: 100vw">
+<body style="height: 100vh;width: 100vw; padding: 10px">
 <div>
     <p>Version 1.11</p>
     <p id="transcript"></p>
@@ -47,6 +47,7 @@
       recognition.onend = (e)=>{
         console.log(e)
         addLog(e.type)
+        recognition.start();
       }
       recognition.onerror = (event)=>{
         addLog(event.error)
