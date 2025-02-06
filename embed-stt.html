@@ -9,7 +9,7 @@
 </head>
 <body style="height: 100vh;width: 100vw">
 <div>
-    <p>Version 1.9</p>
+    <p>Version 1.10</p>
     <div id="logs"></div>
     <p id=""></p>
 </div>
@@ -19,7 +19,7 @@
       if(!SpeechRecognition){
         alert("not support")
       }
-      const recognition = new webkitSpeechRecognition();
+      const recognition = new SpeechRecognition();
       recognition.continuous = true;
       recognition.interimResults = true;
       let href = window.location.href;
