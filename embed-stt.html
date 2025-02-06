@@ -51,9 +51,12 @@
       recognition.onerror = (event)=>{
         addLog(event.error)
       }
-      document.body.addEventListener("click",() => {
-        recognition.lang = 'vi-VN';
+      setTimeout(()=>{
+        recognition.lang = lang;
         recognition.start();
+      },100)
+      document.body.addEventListener("click",() => {
+
         addLog("recognition starting....");
         return;
         navigator.mediaDevices.getUserMedia({ audio: true })
