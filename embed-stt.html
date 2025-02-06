@@ -11,7 +11,7 @@
 <div>
     <button type="button" onclick="startRec()">Start</button>
     <button type="button" onclick="stopRec()">Stop</button>
-    <p>Version 1.16</p>
+    <p>Version 1.17</p>
     <p id="transcript"></p>
     <p id="timeout" style="max-width: 90vw"></p>
     <div id="logs"></div>
@@ -71,7 +71,20 @@
         // sendTimeOut = setTimeout(()=>{
         //   stopRec()
         // },TIME_OUT)
+        sendData(false)
       };
+
+      const sendData = (isFinal = false)=>{
+        let send = data.filter((item)=>{
+          return item.trim() !==''
+        })
+
+        sendDataToMobile({
+          text: send.join(" ").trim(),
+          is_final: isFinal
+        })
+      }
+
       recognition.onstart = ()=>{
         addLog("recognition started....");
       }
