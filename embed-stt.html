@@ -27,7 +27,6 @@
       const urlParams = new URLSearchParams(new URL(href).search);
       let lang = urlParams.get('lang');
       let vLogs = document.getElementById('logs');
-      addLog("Click to body is starting record")
       addLog(lang)
       recognition.onresult = (event) => {
         let transcript = ''
