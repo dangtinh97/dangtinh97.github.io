@@ -14,7 +14,9 @@
 </div>
 <script>
     document.addEventListener("DOMContentLoaded",()=>{
-      let lang = window.location.href;
+      let href = window.location.href;
+      const urlParams = new URLSearchParams(new URL(href).search);
+      let lang = urlParams.get('lang');
       let vLogs = document.getElementById('logs');
       addLog(new Date().toString())
       addLog(lang)
