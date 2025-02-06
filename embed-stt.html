@@ -7,19 +7,42 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
 </head>
-<body>
+<body style="height: 100vh;width: 100vh">
 <div>
     <p>HTML READY</p>
     <div id="logs"></div>
+    <p id=""></p>
 </div>
 <script>
     document.addEventListener("DOMContentLoaded",()=>{
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      const recognition = new SpeechRecognition();
+      recognition.continuous = true;
+      recognition.interimResults = true;
       let href = window.location.href;
+      let textOld = '';
       const urlParams = new URLSearchParams(new URL(href).search);
       let lang = urlParams.get('lang');
       let vLogs = document.getElementById('logs');
+      addLog("Click to body is starting record")
       addLog(new Date().toString())
       addLog(lang)
+      recognition.lang = lang;
+      recognition.onresult = (event) => {
+        const transcript = event.results[0][0].transcript.trim();
+        if(transcript===textOld){
+          return;
+        }
+        textOld = transcript;
+        addLog(transcript)
+      };
+      recognition.onend = (e)=>{
+        console.log(e)
+      }
+      document.body.addEventListener("click",() => {
+        recognition.start();
+        addLog("recognition starting....");
+      });
       function addLog(text){
         let timeNew = new Date();
         vLogs.innerText += `${timeNew.getHours()}:${timeNew.getMinutes()}:${timeNew.getSeconds()} - ${text}\n`
