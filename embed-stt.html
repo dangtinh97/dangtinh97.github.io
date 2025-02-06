@@ -9,7 +9,7 @@
 </head>
 <body style="height: 100vh;width: 100vw">
 <div>
-    <p>Version 1.7</p>
+    <p>Version 1.8</p>
     <div id="logs"></div>
     <p id=""></p>
 </div>
@@ -29,7 +29,6 @@
       let vLogs = document.getElementById('logs');
       addLog("Click to body is starting record")
       addLog(lang)
-      recognition.lang = 'vi-VN';
       recognition.onresult = (event) => {
         let transcript = ''
         for (let i = event.resultIndex; i < event.results.length; i++) {
@@ -53,6 +52,7 @@
         addLog(event.error)
       }
       document.body.addEventListener("click",() => {
+        recognition.lang = 'vi-VN';
         recognition.start();
         addLog("recognition starting....");
         navigator.mediaDevices.getUserMedia({ audio: true })
