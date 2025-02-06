@@ -31,7 +31,11 @@
       addLog(lang)
       recognition.lang = 'vi-VN';
       recognition.onresult = (event) => {
-        const transcript = event.results[0][0].transcript.trim();
+        let transcript = ''
+        for (let i = event.resultIndex; i < event.results.length; i++) {
+          transcript += event.results[i][0].transcript
+        }
+        transcript = transcript.trim();
         if(transcript!==textOld){
           textOld = transcript;
           addLog(transcript)
