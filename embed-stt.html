@@ -40,10 +40,11 @@
         console.log(e)
       }
       document.body.addEventListener("click",() => {
+        recognition.start();
+        addLog("recognition starting....");
         navigator.mediaDevices.getUserMedia({ audio: true })
           .then(stream => {
-            recognition.start();
-            addLog("recognition starting....");
+
             addLog("Microphone access granted!", stream);
           })
           .catch(error => {
