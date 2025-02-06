@@ -56,18 +56,6 @@
         recognition.lang = lang;
         recognition.start();
       },100)
-      document.body.addEventListener("click",() => {
-
-        addLog("recognition starting....");
-        return;
-        navigator.mediaDevices.getUserMedia({ audio: true })
-          .then(stream => {
-            addLog("Microphone access granted!", stream);
-          })
-          .catch(error => {
-            addLog("Microphone access denied!", error);
-          });
-      });
       function addLog(text){
         let timeNew = new Date();
         vLogs.innerText += `${timeNew.getHours()}:${timeNew.getMinutes()}:${timeNew.getSeconds()} - ${text}\n`
