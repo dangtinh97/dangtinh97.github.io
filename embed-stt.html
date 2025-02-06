@@ -28,7 +28,6 @@
       let lang = urlParams.get('lang');
       let vLogs = document.getElementById('logs');
       addLog("Click to body is starting record")
-      addLog(new Date().toString())
       addLog(lang)
       recognition.lang = 'vi-VN';
       recognition.onresult = (event) => {
