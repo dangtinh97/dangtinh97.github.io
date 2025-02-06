@@ -11,8 +11,9 @@
 <div>
     <button type="button" onclick="startRec()">Start</button>
     <button type="button" onclick="stopRec()">Stop</button>
-    <p>Version 1.13</p>
+    <p>Version 1.14</p>
     <p id="transcript"></p>
+    <pre id="timeout"></pre>
     <div id="logs"></div>
 </div>
 <script>
@@ -20,6 +21,8 @@
       let data = [];
       let isBreak = true;
       let isStop = false;
+      const TIME_OUT = 2000;
+      let sendTimeOut = null;
       const userAgent = navigator.userAgent;
       const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
       if(!SpeechRecognition){
@@ -51,6 +54,10 @@
         if(transcript.toLowerCase()===textOld.toLowerCase()){
           return;
         }
+        sendDataToMobile({
+          text: transcript,
+          is_final: false
+        })
         textOld = transcript;
         document.getElementById('transcript').innerText = transcript;
         if(isBreak){
@@ -80,6 +87,7 @@
       }
       const sendDataToMobile = (data) => {
         console.log('send mobile', data)
+        document.getElementById('timeout').innerText = JSON.stringify(data,null,4);
         try {
           if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.buttonClicked) {
             window.webkit.messageHandlers.buttonClicked.postMessage(data);
@@ -95,7 +103,14 @@
       window.stopRec = ()=>{
         recognition.stop();
         isStop = true;
-        console.log(data);
+        let send = data.filter((item)=>{
+          return item.trim() !==''
+        })
+
+        sendDataToMobile({
+          text: send.join(" "),
+          is_final: true
+        })
       }
       window.startRec = ()=>{
         isStop = false;
