@@ -65,12 +65,12 @@
         }else{
           data[data.length-1] = transcript;
         }
-        if(sendTimeOut){
-          clearTimeout(sendTimeOut)
-        }
-        sendTimeOut = setTimeout(()=>{
-          stopRec()
-        },TIME_OUT)
+        // if(sendTimeOut){
+        //   clearTimeout(sendTimeOut)
+        // }
+        // sendTimeOut = setTimeout(()=>{
+        //   stopRec()
+        // },TIME_OUT)
       };
       recognition.onstart = ()=>{
         addLog("recognition started....");
