@@ -9,12 +9,18 @@
 </head>
 <body style="height: 100vh;width: 90vw;">
 <div>
+    <button type="button" onclick="startRec()">Start</button>
+    <button type="button" onclick="stopRec()">Stop</button>
     <p>Version 1.13</p>
     <p id="transcript"></p>
     <div id="logs"></div>
 </div>
 <script>
     document.addEventListener("DOMContentLoaded",()=>{
+      let data = [];
+      let isBreak = true;
+      let isStop = false;
+      const userAgent = navigator.userAgent;
       const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
       if(!SpeechRecognition){
         alert("not support")
@@ -25,20 +31,34 @@
       let href = window.location.href;
       let textOld = '';
       const urlParams = new URLSearchParams(new URL(href).search);
-      let lang = urlParams.get('lang');
+      let lang = urlParams.get('lang') ?? 'vi-VN';
       let vLogs = document.getElementById('logs');
       addLog(lang)
+      addLog(userAgent)
       recognition.onresult = (event) => {
         let transcript = ''
-        for (let i = event.resultIndex; i < event.results.length; i++) {
-          transcript = event.results[i][0].transcript
+        if(userAgent.toLowerCase().includes('android')){
+          for (let i = event.resultIndex; i < event.results.length; i++) {
+            transcript = event.results[i][0].transcript
+          }
+        }else {
+          for (let i = event.resultIndex; i < event.results.length; i++) {
+            transcript += event.results[i][0].transcript
+          }
         }
+
         transcript = transcript.trim();
-        if(transcript===textOld){
+        if(transcript.toLowerCase()===textOld.toLowerCase()){
           return;
         }
         textOld = transcript;
         document.getElementById('transcript').innerText = transcript;
+        if(isBreak){
+          data.push(transcript)
+          isBreak = false;
+        }else{
+          data[data.length-1] = transcript;
+        }
       };
       recognition.onstart = ()=>{
         addLog("recognition started....");
@@ -46,18 +66,42 @@
       recognition.onend = (e)=>{
         console.log(e)
         addLog(e.type)
-        recognition.start();
+        isBreak = true;
+        if(!isStop){
+          recognition.start();
+        }
       }
       recognition.onerror = (event)=>{
         addLog(event.error)
       }
-      setTimeout(()=>{
-        recognition.lang = lang;
-        recognition.start();
-      },100)
       function addLog(text){
         let timeNew = new Date();
         vLogs.innerText += `${timeNew.getHours()}:${timeNew.getMinutes()}:${timeNew.getSeconds()} - ${text}\n`
+      }
+      const sendDataToMobile = (data) => {
+        console.log('send mobile', data)
+        try {
+          if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.buttonClicked) {
+            window.webkit.messageHandlers.buttonClicked.postMessage(data);
+          }
+          if (window.Android) {
+            const messageToPost = JSON.stringify(data);
+            window.Android.postMessage(messageToPost);
+          }
+        } catch (error) {
+          console.error('cannot send mobile', error);
+        }
+      }
+      window.stopRec = ()=>{
+        recognition.stop();
+        isStop = true;
+        console.log(data);
+      }
+      window.startRec = ()=>{
+        isStop = false;
+        data = [];
+        recognition.lang = lang;
+        recognition.start();
       }
     })
 </script>
