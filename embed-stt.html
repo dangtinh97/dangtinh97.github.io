@@ -11,7 +11,7 @@
 <div>
     <button type="button" onclick="startRec()">Start</button>
     <button type="button" onclick="stopRec()">Stop</button>
-    <p>Version 1.14</p>
+    <p>Version 1.15</p>
     <p id="transcript"></p>
     <pre id="timeout"></pre>
     <div id="logs"></div>
@@ -49,7 +49,6 @@
             transcript += event.results[i][0].transcript
           }
         }
-
         transcript = transcript.trim();
         if(transcript.toLowerCase()===textOld.toLowerCase()){
           return;
@@ -66,6 +65,12 @@
         }else{
           data[data.length-1] = transcript;
         }
+        if(sendTimeOut){
+          clearTimeout(sendTimeOut)
+        }
+        sendTimeOut = setTimeout(()=>{
+          stopRec()
+        },TIME_OUT)
       };
       recognition.onstart = ()=>{
         addLog("recognition started....");
