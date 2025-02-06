@@ -55,6 +55,7 @@
         recognition.lang = 'vi-VN';
         recognition.start();
         addLog("recognition starting....");
+        return;
         navigator.mediaDevices.getUserMedia({ audio: true })
           .then(stream => {
             addLog("Microphone access granted!", stream);
