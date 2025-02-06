@@ -44,7 +44,6 @@
         addLog("recognition starting....");
         navigator.mediaDevices.getUserMedia({ audio: true })
           .then(stream => {
-
             addLog("Microphone access granted!", stream);
           })
           .catch(error => {
