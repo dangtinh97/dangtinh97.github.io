@@ -128,9 +128,9 @@
       }
       if(isSilent){
         sendDataToMobile({
-          transcript: transcript.join((' ')).trim(),
+          text: transcript.join((' ')).trim(),
           id: idMax,
-          is_silent: isSilent
+          is_final: isSilent
         })
         dataSend.id = idMax+1;
         addLog(`send when silent: ${transcript.join((' ')).trim()}`);
@@ -146,9 +146,9 @@
         return;
       }
       sendDataToMobile({
-        transcript: transcript.slice(0,-3).join(' '),
+        text: transcript.slice(0,-3).join(' '),
         id: idMax,
-        is_silent: isSilent
+        is_final: isSilent
       });
 
       dataSend.sent.push({
