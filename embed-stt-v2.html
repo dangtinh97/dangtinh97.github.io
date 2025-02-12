@@ -6,6 +6,13 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>STT_EMBED</title>
+    <script>
+      const CONFIG = {
+        TIME_SILENT: 3000,
+        TIME_SEND_ABOUT: 6000,
+        USER_AGENT: navigator.userAgent
+      }
+    </script>
 </head>
 <body style="height: 100vh;width: 90vw;">
 <div>
@@ -17,124 +24,203 @@
     <div id="logs"></div>
 </div>
 <script>
-    document.addEventListener("DOMContentLoaded",()=>{
-      let data = [];
-      let isBreak = true;
-      let isStop = false;
-      const userAgent = navigator.userAgent;
-      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-      if(!SpeechRecognition){
-        alert("not support")
+  document.addEventListener('DOMContentLoaded', () => {
+    let dataSend = {
+      transcripts: [],
+      sent: [],
+      is_break: true,
+      is_stop: true,
+      id: 0,
+      transcript: '',
+      is_sending: false,
+    }
+    let timeoutSilent = null
+    let timeoutAbout = null
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
+    if (!SpeechRecognition) {
+      alert('not support')
+    }
+    const recognition = new SpeechRecognition()
+    recognition.continuous = true
+    recognition.interimResults = true
+    const urlParams = new URLSearchParams(new URL(window.location.href).search)
+    let lang = urlParams.get('lang') ?? 'vi-VN'
+    let vLogs = document.getElementById('logs')
+    addLog(lang)
+    addLog(CONFIG.USER_AGENT)
+    recognition.onresult = (event) => {
+      let transcript = ''
+      if (CONFIG.USER_AGENT.toLowerCase().includes('android')) {
+        for (let i = event.resultIndex; i < event.results.length; i++) {
+          transcript = event.results[i][0].transcript
+        }
+      } else {
+        for (let i = event.resultIndex; i < event.results.length; i++) {
+          transcript += event.results[i][0].transcript
+        }
       }
-      const recognition = new SpeechRecognition();
-      recognition.continuous = true;
-      recognition.interimResults = true;
-      let href = window.location.href;
-      let textOld = '';
-      const urlParams = new URLSearchParams(new URL(href).search);
-      let lang = urlParams.get('lang') ?? 'vi-VN';
-      let vLogs = document.getElementById('logs');
-      addLog(lang)
-      addLog(userAgent)
-      recognition.onresult = (event) => {
-        let transcript = ''
-        if(userAgent.toLowerCase().includes('android')){
-          for (let i = event.resultIndex; i < event.results.length; i++) {
-            transcript = event.results[i][0].transcript
-          }
-        }else {
-          for (let i = event.resultIndex; i < event.results.length; i++) {
-            transcript += event.results[i][0].transcript
-          }
-        }
-        transcript = transcript.trim();
-        if(transcript.toLowerCase()===textOld.toLowerCase()){
-          return;
-        }
+      transcript = transcript.trim()
+      if (transcript.toLowerCase() === dataSend.transcript.toLowerCase()) {
+        return
+      }
+      dataSend.transcript = transcript
+      document.getElementById('transcript').innerText = transcript
+      if (dataSend.is_break) {
+        dataSend.transcripts.push({
+          id: dataSend.id,
+          transcript: transcript,
+        })
+        dataSend.is_break = false;
+      } else {
+        dataSend.transcripts[dataSend.transcripts.length - 1].transcript = transcript;
+      }
+      if (timeoutSilent) {
+        clearTimeout(timeoutSilent)
+      }
+      timeoutSilent = setTimeout(() => {
+        sendContent(true)
+        clearTimeout(timeoutAbout)
+        dataSend.is_sending = false;
+      }, CONFIG.TIME_SILENT)
+
+      /*
+      * Sending...
+      * */
+      if(!dataSend.is_sending){
+        dataSend.is_sending = true;
+        timeoutAbout = setTimeout(()=>{
+          dataSend.is_sending = false;
+          //clearTimeout(timeoutSilent)
+          sendContent(false)
+        },CONFIG.TIME_SEND_ABOUT)
+      }
+    }
+
+    const sendContent = (isSilent = false)=>{
+      const idMax = maxIdOfTranscripts();
+      const filter = dataSend.transcripts.filter((item)=>{
+        return idMax===item.id && item.transcript.trim() !== ''
+      })
+      const filterSent = dataSend.sent.filter((item)=>{
+        return idMax===item.id && item.transcript.trim() !== ''
+      })
+      let transcript= filter
+        .map((item)=>item.transcript)
+        .join((' '))
+        .split(' ')
+        .filter((item)=>{
+          return item.trim()!==''
+        });
+      let transcriptSent = filterSent
+        .map((item)=>item.transcript)
+        .join((' '))
+        .split(' ')
+        .filter((item)=>{
+          return item.trim()!==''
+        })
+      ;
+      if(transcriptSent.length===1 && transcriptSent[0]===''){
+        transcriptSent = [];
+      }
+      transcript = transcript.slice(transcriptSent.length)
+      if(transcript.length<=0){
+        return;
+      }
+      if(isSilent){
         sendDataToMobile({
-          text: transcript,
-          is_final: false
+          transcript: transcript.join((' ')).trim(),
+          id: idMax,
+          is_silent: isSilent
         })
-        textOld = transcript;
-        document.getElementById('transcript').innerText = transcript;
-        if(isBreak){
-          data.push(transcript)
-          isBreak = false;
-        }else{
-          data[data.length-1] = transcript;
+        dataSend.id = idMax+1;
+        addLog(`send when silent: ${transcript.join((' ')).trim()}`);
+        dataSend.sent.push({
+          transcript: transcript.join((' ')).trim(),
+          id: idMax,
+        })
+        recognition.stop()
+        return;
+      }
+
+      if(transcript.length<=3){
+        return;
+      }
+      sendDataToMobile({
+        transcript: transcript.slice(0,-3).join(' '),
+        id: idMax,
+        is_silent: isSilent
+      });
+
+      dataSend.sent.push({
+        transcript: transcript.slice(0,-3).join(' '),
+        id: idMax,
+      })
+
+      addLog(`send when time about: ${transcript.slice(0,-3).join(' ')}`)
+    }
+
+    const maxIdOfTranscripts = ()=>{
+      const ids = dataSend.transcripts.map((item)=>{return item.id})
+      if(ids.length===0){
+        return 0;
+      }
+      return Math.max(...ids)
+    }
+
+    recognition.onstart = () => {
+      addLog('recognition started....')
+    }
+    recognition.onend = (e) => {
+      addLog(e.type)
+      dataSend.is_break = true
+      if (dataSend.is_stop) {
+        return;
+      }
+      recognition.start()
+    }
+    recognition.onerror = (event) => {
+      addLog(event.error)
+    }
+
+    function addLog (text) {
+      let timeNew = new Date()
+      vLogs.innerText += `${timeNew.getHours()}:${timeNew.getMinutes()}:${timeNew.getSeconds()} - ${text}\n`
+    }
+
+    const sendDataToMobile = (data) => {
+      console.log('===>send mobile', data)
+      document.getElementById('timeout').innerText = JSON.stringify(data, null, 4)
+      try {
+        if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.buttonClicked) {
+          window.webkit.messageHandlers.buttonClicked.postMessage(data)
         }
-        // if(sendTimeOut){
-        //   clearTimeout(sendTimeOut)
-        // }
-        // sendTimeOut = setTimeout(()=>{
-        //   stopRec()
-        // },TIME_OUT)
-        sendData(false)
-      };
-
-      const sendData = (isFinal = false)=>{
-        let send = data.filter((item)=>{
-          return item.trim() !==''
-        })
-
-        sendDataToMobile({
-          text: send.join(" ").trim(),
-          is_final: isFinal
-        })
-      }
-
-      recognition.onstart = ()=>{
-        addLog("recognition started....");
-      }
-      recognition.onend = (e)=>{
-        console.log(e)
-        addLog(e.type)
-        isBreak = true;
-        if(!isStop){
-          recognition.start();
+        if (window.Android) {
+          const messageToPost = JSON.stringify(data)
+          window.Android.postMessage(messageToPost)
         }
+      } catch (error) {
+        console.error('cannot send mobile', error)
       }
-      recognition.onerror = (event)=>{
-        addLog(event.error)
-      }
-      function addLog(text){
-        let timeNew = new Date();
-        vLogs.innerText += `${timeNew.getHours()}:${timeNew.getMinutes()}:${timeNew.getSeconds()} - ${text}\n`
-      }
-      const sendDataToMobile = (data) => {
-        console.log('send mobile', data)
-        document.getElementById('timeout').innerText = JSON.stringify(data,null,4);
-        try {
-          if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.buttonClicked) {
-            window.webkit.messageHandlers.buttonClicked.postMessage(data);
-          }
-          if (window.Android) {
-            const messageToPost = JSON.stringify(data);
-            window.Android.postMessage(messageToPost);
-          }
-        } catch (error) {
-          console.error('cannot send mobile', error);
-        }
-      }
-      window.stopRec = ()=>{
-        recognition.stop();
-        isStop = true;
-        let send = data.filter((item)=>{
-          return item.trim() !==''
-        })
+    }
+    window.stopRec = () => {
+      recognition.stop()
+      dataSend.is_stop = true
+      let send = dataSend.transcripts.filter((item) => {
+        return item.trim() !== ''
+      })
 
-        sendDataToMobile({
-          text: send.join(" ").trim(),
-          is_final: true
-        })
-      }
-      window.startRec = ()=>{
-        isStop = false;
-        data = [];
-        recognition.lang = lang;
-        recognition.start();
-      }
-    })
+      sendDataToMobile({
+        text: send.join(' ').trim(),
+        is_final: true
+      })
+    }
+    window.startRec = () => {
+      dataSend.is_stop = false
+      dataSend.transcripts = []
+      recognition.lang = lang
+      recognition.start()
+    }
+  })
 </script>
 </body>
 </html>
