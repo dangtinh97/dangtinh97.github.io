@@ -18,7 +18,7 @@
 <div>
     <button type="button" onclick="startRec()">Start</button>
     <button type="button" onclick="stopRec()">Stop</button>
-    <p>Version 1.17</p>
+    <p>Version 1.00</p>
     <p id="transcript"></p>
     <p id="timeout" style="max-width: 90vw"></p>
     <div id="logs"></div>
@@ -205,14 +205,9 @@
     window.stopRec = () => {
       recognition.stop()
       dataSend.is_stop = true
-      let send = dataSend.transcripts.filter((item) => {
-        return item.trim() !== ''
-      })
-
-      sendDataToMobile({
-        text: send.join(' ').trim(),
-        is_final: true
-      })
+      sendContent(true)
+      clearTimeout(timeoutAbout)
+      clearTimeout(timeoutSilent)
     }
     window.startRec = () => {
       dataSend.is_stop = false
