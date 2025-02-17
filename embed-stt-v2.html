@@ -169,8 +169,16 @@
 
     recognition.onstart = () => {
       addLog('recognition started....')
+      sendDataToMobile({
+        type:"MIC_STATUS",
+        status:"ON"
+      })
     }
     recognition.onend = (e) => {
+      sendDataToMobile({
+        type:"MIC_STATUS",
+        status:"OFF"
+      })
       addLog(e.type)
       dataSend.is_break = true
       if (dataSend.is_stop) {
