@@ -169,13 +169,13 @@
 
     recognition.onstart = () => {
       addLog('recognition started....')
-      sendDataToMobile({
+      sendDataPostEvent({
         type:"MIC_STATUS",
         status:"ON"
       })
     }
     recognition.onend = (e) => {
-      sendDataToMobile({
+      sendDataPostEvent({
         type:"MIC_STATUS",
         status:"OFF"
       })
@@ -205,6 +205,22 @@
         if (window.Android) {
           const messageToPost = JSON.stringify(data)
           window.Android.postMessage(messageToPost)
+        }
+      } catch (error) {
+        console.error('cannot send mobile', error)
+      }
+    }
+
+    const sendDataPostEvent = (data) => {
+      console.log('===>send mobile', data)
+      document.getElementById('timeout').innerText = JSON.stringify(data, null, 4)
+      try {
+        if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.buttonClicked) {
+          window.webkit.messageHandlers.buttonClicked.postEvent(data)
+        }
+        if (window.Android) {
+          const messageToPost = JSON.stringify(data)
+          window.Android.postEvent(messageToPost)
         }
       } catch (error) {
         console.error('cannot send mobile', error)
