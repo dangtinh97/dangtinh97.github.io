@@ -248,6 +248,9 @@
     }
 
     function removeBadWord (text) {
+      if(!text){
+        return ''
+      }
       try {
         let badWords = []
         badWords.concat(['damn', 'hell', 'shit', 'fuck', 'bitch', 'bastard',
