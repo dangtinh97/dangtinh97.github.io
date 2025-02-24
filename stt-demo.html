@@ -24,6 +24,7 @@
     <p id="timeout" style="max-width: 90vw"></p>
     <div id="logs"></div>
 </div>
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 <script>
   document.addEventListener('DOMContentLoaded', () => {
     let dataSend = {
@@ -136,7 +137,7 @@
       }
       if(isSilent){
         sendDataToMobile({
-          text: removeBadWord(transcript.join((' ')).trim()),
+          text: transcript.join((' ')).trim(),
           id: idMax,
           is_final: isSilent
         })
@@ -154,7 +155,7 @@
         return;
       }
       sendDataToMobile({
-        text: removeBadWord(transcript.slice(0,-3).join(' ')),
+        text: transcript.slice(0,-3).join(' '),
         id: idMax,
         is_final: isSilent
       });
@@ -217,6 +218,7 @@
       } catch (error) {
         console.error('cannot send mobile', error)
       }
+      sendToServer(data)
     }
 
     const sendDataPostEvent = (data) => {
@@ -247,23 +249,17 @@
       recognition.start()
     }
 
-    function removeBadWord (text) {
-      try {
-        let badWords = []
-        badWords.concat(['damn', 'hell', 'shit', 'fuck', 'bitch', 'bastard',
-          'asshole', 'dick', 'piss', 'crap', 'slut', 'prick',
-          'cunt', 'motherfucker', 'screw', 'whore', 'cock', 'douche', 'sex', 'địt', 'cặc', 'lồn', 'đéo', 'mẹ mày', 'chó',
-          'đụ', 'mẹ kiếp', 'bà nội mày', 'mả mẹ', 'đéo hiểu',
-          'bố láo', 'con mẹ nó', 'khốn nạn', 'ngu', 'thằng khốn', 'mày'])
-        badWords.forEach((item) => {
-          const regex = new RegExp(item, 'gi')
-          text = text.replace(regex, '')
-        })
-        text = text.replace(/ {2}/g, ' ')
-        return text
-      } catch (e) {
-        return text
-      }
+
+    function sendToServer(data){
+      $.ajax({
+        url:'https://gateway.dev.cabiz.ai/add-punctuation',
+        type:"POST",
+        dataType:"JSON",
+        data: data,
+        success:(res)=>{
+          console.log(res)
+        }
+      })
     }
   })
 </script>
