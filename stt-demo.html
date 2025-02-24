@@ -27,6 +27,7 @@
         <table border="1">
             <thead>
             <tr>
+                <th>ID</th>
                 <th>Text</th>
                 <th>Cut</th>
                 <th>Remining</th>
@@ -267,6 +268,14 @@
     const sessionId = new Date().getTime().toString()
 
     function sendToServer (data) {
+      let id = new Date().getTime().toString();
+      let idR = data.id;
+      $('#log-table > table > tbody').append(`<tr id="q-${id}">
+                <td>${data.id}</td>
+                <td>${data.text}</td>
+                <td></td>
+                <td></td>
+            </tr>`)
       $.ajax({
         url: 'https://gateway.dev.cabiz.ai/add-punctuation',
         method: 'POST',
@@ -278,11 +287,12 @@
           session_id: sessionId,
         }),
         success: (res) => {
-          $('#log-table > table > tbody').append(`            <tr>
+          $(`#q-${id}`).html(`
+                <td>${idR}</td>
                 <td>${data.text}</td>
                 <td>${res.data.result}</td>
                 <td>${res.data.text_mining}</td>
-            </tr>`)
+            `)
         }
       })
     }
