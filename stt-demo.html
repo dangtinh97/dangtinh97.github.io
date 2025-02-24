@@ -23,8 +23,22 @@
     <p id="transcript"></p>
     <p id="timeout" style="max-width: 90vw"></p>
     <div id="logs"></div>
+    <div id="log-table">
+        <table border="1">
+            <thead>
+            <tr>
+                <th>Text</th>
+                <th>Cut</th>
+                <th>Remining</th>
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
 </div>
-<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+        crossorigin="anonymous"></script>
 <script>
   document.addEventListener('DOMContentLoaded', () => {
     let dataSend = {
@@ -36,9 +50,9 @@
       transcript: '',
       is_sending: false,
     }
-    window.showDataSend = function (){
-      console.log(dataSend);
-      addLog(JSON.stringify(dataSend.transcripts,null,4))
+    window.showDataSend = function () {
+      console.log(dataSend)
+      addLog(JSON.stringify(dataSend.transcripts, null, 4))
     }
     let timeoutSilent = null
     let timeoutAbout = null
@@ -69,8 +83,8 @@
       if (transcript.toLowerCase() === dataSend.transcript.toLowerCase()) {
         return
       }
-      if(!dataSend.is_break){
-        dataSend.is_break = dataSend.transcript.split(' ').length-3 > transcript.split(' ').length
+      if (!dataSend.is_break) {
+        dataSend.is_break = dataSend.transcript.split(' ').length - 3 > transcript.split(' ').length
       }
       dataSend.transcript = transcript
       document.getElementById('transcript').innerText = transcript
@@ -79,9 +93,9 @@
           id: dataSend.id,
           transcript: transcript,
         })
-        dataSend.is_break = false;
+        dataSend.is_break = false
       } else {
-        dataSend.transcripts[dataSend.transcripts.length - 1].transcript = transcript;
+        dataSend.transcripts[dataSend.transcripts.length - 1].transcript = transcript
       }
       if (timeoutSilent) {
         clearTimeout(timeoutSilent)
@@ -89,89 +103,89 @@
       timeoutSilent = setTimeout(() => {
         sendContent(true)
         clearTimeout(timeoutAbout)
-        dataSend.is_sending = false;
+        dataSend.is_sending = false
       }, CONFIG.TIME_SILENT)
 
       /*
       * Sending...
       * */
-      if(!dataSend.is_sending){
-        dataSend.is_sending = true;
-        timeoutAbout = setTimeout(()=>{
-          dataSend.is_sending = false;
+      if (!dataSend.is_sending) {
+        dataSend.is_sending = true
+        timeoutAbout = setTimeout(() => {
+          dataSend.is_sending = false
           //clearTimeout(timeoutSilent)
           sendContent(false)
-        },CONFIG.TIME_SEND_ABOUT)
+        }, CONFIG.TIME_SEND_ABOUT)
       }
     }
 
-    const sendContent = (isSilent = false)=>{
-      const idMax = maxIdOfTranscripts();
-      const filter = dataSend.transcripts.filter((item)=>{
-        return idMax===item.id && item.transcript.trim() !== ''
+    const sendContent = (isSilent = false) => {
+      const idMax = maxIdOfTranscripts()
+      const filter = dataSend.transcripts.filter((item) => {
+        return idMax === item.id && item.transcript.trim() !== ''
       })
-      const filterSent = dataSend.sent.filter((item)=>{
-        return idMax===item.id && item.transcript.trim() !== ''
+      const filterSent = dataSend.sent.filter((item) => {
+        return idMax === item.id && item.transcript.trim() !== ''
       })
-      let transcript= filter
-        .map((item)=>item.transcript)
+      let transcript = filter
+        .map((item) => item.transcript)
         .join((' '))
         .split(' ')
-        .filter((item)=>{
-          return item.trim()!==''
-        });
-      let transcriptSent = filterSent
-        .map((item)=>item.transcript)
-        .join((' '))
-        .split(' ')
-        .filter((item)=>{
-          return item.trim()!==''
+        .filter((item) => {
+          return item.trim() !== ''
         })
-      ;
-      if(transcriptSent.length===1 && transcriptSent[0]===''){
-        transcriptSent = [];
+      let transcriptSent = filterSent
+        .map((item) => item.transcript)
+        .join((' '))
+        .split(' ')
+        .filter((item) => {
+          return item.trim() !== ''
+        })
+
+      if (transcriptSent.length === 1 && transcriptSent[0] === '') {
+        transcriptSent = []
       }
       transcript = transcript.slice(transcriptSent.length)
-      if(transcript.length<=0){
-        return;
+      if (transcript.length <= 0) {
+        return
       }
-      if(isSilent){
+      if (isSilent) {
         sendDataToMobile({
           text: transcript.join((' ')).trim(),
           id: idMax,
           is_final: isSilent
         })
-        dataSend.id = idMax+1;
-        addLog(`send when silent: ${transcript.join((' ')).trim()}`);
+        dataSend.id = idMax + 1
+        addLog(`send when silent: ${transcript.join((' ')).trim()}`)
         dataSend.sent.push({
           transcript: transcript.join((' ')).trim(),
           id: idMax,
         })
         // recognition.stop()
-        return;
+        return
       }
 
-      if(transcript.length<=3){
-        return;
+      if (transcript.length <= 3) {
+        return
       }
       sendDataToMobile({
-        text: transcript.slice(0,-3).join(' '),
+        text: transcript.slice(0, -3).join(' '),
         id: idMax,
         is_final: isSilent
-      });
+      })
 
       dataSend.sent.push({
-        transcript: transcript.slice(0,-3).join(' '),
+        transcript: transcript.slice(0, -3).join(' '),
         id: idMax,
       })
 
-      addLog(`send when time about: ${transcript.slice(0,-3).join(' ')}`)
+      addLog(`send when time about: ${transcript.slice(0, -3).join(' ')}`)
     }
 
-    const maxIdOfTranscripts = ()=>{
-      const ids = dataSend.transcripts.map((item)=>{return item.id})
-      if(ids.length===0){
-        return 0;
+    const maxIdOfTranscripts = () => {
+      const ids = dataSend.transcripts.map((item) => {return item.id})
+      if (ids.length === 0) {
+        return 0
       }
       return Math.max(...ids)
     }
@@ -179,19 +193,19 @@
     recognition.onstart = () => {
       addLog('recognition started....')
       sendDataPostEvent({
-        type:"MIC_STATUS",
-        status:"ON"
+        type: 'MIC_STATUS',
+        status: 'ON'
       })
     }
     recognition.onend = (e) => {
       sendDataPostEvent({
-        type:"MIC_STATUS",
-        status:"OFF"
+        type: 'MIC_STATUS',
+        status: 'OFF'
       })
       addLog(e.type)
       dataSend.is_break = true
       if (dataSend.is_stop) {
-        return;
+        return
       }
       recognition.start()
     }
@@ -200,6 +214,7 @@
     }
 
     function addLog (text) {
+      return
       let timeNew = new Date()
       vLogs.innerText += `${timeNew.getHours()}:${timeNew.getMinutes()}:${timeNew.getSeconds()} - ${text}\n`
     }
@@ -249,15 +264,25 @@
       recognition.start()
     }
 
+    const sessionId = new Date().getTime().toString()
 
-    function sendToServer(data){
+    function sendToServer (data) {
       $.ajax({
-        url:'https://gateway.dev.cabiz.ai/add-punctuation',
-        type:"POST",
-        dataType:"JSON",
-        data: data,
-        success:(res)=>{
-          console.log(res)
+        url: 'https://gateway.dev.cabiz.ai/add-punctuation',
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        data: JSON.stringify({
+          ...data,
+          session_id: sessionId,
+        }),
+        success: (res) => {
+          $('#log-table > table > tbody').append(`            <tr>
+                <td>${data.text}</td>
+                <td>${res.data.result}</td>
+                <td>${res.data.text_mining}</td>
+            </tr>`)
         }
       })
     }
