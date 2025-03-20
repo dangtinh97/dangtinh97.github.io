@@ -1,0 +1,58 @@
+import pyaudio
+import numpy as np
+import queue
+import time
+from threading import Thread
+from faster_whisper import WhisperModel
+
+# Audio settings
+CHUNK = 1024
+FORMAT = pyaudio.paInt16
+CHANNELS = 1
+RATE = 16000
+
+audio_queue = queue.Queue()
+model = WhisperModel("small", device="cpu", compute_type="int8")
+
+def record_audio():
+    p = pyaudio.PyAudio()
+    stream = p.open(
+        format=FORMAT,
+        channels=CHANNELS,
+        rate=RATE,
+        input=True,
+        frames_per_buffer=CHUNK * 4  # Larger buffer
+    )
+    print("Recording...")
+    while True:
+        data = stream.read(CHUNK, exception_on_overflow=False)
+        audio_queue.put(np.frombuffer(data, dtype=np.int16).astype(np.float32) / 32768.0)
+    stream.stop_stream()
+    stream.close()
+    p.terminate()
+
+def process_audio():
+    buffer = np.array([], dtype=np.float32)
+    process_interval = 2.0  # Process every 2 seconds
+
+    while True:
+        while not audio_queue.empty():
+            buffer = np.concatenate((buffer, audio_queue.get_nowait()))
+
+        if len(buffer) >= RATE * process_interval:
+            audio_chunk = buffer[:int(RATE * process_interval)]
+            buffer = buffer[int(RATE * process_interval):]
+            segments, _ = model.transcribe(audio_chunk, vad_filter=True)
+            for segment in segments:
+                print(f"[{segment.start:.2f}s -> {segment.end:.2f}s] {segment.text}")
+        time.sleep(0.01)
+
+# Start threads
+recording_thread = Thread(target=record_audio)
+processing_thread = Thread(target=process_audio)
+
+recording_thread.start()
+processing_thread.start()
+
+recording_thread.join()
+processing_thread.join()
