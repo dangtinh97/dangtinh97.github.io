@@ -1,0 +1,228 @@
+<!--
+@Date 20/03/2023
+
+-->
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>V3</title>
+    <script>
+      const CONFIG = {
+        TIME_SILENT: 3200,
+        TIME_SEND_ABOUT: 6000,
+        USER_AGENT: navigator.userAgent
+      }
+    </script>
+</head>
+<body style="height: 100vh;width: 90vw;">
+<div>
+    <button type="button" onclick="startRec()">Start</button>
+    <button type="button" onclick="stopRec()">Stop</button>
+    <p>Version 1.00</p>
+    <p id="transcript"></p>
+    <p id="timeout" style="max-width: 90vw"></p>
+    <div id="logs"></div>
+</div>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
+    if (!SpeechRecognition) {
+      alert('not support')
+    }
+    let dataSend = {
+      transcripts: [],
+      sent: [],
+      is_break: true,
+      is_stop: true,
+      id: 0,
+      transcript: '',
+      is_sending: false,
+    }
+    let isWaitingTimeAbout = false;
+    let timeoutSilent = null
+    let timeoutAbout = null
+    const urlParams = new URLSearchParams(new URL(window.location.href).search)
+    let lang = urlParams.get('lang') ?? 'vi-VN'
+    const recognition = new SpeechRecognition()
+    recognition.continuous = true
+    recognition.interimResults = true
+    recognition.lang = lang;
+    recognition.onresult = (event) => {
+      let transcript = ''
+      if (CONFIG.USER_AGENT.toLowerCase().includes('android')) {
+        for (let i = 0; i < event.results.length; i++) {
+          transcript = event.results[i][0].transcript
+        }
+      } else {
+        for (let i = 0; i < event.results.length; i++) {
+          transcript += event.results[i][0].transcript
+        }
+      }
+      transcript = transcript.trim()
+      if (transcript.toLowerCase() === dataSend.transcript.toLowerCase()) {
+        return
+      }
+      dataSend.transcript = transcript
+      document.getElementById('transcript').innerText = transcript;
+      if(dataSend.is_break){
+        dataSend.transcripts.push({
+          id: dataSend.id,
+          transcript: transcript,
+        })
+        dataSend.is_break = false;
+      }else{
+        const transcripts = dataSend.transcripts;
+        transcripts[transcripts.length-1].transcript = transcript
+      }
+      processTime()
+    }
+    function processTime(){
+      if(!isWaitingTimeAbout){
+        isWaitingTimeAbout = true;
+        timeoutAbout = setTimeout(()=>{
+          isWaitingTimeAbout = false;
+          processData({...dataSend},false);
+        },CONFIG.TIME_SEND_ABOUT)
+      }
+
+      if(timeoutSilent){
+        clearTimeout(timeoutSilent)
+      }
+      timeoutSilent = setTimeout(()=>{
+        clearTimeout(isWaitingTimeAbout);
+        processData({...dataSend},true);
+      },CONFIG.TIME_SILENT)
+    }
+
+    recognition.onend = (event)=>{
+      if(!dataSend.is_stop){
+        recognition.start()
+      }
+      dataSend.is_break = true;
+      sendDataPostEvent({
+        type:"MIC_STATUS",
+        status:"OFF"
+      })
+    }
+
+    recognition.onstart = ()=>{
+      sendDataPostEvent({
+        type:"MIC_STATUS",
+        status:"ON"
+      })
+    }
+
+    const processData = (data, isFinal)=>{
+      const idProcess = getMaxIdProcess(data);
+      const transcripts = [];
+      const sent = [];
+      data.transcripts.forEach(item=>{
+        if(item.id===idProcess){
+          transcripts.push(...item.transcript.split(' '))
+        }
+      })
+      data.sent.forEach((item)=>{
+        if(item.id===idProcess){
+          sent.push(...item.transcript.split(' '))
+        }
+      })
+      let transcriptSplit = transcripts.slice(sent.length);
+      if(transcriptSplit.length===0){
+        return;
+      }
+      if(isFinal){
+        sendDataToMobile({
+          text: transcriptSplit.join(' ').trim(),
+          id: idProcess,
+          is_final: isFinal
+        })
+        dataSend.sent.push({
+          transcript: transcriptSplit.join(' ').trim(),
+          id: idProcess
+        })
+        return;
+      }
+      if(transcriptSplit.length<=3){
+        return;
+      }
+      let text = transcriptSplit.slice(0,-3).join(' ').trim()
+      sendDataToMobile({
+        text: text,
+        id: idProcess,
+        is_final: isFinal
+      });
+      dataSend.sent.push({
+        transcript: text,
+        id: idProcess,
+      })
+    }
+
+    const sendDataToMobile = (data) => {
+      console.log('===>send mobile', {
+        ...data,
+        time: new Date()
+      })
+      document.getElementById('timeout').innerText = JSON.stringify(data, null, 4)
+      try {
+        if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.buttonClicked) {
+          window.webkit.messageHandlers.buttonClicked.postMessage(data)
+        }
+        if (window.Android) {
+          const messageToPost = JSON.stringify(data)
+          window.Android.postMessage(messageToPost)
+        }
+      } catch (error) {
+        console.error('cannot send mobile', error)
+      }
+    }
+
+    const sendDataPostEvent = (data) => {
+      console.log('===>send mobile', data)
+      document.getElementById('timeout').innerText = JSON.stringify(data, null, 4)
+      try {
+        if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.buttonClicked) {
+          window.webkit.messageHandlers.buttonClicked.postEvent(data)
+        }
+        if (window.Android) {
+          const messageToPost = JSON.stringify(data)
+          window.Android.postEvent(messageToPost)
+        }
+      } catch (error) {
+        console.error('cannot send mobile', error)
+      }
+    }
+
+    const getMaxIdProcess=(dataSend)=>{
+      let ids = dataSend.transcripts.map((item)=>{
+        return item.id
+      })
+      if(ids.length===0){
+        return 0;
+      }
+      return Math.max(...ids)
+    }
+
+    /*
+    *
+    * */
+    window.stopRec = ()=>{
+      dataSend.is_stop = true;
+      dataSend.id = getMaxIdProcess(dataSend)
+      recognition.stop()
+      clearTimeout(timeoutSilent)
+      clearTimeout(timeoutAbout)
+      processData(dataSend,true)
+    }
+
+    window.startRec = ()=>{
+      dataSend.is_stop = false;
+      recognition.start()
+    }
+  })
+</script>
+</body>
+</html>
