@@ -22,7 +22,6 @@ let timeLeft = 60;
 let level = 1;
 let lastTime = performance.now();
 let gameRunning = false;
-let gyroWorking = false; // Biến kiểm tra con quay hồi chuyển
 
 // Các cấp độ mê cung
 const mazes = [
@@ -68,56 +67,38 @@ const mazes = [
 ];
 let currentMaze = mazes[0];
 
-// Kiểm tra và yêu cầu quyền truy cập cảm biến
+// Yêu cầu quyền truy cập cảm biến (iOS)
 function requestSensorPermission() {
   if (typeof DeviceOrientationEvent.requestPermission === 'function') {
     DeviceOrientationEvent.requestPermission()
       .then(permissionState => {
         if (permissionState === 'granted') {
-          window.addEventListener('deviceorientation', handleOrientation);
-          gyroWorking = true;
+          window.addEventListener('deviceorientation', handleOrientation, true);
+          console.log('Cảm biến được cấp quyền!');
         } else {
-          alert('Quyền truy cập cảm biến bị từ chối. Sử dụng phím mũi tên để chơi.');
+          alert('Quyền truy cập cảm biến bị từ chối. Game sẽ không hoạt động trên iPhone trừ khi bạn cấp quyền.');
         }
       })
       .catch(err => {
         console.error('Lỗi yêu cầu quyền:', err);
-        alert('Không thể truy cập cảm biến. Sử dụng phím mũi tên để chơi.');
+        alert('Không thể truy cập cảm biến. Vui lòng kiểm tra cài đặt.');
       });
   } else {
-    window.addEventListener('deviceorientation', handleOrientation);
-    setTimeout(() => {
-      if (!gyroWorking) {
-        alert('Không phát hiện cảm biến. Sử dụng phím mũi tên để chơi.');
-      }
-    }, 1000);
+    // Trường hợp không cần yêu cầu quyền (Android hoặc iOS cũ)
+    window.addEventListener('deviceorientation', handleOrientation, true);
+    console.log('Không cần yêu cầu quyền, thử cảm biến...');
   }
 }
 
 // Xử lý con quay hồi chuyển
 function handleOrientation(event) {
   if (!gameRunning) return;
-  const tiltX = event.gamma || 0;
-  const tiltY = event.beta || 0;
+  const tiltX = event.gamma || 0; // Nghiêng trái-phải
+  const tiltY = event.beta || 0;  // Nghiêng trước-sau
   ball.speedX = Math.max(-5, Math.min(5, tiltX * 0.2));
   ball.speedY = Math.max(-5, Math.min(5, tiltY * 0.2));
-  gyroWorking = true; // Xác nhận con quay hoạt động
+  console.log(`Gamma: ${tiltX}, Beta: ${tiltY}`); // Debug giá trị
 }
-
-// Điều khiển bằng phím (fallback)
-window.addEventListener('keydown', (event) => {
-  if (!gameRunning) return;
-  switch (event.key) {
-    case 'ArrowLeft': ball.speedX = -5; break;
-    case 'ArrowRight': ball.speedX = 5; break;
-    case 'ArrowUp': ball.speedY = -5; break;
-    case 'ArrowDown': ball.speedY = 5; break;
-  }
-});
-window.addEventListener('keyup', () => {
-  ball.speedX = 0;
-  ball.speedY = 0;
-});
 
 // Kiểm tra va chạm
 function checkCollision(x, y) {
@@ -133,7 +114,6 @@ function update(currentTime) {
   const deltaTime = (currentTime - lastTime) / 1000;
   lastTime = currentTime;
 
-  // Cập nhật thời gian
   timeLeft -= deltaTime;
   if (timeLeft <= 0) {
     alert(`Hết giờ! Điểm: ${score}`);
@@ -142,11 +122,9 @@ function update(currentTime) {
   }
   timeDisplay.textContent = Math.max(0, Math.floor(timeLeft));
 
-  // Cập nhật vị trí viên bi
   let newX = ball.x + ball.speedX;
   let newY = ball.y + ball.speedY;
 
-  // Kiểm tra va chạm
   if (checkCollision(newX + ball.radius, ball.y) || checkCollision(newX - ball.radius, ball.y)) {
     // collisionSound.play();
   } else {
@@ -158,7 +136,6 @@ function update(currentTime) {
     ball.y = newY;
   }
 
-  // Kiểm tra đến đích
   const goalRow = Math.floor(ball.y / tileSize);
   const goalCol = Math.floor(ball.x / tileSize);
   if (currentMaze[goalRow] && currentMaze[goalRow][goalCol] === 2) {
@@ -183,8 +160,6 @@ function update(currentTime) {
 // Vẽ game
 function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-  // Vẽ mê cung
   for (let row = 0; row < currentMaze.length; row++) {
     for (let col = 0; col < currentMaze[row].length; col++) {
       if (currentMaze[row][col] === 1) {
@@ -196,8 +171,6 @@ function draw() {
       }
     }
   }
-
-  // Vẽ viên bi
   ctx.beginPath();
   ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
   ctx.fillStyle = 'red';
