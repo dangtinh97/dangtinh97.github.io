@@ -22,6 +22,7 @@ let timeLeft = 60;
 let level = 1;
 let lastTime = performance.now();
 let gameRunning = false;
+let gyroWorking = false; // Biến kiểm tra con quay hồi chuyển
 
 // Các cấp độ mê cung
 const mazes = [
@@ -67,16 +68,56 @@ const mazes = [
 ];
 let currentMaze = mazes[0];
 
-// Xử lý con quay hồi chuyển
-window.addEventListener('deviceorientation', handleOrientation);
+// Kiểm tra và yêu cầu quyền truy cập cảm biến
+function requestSensorPermission() {
+  if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+    DeviceOrientationEvent.requestPermission()
+      .then(permissionState => {
+        if (permissionState === 'granted') {
+          window.addEventListener('deviceorientation', handleOrientation);
+          gyroWorking = true;
+        } else {
+          alert('Quyền truy cập cảm biến bị từ chối. Sử dụng phím mũi tên để chơi.');
+        }
+      })
+      .catch(err => {
+        console.error('Lỗi yêu cầu quyền:', err);
+        alert('Không thể truy cập cảm biến. Sử dụng phím mũi tên để chơi.');
+      });
+  } else {
+    window.addEventListener('deviceorientation', handleOrientation);
+    setTimeout(() => {
+      if (!gyroWorking) {
+        alert('Không phát hiện cảm biến. Sử dụng phím mũi tên để chơi.');
+      }
+    }, 1000);
+  }
+}
 
+// Xử lý con quay hồi chuyển
 function handleOrientation(event) {
   if (!gameRunning) return;
   const tiltX = event.gamma || 0;
   const tiltY = event.beta || 0;
   ball.speedX = Math.max(-5, Math.min(5, tiltX * 0.2));
   ball.speedY = Math.max(-5, Math.min(5, tiltY * 0.2));
+  gyroWorking = true; // Xác nhận con quay hoạt động
 }
+
+// Điều khiển bằng phím (fallback)
+window.addEventListener('keydown', (event) => {
+  if (!gameRunning) return;
+  switch (event.key) {
+    case 'ArrowLeft': ball.speedX = -5; break;
+    case 'ArrowRight': ball.speedX = 5; break;
+    case 'ArrowUp': ball.speedY = -5; break;
+    case 'ArrowDown': ball.speedY = 5; break;
+  }
+});
+window.addEventListener('keyup', () => {
+  ball.speedX = 0;
+  ball.speedY = 0;
+});
 
 // Kiểm tra va chạm
 function checkCollision(x, y) {
@@ -120,7 +161,7 @@ function update(currentTime) {
   // Kiểm tra đến đích
   const goalRow = Math.floor(ball.y / tileSize);
   const goalCol = Math.floor(ball.x / tileSize);
-  if (currentMaze[goalRow] && currentMaze[goalCol][goalCol] === 2) {
+  if (currentMaze[goalRow] && currentMaze[goalRow][goalCol] === 2) {
     // winSound.play();
     score += Math.floor(timeLeft * 10);
     scoreDisplay.textContent = score;
@@ -188,6 +229,7 @@ function endGame() {
 
 // Bắt đầu game
 startButton.addEventListener('click', () => {
+  requestSensorPermission();
   menu.classList.add('hidden');
   canvas.classList.remove('hidden');
   ui.classList.remove('hidden');
