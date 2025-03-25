@@ -107,12 +107,12 @@ function update(currentTime) {
 
   // Kiểm tra va chạm
   if (checkCollision(newX + ball.radius, ball.y) || checkCollision(newX - ball.radius, ball.y)) {
-    collisionSound.play();
+    // collisionSound.play();
   } else {
     ball.x = newX;
   }
   if (checkCollision(ball.x, newY + ball.radius) || checkCollision(ball.x, newY - ball.radius)) {
-    collisionSound.play();
+    // collisionSound.play();
   } else {
     ball.y = newY;
   }
@@ -121,7 +121,7 @@ function update(currentTime) {
   const goalRow = Math.floor(ball.y / tileSize);
   const goalCol = Math.floor(ball.x / tileSize);
   if (currentMaze[goalRow] && currentMaze[goalCol][goalCol] === 2) {
-    winSound.play();
+    // winSound.play();
     score += Math.floor(timeLeft * 10);
     scoreDisplay.textContent = score;
     level++;
