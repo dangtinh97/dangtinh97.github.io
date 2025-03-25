@@ -9,7 +9,22 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<canvas id="gameCanvas" width="400" height="600"></canvas>
+<div id="gameContainer">
+  <div id="menu" class="hidden">
+    <h1>Game Bi Mê Cung</h1>
+    <button id="startButton">Chơi</button>
+  </div>
+  <canvas id="gameCanvas" class="hidden"></canvas>
+  <div id="ui" class="hidden">
+    <p>Cấp độ: <span id="level">1</span></p>
+    <p>Điểm: <span id="score">0</span></p>
+    <p>Thời gian: <span id="time">60</span>s</p>
+    <button id="restartButton">Chơi lại</button>
+  </div>
+</div>
+<!-- Âm thanh -->
+<audio id="collisionSound" src="https://www.soundjay.com/buttons/beep-01a.mp3"></audio>
+<audio id="winSound" src="https://www.soundjay.com/buttons/beep-02.mp3"></audio>
 <script src="game.js"></script>
 </body>
 </html>
