@@ -1,120 +1,18 @@
- 
-
-
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>
-    Hướng dẫn nghe nhạc Offline khi tắt màn hình hoặc chế độ PiP trên Drumtify    </title>
-<meta name="apple-itunes-app" content="app-id=1530173879">
-<meta name="apple-mobile-web-app-capable" content="yes" />
-<meta name="description" content="Hướng dẫn nghe nhạc Offline khi tắt màn hình hoặc chế độ PiP trên Drumtify, Drumtify - Music For Life" />
-<meta property="og:title" content="Hướng dẫn nghe nhạc Offline khi tắt màn hình hoặc chế độ PiP trên Drumtify" />
-<meta property="og:site_name" content="Drumtify" />
-<meta property="og:url" content="/TKIfLjkUYJw" />
-<meta property="og:type" content="Media" />
-<meta property="og:image" content="https://i.ytimg.com/vi/TKIfLjkUYJw/hqdefault.jpg" />
-<meta property="og:description" content="Hướng dẫn nghe nhạc Offline khi tắt màn hình hoặc chế độ PiP trên Drumtify, Drumtify - Music For Life, Chia sẻ nhạc trực tuyến" />
-<meta itemprop="name" content="Hướng dẫn nghe nhạc Offline khi tắt màn hình hoặc chế độ PiP trên Drumtify" />
-<meta itemprop="description" content="Hướng dẫn nghe nhạc Offline khi tắt màn hình hoặc chế độ PiP trên Drumtify, Drumtify - Music For Life, Chia sẻ nhạc trực tuyến" />
-<meta itemprop="image" content="https://i.ytimg.com/vi/TKIfLjkUYJw/hqdefault.jpg" />
-<meta name="thumbnail" content="https://i.ytimg.com/vi/TKIfLjkUYJw/hqdefault.jpg" />
-<link rel="amphtml" href="/TKIfLjkUYJw" />
-<link rel="canonical" href="/TKIfLjkUYJw" />
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
-<link rel="icon" type="image/png" href="images/icons/favicon.ico" />
-
-<link rel="stylesheet" type="text/css" href="public/vendor/bootstrap/css/bootstrap.min.css">
-
-<link rel="stylesheet" type="text/css" href="public/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
-
-<link rel="stylesheet" type="text/css" href="public/fonts/Linearicons-Free-v1.0.0/icon-font.min.css">
-
-<link rel="stylesheet" type="text/css" href="public/vendor/animate/animate.css">
-
-<link rel="stylesheet" type="text/css" href="public/vendor/css-hamburgers/hamburgers.min.css">
-
-<link rel="stylesheet" type="text/css" href="public/vendor/animsition/css/animsition.min.css">
-
-<link rel="stylesheet" type="text/css" href="public/vendor/select2/select2.min.css">
-
-<link rel="stylesheet" type="text/css" href="public/vendor/daterangepicker/daterangepicker.css">
-
-<link rel="stylesheet" type="text/css" href="public/css/util.css">
-<link rel="stylesheet" type="text/css" href="public/css/main.css">
-
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
 </head>
 <body>
-<div class="container-contact100">
-<div class="row d-flex justify-content-center " style="width: 100%;padding: 20px 0px">
-<a class="btn btn-success" onclick="openOnApp()" style="font-family: system-ui;font-size: 20px;color: #fff;">Bấm để nghe nhạc tắt màn hình</a>
-</div>
-<div class="wrap-contact100" style="border-radius: 10px;">
-<iframe width="100%" height="74%" style="height: 72.4vh" src="https://www.youtube.com/embed/TKIfLjkUYJw?autoplay=1&playsinline=1&feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-</div>
-<div class="row d-flex justify-content-center" style="padding: 20px">
-<h1 style="font-size: 16px; padding-bottom: 20px;width: 100%; text-alignL center">Hướng dẫn nghe nhạc Offline khi tắt màn hình hoặc chế độ PiP trên Drumtify</h1>
-<h2 style="font-size: 20px; padding-bottom: 20px;width: 100%; text-alignL center">Drumtify - Music For Life</h2>
-</div>
-</div>
-<div id="dropDownSelect1"></div>
-
-<script src="public/vendor/jquery/jquery-3.2.1.min.js"></script>
-
-<script src="public/vendor/animsition/js/animsition.min.js"></script>
-
-<script src="public/vendor/bootstrap/js/popper.js"></script>
-<script src="public/vendor/bootstrap/js/bootstrap.min.js"></script>
-
-<script src="public/vendor/select2/select2.min.js"></script>
+<button type="button" onclick="openApp()">Open</button>
 <script>
-		$(".selection-2").select2({
-			minimumResultsForSearch: 20,
-			dropdownParent: $('#dropDownSelect1')
-		});
-	</script>
-
-<script src="public/vendor/daterangepicker/moment.min.js"></script>
-<script src="public/vendor/daterangepicker/daterangepicker.js"></script>
-
-<script src="public/vendor/countdowntime/countdowntime.js"></script>
-
-<script src="public/js/main.js"></script>
-
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-22610416-6"></script>
-<script>
-	  window.dataLayer = window.dataLayer || [];
-	  function gtag(){dataLayer.push(arguments);}
-	  gtag('js', new Date());
-
-	  gtag('config', 'UA-22610416-6');
-
-      function openOnApp() {
-
-        var now = new Date().valueOf();
-        setTimeout(function () {
-            // if (new Date().valueOf() - now > 100) return;
-            window.location = "https://drumtify.com";
-        }, 250);
-        window.location = "locamos_app://?videoID=TKIfLjkUYJw&song=SMaw4bubbmcgZOG6q24gbmdoZSBuaOG6oWMgT2ZmbGluZSBraGkgdOG6r3QgbcOgbiBow6xuaCBob+G6t2MgY2jhur8gxJHhu5kgUGlQIHRyw6puIERydW10aWZ5&singer=RHJ1bXRpZnkgLSBNdXNpYyBGb3IgTGlmZQ==";
-
-
-        // setTimeout(function() {
-        //     window.location = "https://apps.apple.com/vn/app/drumtify-music-for-life/id1530173879?l=en";
-        // }, 25);
-
-        // // If "yourapp://" is registered, the user will see a dialog
-        // // asking if they want to open your app. If they agree, your
-        // // app will launch immediately and the timer won't fire.
-        // // If not installed, you'll get an ugly "Cannot Open Page" 
-        // // dialogue and your fallback page will open when the timer expires.
-
-        // window.location = "drumtify://";
-      }
-
-
-	</script>
+	function openApp(){
+		window.location = 'youpipapp://open-phim?url=https://dangtinh'
+	}
+</script>
 </body>
 </html>
