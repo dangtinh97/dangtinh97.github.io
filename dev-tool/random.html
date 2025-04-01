@@ -6,8 +6,8 @@
   <title>Random Character Generator</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f5f6fa;
       margin: 0;
       padding: 20px;
       display: flex;
@@ -16,18 +16,18 @@
       min-height: 100vh;
     }
     .container {
+      max-width: 900px;
       background: white;
-      padding: 20px;
-      border-radius: 15px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-      width: 100%;
-      max-width: 500px;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      padding: 2rem;
       text-align: center;
     }
     h1 {
-      color: #333;
+      color: #2c3e50;
       font-size: 1.8em;
-      margin-bottom: 20px;
+      margin-bottom: 2rem;
+      font-weight: 600;
     }
     .options {
       display: flex;
@@ -41,52 +41,72 @@
       justify-content: space-between;
       padding: 5px 10px;
     }
+    label {
+      color: #34495e;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
     input[type="checkbox"] {
       margin-right: 10px;
     }
     input[type="number"] {
       padding: 8px;
-      border: 1px solid #ddd;
+      border: 1px solid #dcdcdc;
       border-radius: 5px;
       width: 60px;
+      transition: border-color 0.3s;
+    }
+    input[type="number"]:focus {
+      border-color: #3498db;
+      box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
+      outline: none;
     }
     .button-group {
       display: flex;
-      gap: 10px;
+      gap: 1rem;
+      justify-content: center;
+      margin: 1.5rem 0;
     }
     button {
-      padding: 10px;
-      background: #ff6f61;
-      color: white;
+      padding: 0.5rem 1.5rem;
+      font-weight: 500;
       border: none;
       border-radius: 5px;
+      color: white;
       cursor: pointer;
-      transition: background 0.3s;
+      transition: transform 0.2s, background-color 0.2s;
       flex: 1;
     }
     button:hover {
-      background: #e65b50;
+      transform: translateY(-2px);
     }
-    #copyButton {
-      background: #4CAF50;
+    .btn-dark {
+      background-color: #2c3e50;
+      border-color: #2c3e50;
     }
-    #copyButton:hover {
-      background: #45a049;
+    .btn-info {
+      background-color: #3498db;
+      border-color: #3498db;
     }
     #result {
       margin-top: 20px;
       font-size: 1.2em;
-      font-weight: bold;
       color: #333;
       word-wrap: break-word;
       text-align: left;
       white-space: pre-wrap;
+      border: 1px solid #dcdcdc;
+      border-radius: 5px;
+      padding: 10px;
+      background: white;
     }
 
     /* Responsive Design */
-    @media (max-width: 500px) {
+    @media (max-width: 600px) {
       .container {
-        padding: 15px;
+        padding: 1rem;
       }
       h1 {
         font-size: 1.5em;
@@ -136,8 +156,8 @@
     </div>
   </div>
   <div class="button-group">
-    <button onclick="generateRandom()">Tạo Random</button>
-    <button id="copyButton" onclick="copyResult()">Copy Kết Quả</button>
+    <button class="btn-dark" onclick="generateRandom()">Tạo Random</button>
+    <button id="copyButton" class="btn-info" onclick="copyResult()">Copy Kết Quả</button>
   </div>
   <div id="result"></div>
 </div>
@@ -196,13 +216,11 @@
       return;
     }
 
-    // Phương pháp 1: Sử dụng navigator.clipboard (ưu tiên)
     if (navigator.clipboard && window.isSecureContext) {
       navigator.clipboard.writeText(resultText)
               .then(() => alert('Đã copy kết quả vào clipboard!'))
               .catch(() => fallbackCopy(resultText));
     } else {
-      // Phương pháp dự phòng: Sử dụng execCommand
       fallbackCopy(resultText);
     }
   }
@@ -210,7 +228,7 @@
   function fallbackCopy(text) {
     const textArea = document.createElement('textarea');
     textArea.value = text;
-    textArea.style.position = 'fixed'; // Tránh làm ảnh hưởng giao diện
+    textArea.style.position = 'fixed';
     textArea.style.opacity = '0';
     document.body.appendChild(textArea);
     textArea.focus();
