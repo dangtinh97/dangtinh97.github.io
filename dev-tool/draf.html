@@ -1,11 +1,12 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="vi">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
-  <title>MD5/SHA1 Generator</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <title>Chuyển Đổi Đơn Vị Thời Gian</title>
   <style>
     body {
       background-color: #f5f6fa;
@@ -28,18 +29,19 @@
     .form-label {
       font-weight: 500;
       color: #34495e;
-      margin-bottom: 0.5rem;
     }
     .form-control {
       border-radius: 5px;
       border: 1px solid #dcdcdc;
       transition: border-color 0.3s;
-      resize: vertical;
-      min-height: 120px;
     }
     .form-control:focus {
       border-color: #3498db;
       box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
+    }
+    textarea.form-control {
+      resize: vertical;
+      min-height: 100px;
     }
     .btn {
       padding: 0.5rem 1.5rem;
@@ -49,91 +51,347 @@
     .btn:hover {
       transform: translateY(-2px);
     }
-    .btn-primary {
+    .btn-dark {
+      background-color: #2c3e50;
+      border-color: #2c3e50;
+    }
+    .btn-info {
       background-color: #3498db;
       border-color: #3498db;
     }
     .button-group {
       display: flex;
+      gap: 1rem;
       justify-content: center;
-      margin: 1.5rem 0 2rem;
+      margin: 1.5rem 0;
     }
-    .result {
-      background-color: #f8f9fa;
-      border-radius: 5px;
-      padding: 1rem;
-      font-size: 18px;
-      color: #2c3e50;
+    .input-group {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
     }
-    .md5, .sha1 {
-      font-weight: 500;
-      padding: 0.5rem 0;
+    .input-group .form-group {
+      flex: 1;
+      min-width: 200px;
     }
-    .md5 p, .sha1 p {
-      margin: 0;
-      min-width: 60px;
-    }
-    .md5 span, .sha1 span {
-      font-weight: 600;
-      color: #3498db;
-      word-break: break-all;
+    .checkbox-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: center;
+      margin: 1rem 0;
     }
   </style>
 </head>
 <body>
 <div class="container">
-  <h1>MD5/SHA1 Generator</h1>
+  <h1>Chuyển Đổi Đơn Vị Thời Gian</h1>
   <div class="row">
     <div class="col-12 mb-3">
-      <label for="text" class="form-label">Input Text</label>
-      <textarea id="text" rows="5" class="form-control" placeholder="Enter text to generate hashes"></textarea>
+      <label for="value" class="form-label">Giá trị cần chuyển đổi</label>
+      <textarea id="value" class="form-control" placeholder="Nhập giá trị (số)"></textarea>
+    </div>
+
+    <div class="input-group mb-3">
+      <div class="form-group">
+        <label for="fromUnit" class="form-label">Đơn vị gốc</label>
+        <select id="fromUnit" class="form-control">
+          <option value="seconds">Giây</option>
+          <option value="minutes">Phút</option>
+          <option value="hours">Giờ</option>
+          <option value="days">Ngày</option>
+          <option value="weeks">Tuần</option>
+          <option value="months">Tháng</option>
+          <option value="years">Năm</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Đơn vị hiển thị</label>
+        <div class="checkbox-group">
+          <label><input type="checkbox" id="showYearUnit" checked> Năm</label>
+          <label><input type="checkbox" id="showMonthUnit" checked> Tháng</label>
+          <label><input type="checkbox" id="showDayUnit" checked> Ngày</label>
+          <label><input type="checkbox" id="showHourUnit" checked> Giờ</label>
+          <label><input type="checkbox" id="showMinuteUnit" checked> Phút</label>
+          <label><input type="checkbox" id="showSecondUnit" checked> Giây</label>
+        </div>
+      </div>
     </div>
 
     <div class="button-group">
-      <button type="button" id="cal" class="btn btn-primary">Generate Hashes</button>
+      <button onclick="convertTime()" class="btn btn-dark">Chuyển Đổi</button>
     </div>
 
-    <div class="result">
-      <div class="md5 d-flex">
-        <p class="me-3">MD5:</p>
-        <span></span>
+    <div class="col-12">
+      <label for="result" class="form-label">Kết quả</label>
+      <textarea rows="5" readonly id="result" class="form-control" placeholder="Kết quả sẽ hiển thị ở đây"></textarea>
+    </div>
+  </div>
+
+  <div class="row mt-4">
+    <div class="col-12 mb-3">
+      <label for="timestamp" class="form-label">Timestamp</label>
+      <textarea id="timestamp" class="form-control" placeholder="Nhập timestamp (mặc định: giờ hiện tại)"></textarea>
+    </div>
+
+    <div class="input-group mb-3">
+      <div class="form-group">
+        <label for="timestampType" class="form-label">Đơn vị Timestamp</label>
+        <select id="timestampType" class="form-control">
+          <option value="seconds">Giây</option>
+          <option value="milliseconds" selected>Mili-giây</option>
+        </select>
       </div>
-      <div class="sha1 d-flex">
-        <p class="me-3">SHA1:</p>
-        <span></span>
+      <div class="form-group">
+        <label for="timezone" class="form-label">Múi giờ</label>
+        <select id="timezone" class="form-control">
+          <option value="client">Múi giờ máy (mặc định)</option>
+          <option value="UTC">UTC</option>
+          <option value="Asia/Ho_Chi_Minh">Asia/Ho_Chi_Minh (GMT+7)</option>
+          <option value="America/New_York">America/New_York (GMT-4/-5)</option>
+          <option value="Europe/London">Europe/London (GMT+0/+1)</option>
+          <option value="Asia/Tokyo">Asia/Tokyo (GMT+9)</option>
+          <option value="Australia/Sydney">Australia/Sydney (GMT+10/+11)</option>
+        </select>
       </div>
+    </div>
+
+    <div class="input-group mb-3">
+      <div class="form-group">
+        <label class="form-label">Thành phần thời gian</label>
+        <div class="checkbox-group">
+          <label><input type="checkbox" id="showYear" checked> Năm</label>
+          <label><input type="checkbox" id="showMonth" checked> Tháng</label>
+          <label><input type="checkbox" id="showDay" checked> Ngày</label>
+          <label><input type="checkbox" id="showHour" checked> Giờ</label>
+          <label><input type="checkbox" id="showMinute" checked> Phút</label>
+          <label><input type="checkbox" id="showSecond" checked> Giây</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="button-group">
+      <button onclick="convertTimestamp()" class="btn btn-dark">Chuyển Đổi</button>
+    </div>
+
+    <div class="col-12">
+      <label for="timestampResult" class="form-label">Kết quả</label>
+      <textarea rows="5" readonly id="timestampResult" class="form-control" placeholder="Kết quả sẽ hiển thị ở đây"></textarea>
+    </div>
+  </div>
+
+  <div class="row mt-4">
+    <div class="col-12 mb-3">
+      <label for="distanceTimestamp" class="form-label">Timestamp</label>
+      <textarea id="distanceTimestamp" class="form-control" placeholder="Nhập timestamp"></textarea>
+    </div>
+
+    <div class="input-group mb-3">
+      <div class="form-group">
+        <label for="distanceTimestampType" class="form-label">Đơn vị Timestamp</label>
+        <select id="distanceTimestampType" class="form-control">
+          <option value="seconds">Giây</option>
+          <option value="milliseconds" selected>Mili-giây</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="distanceDirection" class="form-label">Hướng tính</label>
+        <select id="distanceDirection" class="form-control">
+          <option value="toNow">Từ timestamp đến hiện tại</option>
+          <option value="fromNow">Từ hiện tại đến timestamp</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="input-group mb-3">
+      <div class="form-group">
+        <label class="form-label">Đơn vị hiển thị</label>
+        <div class="checkbox-group">
+          <label><input type="checkbox" id="showYearDistance" checked> Năm</label>
+          <label><input type="checkbox" id="showMonthDistance" checked> Tháng</label>
+          <label><input type="checkbox" id="showDayDistance" checked> Ngày</label>
+          <label><input type="checkbox" id="showHourDistance" checked> Giờ</label>
+          <label><input type="checkbox" id="showMinuteDistance" checked> Phút</label>
+          <label><input type="checkbox" id="showSecondDistance" checked> Giây</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="button-group">
+      <button onclick="calculateDistance()" class="btn btn-dark">Tính Khoảng Cách</button>
+    </div>
+
+    <div class="col-12">
+      <label for="distanceResult" class="form-label">Kết quả</label>
+      <textarea rows="5" readonly id="distanceResult" class="form-control" placeholder="Kết quả sẽ hiển thị ở đây"></textarea>
     </div>
   </div>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.7.0.js" integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
 <script>
-  document.addEventListener("DOMContentLoaded",function (){
+  const clientTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  document.getElementById('timezone').options[0].text = `Múi giờ máy (${clientTimezone})`;
+  const timestampInput = document.getElementById('timestamp');
+  timestampInput.value = Date.now();
+  convertTimestamp();
 
-    var MD5 = function(d){var r = M(V(Y(X(d),8*d.length)));return r.toLowerCase()};function M(d){for(var _,m="0123456789ABCDEF",f="",r=0;r<d.length;r++)_=d.charCodeAt(r),f+=m.charAt(_>>>4&15)+m.charAt(15&_);return f}function X(d){for(var _=Array(d.length>>2),m=0;m<_.length;m++)_[m]=0;for(m=0;m<8*d.length;m+=8)_[m>>5]|=(255&d.charCodeAt(m/8))<<m%32;return _}function V(d){for(var _="",m=0;m<32*d.length;m+=8)_+=String.fromCharCode(d[m>>5]>>>m%32&255);return _}function Y(d,_){d[_>>5]|=128<<_%32,d[14+(_+64>>>9<<4)]=_;for(var m=1732584193,f=-271733879,r=-1732584194,i=271733878,n=0;n<d.length;n+=16){var h=m,t=f,g=r,e=i;f=md5_ii(f=md5_ii(f=md5_ii(f=md5_ii(f=md5_hh(f=md5_hh(f=md5_hh(f=md5_hh(f=md5_gg(f=md5_gg(f=md5_gg(f=md5_gg(f=md5_ff(f=md5_ff(f=md5_ff(f=md5_ff(f,r=md5_ff(r,i=md5_ff(i,m=md5_ff(m,f,r,i,d[n+0],7,-680876936),f,r,d[n+1],12,-389564586),m,f,d[n+2],17,606105819),i,m,d[n+3],22,-1044525330),r=md5_ff(r,i=md5_ff(i,m=md5_ff(m,f,r,i,d[n+4],7,-176418897),f,r,d[n+5],12,1200080426),m,f,d[n+6],17,-1473231341),i,m,d[n+7],22,-45705983),r=md5_ff(r,i=md5_ff(i,m=md5_ff(m,f,r,i,d[n+8],7,1770035416),f,r,d[n+9],12,-1958414417),m,f,d[n+10],17,-42063),i,m,d[n+11],22,-1990404162),r=md5_ff(r,i=md5_ff(i,m=md5_ff(m,f,r,i,d[n+12],7,1804603682),f,r,d[n+13],12,-40341101),m,f,d[n+14],17,-1502002290),i,m,d[n+15],22,1236535329),r=md5_gg(r,i=md5_gg(i,m=md5_gg(m,f,r,i,d[n+1],5,-165796510),f,r,d[n+6],9,-1069501632),m,f,d[n+11],14,643717713),i,m,d[n+0],20,-373897302),r=md5_gg(r,i=md5_gg(i,m=md5_gg(m,f,r,i,d[n+5],5,-701558691),f,r,d[n+10],9,38016083),m,f,d[n+15],14,-660478335),i,m,d[n+4],20,-405537848),r=md5_gg(r,i=md5_gg(i,m=md5_gg(m,f,r,i,d[n+9],5,568446438),f,r,d[n+14],9,-1019803690),m,f,d[n+3],14,-187363961),i,m,d[n+8],20,1163531501),r=md5_gg(r,i=md5_gg(i,m=md5_gg(m,f,r,i,d[n+13],5,-1444681467),f,r,d[n+2],9,-51403784),m,f,d[n+7],14,1735328473),i,m,d[n+12],20,-1926607734),r=md5_hh(r,i=md5_hh(i,m=md5_hh(m,f,r,i,d[n+5],4,-378558),f,r,d[n+8],11,-2022574463),m,f,d[n+11],16,1839030562),i,m,d[n+14],23,-35309556),r=md5_hh(r,i=md5_hh(i,m=md5_hh(m,f,r,i,d[n+1],4,-1530992060),f,r,d[n+4],11,1272893353),m,f,d[n+7],16,-155497632),i,m,d[n+10],23,-1094730640),r=md5_hh(r,i=md5_hh(i,m=md5_hh(m,f,r,i,d[n+13],4,681279174),f,r,d[n+0],11,-358537222),m,f,d[n+3],16,-722521979),i,m,d[n+6],23,76029189),r=md5_hh(r,i=md5_hh(i,m=md5_hh(m,f,r,i,d[n+9],4,-640364487),f,r,d[n+12],11,-421815835),m,f,d[n+15],16,530742520),i,m,d[n+2],23,-995338651),r=md5_ii(r,i=md5_ii(i,m=md5_ii(m,f,r,i,d[n+0],6,-198630844),f,r,d[n+7],10,1126891415),m,f,d[n+14],15,-1416354905),i,m,d[n+5],21,-57434055),r=md5_ii(r,i=md5_ii(i,m=md5_ii(m,f,r,i,d[n+12],6,1700485571),f,r,d[n+3],10,-1894986606),m,f,d[n+10],15,-1051523),i,m,d[n+1],21,-2054922799),r=md5_ii(r,i=md5_ii(i,m=md5_ii(m,f,r,i,d[n+8],6,1873313359),f,r,d[n+15],10,-30611744),m,f,d[n+6],15,-1560198380),i,m,d[n+13],21,1309151649),r=md5_ii(r,i=md5_ii(i,m=md5_ii(m,f,r,i,d[n+4],6,-145523070),f,r,d[n+11],10,-1120210379),m,f,d[n+2],15,718787259),i,m,d[n+9],21,-343485551),m=safe_add(m,h),f=safe_add(f,t),r=safe_add(r,g),i=safe_add(i,e)}return Array(m,f,r,i)}function md5_cmn(d,_,m,f,r,i){return safe_add(bit_rol(safe_add(safe_add(_,d),safe_add(f,i)),r),m)}function md5_ff(d,_,m,f,r,i,n){return md5_cmn(_&m|~_&f,d,_,r,i,n)}function md5_gg(d,_,m,f,r,i,n){return md5_cmn(_&f|m&~f,d,_,r,i,n)}function md5_hh(d,_,m,f,r,i,n){return md5_cmn(_^m^f,d,_,r,i,n)}function md5_ii(d,_,m,f,r,i,n){return md5_cmn(m^(_|~f),d,_,r,i,n)}function safe_add(d,_){var m=(65535&d)+(65535&_);return(d>>16)+(_>>16)+(m>>16)<<16|65535&m}function bit_rol(d,_){return d<<_|d>>>32-_}
+  function convertTime() {
+    const value = parseFloat(document.getElementById('value').value.trim());
+    const fromUnit = document.getElementById('fromUnit').value;
+    const showYear = document.getElementById('showYearUnit').checked;
+    const showMonth = document.getElementById('showMonthUnit').checked;
+    const showDay = document.getElementById('showDayUnit').checked;
+    const showHour = document.getElementById('showHourUnit').checked;
+    const showMinute = document.getElementById('showMinuteUnit').checked;
+    const showSecond = document.getElementById('showSecondUnit').checked;
 
-    $(this).on('click','#cal',()=>{
-      const v = $('#text').val().trim();
-      const r = MD5(v)
-      $('.md5 span').html(r)
-      $('.sha1 span').html(SHA1(v))
-    })
+    if (isNaN(value) || value < 0) {
+      document.getElementById('result').value = 'Vui lòng nhập một giá trị số hợp lệ!';
+      return;
+    }
 
-    //code of the SHA1 function
-    function SHA1(msg){function rotate_left(n,s){var t4=(n<<s)|(n>>>(32-s));return t4;};function lsb_hex(val){var str='';var i;var vh;var vl;for(i=0;i<=6;i+=2){vh=(val>>>(i*4+4))&0x0f;vl=(val>>>(i*4))&0x0f;str+=vh.toString(16)+vl.toString(16);}
-      return str;};function cvt_hex(val){var str='';var i;var v;for(i=7;i>=0;i--){v=(val>>>(i*4))&0x0f;str+=v.toString(16);}
-      return str;};function Utf8Encode(string){string=string.replace(/\r\n/g,'\n');var utftext='';for(var n=0;n<string.length;n++){var c=string.charCodeAt(n);if(c<128){utftext+=String.fromCharCode(c);}
-    else if((c>127)&&(c<2048)){utftext+=String.fromCharCode((c>>6)|192);utftext+=String.fromCharCode((c&63)|128);}
-    else{utftext+=String.fromCharCode((c>>12)|224);utftext+=String.fromCharCode(((c>>6)&63)|128);utftext+=String.fromCharCode((c&63)|128);}}
-      return utftext;};var blockstart;var i,j;var W=new Array(80);var H0=0x67452301;var H1=0xEFCDAB89;var H2=0x98BADCFE;var H3=0x10325476;var H4=0xC3D2E1F0;var A,B,C,D,E;var temp;msg=Utf8Encode(msg);var msg_len=msg.length;var word_array=new Array();for(i=0;i<msg_len-3;i+=4){j=msg.charCodeAt(i)<<24|msg.charCodeAt(i+1)<<16|msg.charCodeAt(i+2)<<8|msg.charCodeAt(i+3);word_array.push(j);}
-      switch(msg_len % 4){case 0:i=0x080000000;break;case 1:i=msg.charCodeAt(msg_len-1)<<24|0x0800000;break;case 2:i=msg.charCodeAt(msg_len-2)<<24|msg.charCodeAt(msg_len-1)<<16|0x08000;break;case 3:i=msg.charCodeAt(msg_len-3)<<24|msg.charCodeAt(msg_len-2)<<16|msg.charCodeAt(msg_len-1)<<8|0x80;break;}
-      word_array.push(i);while((word_array.length % 16)!=14)word_array.push(0);word_array.push(msg_len>>>29);word_array.push((msg_len<<3)&0x0ffffffff);for(blockstart=0;blockstart<word_array.length;blockstart+=16){for(i=0;i<16;i++)W[i]=word_array[blockstart+i];for(i=16;i<=79;i++)W[i]=rotate_left(W[i-3]^W[i-8]^W[i-14]^W[i-16],1);A=H0;B=H1;C=H2;D=H3;E=H4;for(i=0;i<=19;i++){temp=(rotate_left(A,5)+((B&C)|(~B&D))+E+W[i]+0x5A827999)&0x0ffffffff;E=D;D=C;C=rotate_left(B,30);B=A;A=temp;}
-        for(i=20;i<=39;i++){temp=(rotate_left(A,5)+(B^C^D)+E+W[i]+0x6ED9EBA1)&0x0ffffffff;E=D;D=C;C=rotate_left(B,30);B=A;A=temp;}
-        for(i=40;i<=59;i++){temp=(rotate_left(A,5)+((B&C)|(B&D)|(C&D))+E+W[i]+0x8F1BBCDC)&0x0ffffffff;E=D;D=C;C=rotate_left(B,30);B=A;A=temp;}
-        for(i=60;i<=79;i++){temp=(rotate_left(A,5)+(B^C^D)+E+W[i]+0xCA62C1D6)&0x0ffffffff;E=D;D=C;C=rotate_left(B,30);B=A;A=temp;}
-        H0=(H0+A)&0x0ffffffff;H1=(H1+B)&0x0ffffffff;H2=(H2+C)&0x0ffffffff;H3=(H3+D)&0x0ffffffff;H4=(H4+E)&0x0ffffffff;}
-      var temp=cvt_hex(H0)+cvt_hex(H1)+cvt_hex(H2)+cvt_hex(H3)+cvt_hex(H4);return temp.toLowerCase();}
-  })
+    if (!showYear && !showMonth && !showDay && !showHour && !showMinute && !showSecond) {
+      document.getElementById('result').value = 'Vui lòng chọn ít nhất một đơn vị hiển thị!';
+      return;
+    }
+
+    const conversionsToSeconds = {
+      seconds: 1,
+      minutes: 60,
+      hours: 3600,
+      days: 86400,
+      weeks: 604800,
+      months: 2628000,
+      years: 31536000
+    };
+
+    const totalSeconds = value * conversionsToSeconds[fromUnit];
+    let seconds = Math.floor(totalSeconds);
+    let minutes = Math.floor(seconds / 60);
+    seconds %= 60;
+    let hours = Math.floor(minutes / 60);
+    minutes %= 60;
+    let days = Math.floor(hours / 24);
+    hours %= 24;
+    let months = Math.floor(days / 30.44);
+    days = Math.floor(days % 30.44);
+    let years = Math.floor(months / 12);
+    months %= 12;
+
+    let resultParts = [];
+    if (showYear && years > 0) resultParts.push(`${years} năm`);
+    if (showMonth && months > 0) resultParts.push(`${months} tháng`);
+    if (showDay && days > 0) resultParts.push(`${days} ngày`);
+    if (showHour && hours > 0) resultParts.push(`${hours} giờ`);
+    if (showMinute && minutes > 0) resultParts.push(`${minutes} phút`);
+    if (showSecond && seconds > 0) resultParts.push(`${seconds} giây`);
+
+    const unitsVi = {
+      seconds: 'giây',
+      minutes: 'phút',
+      hours: 'giờ',
+      days: 'ngày',
+      weeks: 'tuần',
+      months: 'tháng',
+      years: 'năm'
+    };
+
+    const resultStr = resultParts.length > 0 ? resultParts.join(', ') : '0 giây';
+    document.getElementById('result').value = `${value} ${unitsVi[fromUnit]} = ${resultStr}`;
+  }
+
+  function convertTimestamp() {
+    let timestamp = parseFloat(document.getElementById('timestamp').value.trim());
+    const timestampType = document.getElementById('timestampType').value;
+    const timezone = document.getElementById('timezone').value;
+    const showYear = document.getElementById('showYear').checked;
+    const showMonth = document.getElementById('showMonth').checked;
+    const showDay = document.getElementById('showDay').checked;
+    const showHour = document.getElementById('showHour').checked;
+    const showMinute = document.getElementById('showMinute').checked;
+    const showSecond = document.getElementById('showSecond').checked;
+
+    if (isNaN(timestamp)) {
+      timestamp = Date.now();
+      document.getElementById('timestamp').value = timestamp;
+    }
+
+    if (!showYear && !showMonth && !showDay && !showHour && !showMinute && !showSecond) {
+      document.getElementById('timestampResult').value = 'Vui lòng chọn ít nhất một thành phần thời gian!';
+      return;
+    }
+
+    const milliseconds = timestampType === 'seconds' ? timestamp * 1000 : timestamp;
+    const date = new Date(milliseconds);
+    const options = {
+      timeZone: timezone === 'client' ? clientTimezone : timezone,
+      year: showYear ? 'numeric' : undefined,
+      month: showMonth ? '2-digit' : undefined,
+      day: showDay ? '2-digit' : undefined,
+      hour: showHour ? '2-digit' : undefined,
+      minute: showMinute ? '2-digit' : undefined,
+      second: showSecond ? '2-digit' : undefined,
+      hour12: false
+    };
+
+    const formatter = new Intl.DateTimeFormat('vi', options);
+    const formattedDate = formatter.format(date);
+    const tzName = timezone === 'client' ? clientTimezone : timezone;
+
+    document.getElementById('timestampResult').value = `${timestamp} ${timestampType === 'seconds' ? 'giây' : 'mili-giây'} = ${formattedDate} (${tzName})`;
+  }
+
+  function calculateDistance() {
+    const timestamp = parseFloat(document.getElementById('distanceTimestamp').value.trim());
+    const timestampType = document.getElementById('distanceTimestampType').value;
+    const direction = document.getElementById('distanceDirection').value;
+    const showYear = document.getElementById('showYearDistance').checked;
+    const showMonth = document.getElementById('showMonthDistance').checked;
+    const showDay = document.getElementById('showDayDistance').checked;
+    const showHour = document.getElementById('showHourDistance').checked;
+    const showMinute = document.getElementById('showMinuteDistance').checked;
+    const showSecond = document.getElementById('showSecondDistance').checked;
+
+    if (isNaN(timestamp)) {
+      document.getElementById('distanceResult').value = 'Vui lòng nhập một timestamp hợp lệ!';
+      return;
+    }
+
+    if (!showYear && !showMonth && !showDay && !showHour && !showMinute && !showSecond) {
+      document.getElementById('distanceResult').value = 'Vui lòng chọn ít nhất một đơn vị hiển thị!';
+      return;
+    }
+
+    const milliseconds = timestampType === 'seconds' ? timestamp * 1000 : timestamp;
+    const now = Date.now();
+    const isFuture = milliseconds > now;
+    const effectiveDirection = direction === 'fromNow' ? (isFuture ? 'fromNow' : 'toNow') : (isFuture ? 'fromNow' : 'toNow');
+    let diffMs = isFuture ? milliseconds - now : now - milliseconds;
+
+    const secondsTotal = Math.floor(diffMs / 1000);
+    let seconds = secondsTotal % 60;
+    let minutes = Math.floor(secondsTotal / 60);
+    let hours = Math.floor(minutes / 60);
+    minutes %= 60;
+    let days = Math.floor(hours / 24);
+    hours %= 24;
+    let months = Math.floor(days / 30.44);
+    days = Math.floor(days % 30.44);
+    let years = Math.floor(months / 12);
+    months %= 12;
+
+    let resultParts = [];
+    if (showYear && years > 0) resultParts.push(`${years} năm`);
+    if (showMonth && months > 0) resultParts.push(`${months} tháng`);
+    if (showDay && days > 0) resultParts.push(`${days} ngày`);
+    if (showHour && hours > 0) resultParts.push(`${hours} giờ`);
+    if (showMinute && minutes > 0) resultParts.push(`${minutes} phút`);
+    if (showSecond && seconds > 0) resultParts.push(`${seconds} giây`);
+
+    const resultStr = resultParts.length > 0 ? resultParts.join(', ') : '0 giây';
+    const directionText = effectiveDirection === 'toNow' ? 'đến hiện tại' : 'từ hiện tại';
+    document.getElementById('distanceResult').value = `Khoảng cách ${directionText}: ${resultStr}`;
+  }
 </script>
 </body>
 </html>
