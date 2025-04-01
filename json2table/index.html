@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JSON to Table Converter</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 1200px;
+      margin: 20px auto;
+      padding: 20px;
+    }
+    textarea {
+      width: 100%;
+      height: 200px;
+      margin: 10px 0;
+      padding: 10px;
+    }
+    .button-group {
+      margin: 10px 0;
+    }
+    button {
+      padding: 10px 20px;
+      margin-right: 10px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    .table-wrapper {
+      overflow-x: auto;
+      margin-top: 20px;
+      position: relative;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 600px;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+    .nested-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .nested-table td {
+      border: 1px solid #eee;
+      padding: 4px;
+    }
+    .error {
+      color: red;
+      margin: 10px 0;
+    }
+    .fullscreen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: white;
+      z-index: 1000;
+      padding: 20px;
+      margin: 0;
+      overflow: auto;
+    }
+    .exit-fullscreen {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      background-color: #ff4444;
+      padding: 10px 20px;
+      z-index: 1001;
+    }
+    .exit-fullscreen:hover {
+      background-color: #cc0000;
+    }
+  </style>
+</head>
+<body>
+<h2>JSON to Table Converter</h2>
+<textarea id="jsonInput" placeholder="Dán JSON của bạn vào đây..."></textarea>
+<div class="button-group">
+  <button onclick="convertToTable()">Chuyển thành bảng</button>
+  <button onclick="exportToCSV()">Export CSV</button>
+  <button id="fullscreenBtn" onclick="toggleFullscreen()">Xem full màn hình</button>
+</div>
+<div id="errorMsg" class="error"></div>
+<div id="tableContainer" class="table-wrapper"></div>
+
+<script>
+  let tableData = null;
+  let isFullscreen = false;
+
+  // Hàm tạo bảng lồng nhau cho object đa cấp
+  function createNestedTable(obj) {
+    if (typeof obj !== 'object' || obj === null || Array.isArray(obj)) {
+      const div = document.createElement('div');
+      div.textContent = obj === null || obj === undefined ? '' : JSON.stringify(obj);
+      return div;
+    }
+
+    const table = document.createElement('table');
+    table.className = 'nested-table';
+
+    for (const [key, value] of Object.entries(obj)) {
+      const row = document.createElement('tr');
+
+      const keyCell = document.createElement('td');
+      keyCell.textContent = key;
+      keyCell.style.fontWeight = 'bold';
+
+      const valueCell = document.createElement('td');
+      if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
+        valueCell.appendChild(createNestedTable(value));
+      } else {
+        valueCell.textContent = value === null || value === undefined ? '' : JSON.stringify(value);
+      }
+
+      row.appendChild(keyCell);
+      row.appendChild(valueCell);
+      table.appendChild(row);
+    }
+    return table;
+  }
+
+  function convertToTable() {
+    const jsonInput = document.getElementById('jsonInput').value;
+    const errorMsg = document.getElementById('errorMsg');
+    const tableContainer = document.getElementById('tableContainer');
+
+    errorMsg.innerHTML = '';
+    tableContainer.innerHTML = '';
+
+    try {
+      tableData = JSON.parse(jsonInput);
+
+      if (!Array.isArray(tableData) || tableData.length === 0) {
+        errorMsg.innerHTML = 'Vui lòng nhập một mảng JSON hợp lệ với ít nhất một phần tử';
+        return;
+      }
+
+      const headers = Object.keys(tableData[0]);
+      const table = document.createElement('table');
+      const thead = document.createElement('thead');
+      const tbody = document.createElement('tbody');
+
+      const headerRow = document.createElement('tr');
+      headers.forEach(header => {
+        const th = document.createElement('th');
+        th.textContent = header;
+        headerRow.appendChild(th);
+      });
+      thead.appendChild(headerRow);
+
+      tableData.forEach(item => {
+        const row = document.createElement('tr');
+        headers.forEach(header => {
+          const td = document.createElement('td');
+          const value = item[header];
+          if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
+            td.appendChild(createNestedTable(value));
+          } else {
+            td.textContent = value === null || value === undefined ? '' : JSON.stringify(value);
+          }
+          row.appendChild(td);
+        });
+        tbody.appendChild(row);
+      });
+
+      table.appendChild(thead);
+      table.appendChild(tbody);
+      tableContainer.appendChild(table);
+
+    } catch (error) {
+      errorMsg.innerHTML = 'Lỗi: JSON không hợp lệ - ' + error.message;
+      tableData = null;
+    }
+  }
+
+  function exportToCSV() {
+    if (!tableData) {
+      alert('Vui lòng tạo bảng trước khi export!');
+      return;
+    }
+
+    function flattenValue(value) {
+      if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
+        return JSON.stringify(value).replace(/"/g, '""');
+      }
+      return value === null || value === undefined ? '' : String(value).replace(/"/g, '""');
+    }
+
+    const headers = Object.keys(tableData[0]);
+    let csv = headers.map(h => `"${h}"`).join(',') + '\n';
+
+    tableData.forEach(item => {
+      const row = headers.map(header => `"${flattenValue(item[header])}"`).join(',');
+      csv += row + '\n';
+    });
+
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'table_export.csv';
+    link.click();
+  }
+
+  function toggleFullscreen() {
+    const tableContainer = document.getElementById('tableContainer');
+    const fullscreenBtn = document.getElementById('fullscreenBtn');
+
+    if (tableContainer.children.length === 0) {
+      alert('Vui lòng tạo bảng trước khi xem full màn hình!');
+      return;
+    }
+
+    if (isFullscreen) {
+      tableContainer.classList.remove('fullscreen');
+      const exitBtn = document.getElementById('exitFullscreenBtn');
+      if (exitBtn) exitBtn.remove();
+      fullscreenBtn.textContent = 'Xem full màn hình';
+      isFullscreen = false;
+    } else {
+      tableContainer.classList.add('fullscreen');
+      const exitBtn = document.createElement('button');
+      exitBtn.id = 'exitFullscreenBtn';
+      exitBtn.className = 'exit-fullscreen';
+      exitBtn.textContent = 'Thoát';
+      exitBtn.onclick = toggleFullscreen;
+      tableContainer.appendChild(exitBtn);
+      fullscreenBtn.textContent = 'Thu nhỏ';
+      isFullscreen = true;
+    }
+  }
+
+  // Thêm sự kiện phím Esc để thoát toàn màn hình
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && isFullscreen) {
+      toggleFullscreen();
+    }
+  });
+</script>
+</body>
+</html>
