@@ -3,14 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <title>Chuyển Đổi Đơn Vị Thời Gian</title>
     <style>
         body {
             background-color: #f5f6fa;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
         }
         .container {
             max-width: 900px;
@@ -19,36 +22,70 @@
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
             padding: 2rem;
             margin-top: 3rem;
+            text-align: center;
         }
         h1 {
             color: #2c3e50;
-            text-align: center;
+            font-size: 1.8em;
             margin-bottom: 2rem;
             font-weight: 600;
         }
-        .form-label {
-            font-weight: 500;
-            color: #34495e;
-        }
-        .form-control {
+        .section {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f9f9f9;
             border-radius: 5px;
+        }
+        h2 {
+            font-size: 1.2em;
+            color: #34495e;
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
+        .input-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .input-group input[type="number"], .input-group select {
+            flex: 1;
+            min-width: 200px;
+            padding: 10px;
             border: 1px solid #dcdcdc;
+            border-radius: 5px;
+            font-size: 16px;
             transition: border-color 0.3s;
         }
-        .form-control:focus {
+        .input-group input[type="number"]:focus, .input-group select:focus {
             border-color: #3498db;
             box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
+            outline: none;
         }
-        textarea.form-control {
-            resize: vertical;
-            min-height: 100px;
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin: 10px 0;
         }
-        .btn {
+        label {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: #34495e;
+            font-weight: 500;
+        }
+        button {
             padding: 0.5rem 1.5rem;
             font-weight: 500;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
             transition: transform 0.2s, background-color 0.2s;
+            width: 100%;
         }
-        .btn:hover {
+        button:hover {
             transform: translateY(-2px);
         }
         .btn-dark {
@@ -59,184 +96,148 @@
             background-color: #3498db;
             border-color: #3498db;
         }
-        .button-group {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            margin: 1.5rem 0;
+        #result, #timestampResult, #distanceResult {
+            margin-top: 20px;
+            font-size: 1.1em;
+            color: #333;
+            text-align: left;
+            white-space: pre-wrap;
+            border: 1px solid #dcdcdc;
+            border-radius: 5px;
+            padding: 10px;
+            background: white;
         }
-        .input-group {
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
+
+        /* Responsive Design */
+        @media (max-width: 600px) {
+            .container {
+                padding: 1rem;
+            }
+            h1 {
+                font-size: 1.5em;
+            }
+            h2 {
+                font-size: 1.1em;
+            }
+            .input-group input[type="number"], .input-group select, button {
+                font-size: 14px;
+                padding: 8px;
+            }
         }
-        .input-group .form-group {
-            flex: 1;
-            min-width: 200px;
-        }
-        .checkbox-group {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-            justify-content: center;
-            margin: 1rem 0;
+        @media (min-width: 601px) {
+            .input-group.unit-conversion, .input-group.timestamp-conversion, .input-group.distance-conversion {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
+            .input-group.unit-conversion select, .input-group.timestamp-conversion select, .input-group.distance-conversion select {
+                grid-column: span 1;
+            }
+            .input-group.unit-conversion button, .input-group.timestamp-conversion button, .input-group.distance-conversion button {
+                grid-column: span 2;
+            }
         }
     </style>
 </head>
 <body>
 <div class="container">
     <h1>Chuyển Đổi Đơn Vị Thời Gian</h1>
-    <div class="row">
-        <div class="col-12 mb-3">
-            <label for="value" class="form-label">Giá trị cần chuyển đổi</label>
-            <textarea id="value" class="form-control" placeholder="Nhập giá trị (số)"></textarea>
-        </div>
 
-        <div class="input-group mb-3">
-            <div class="form-group">
-                <label for="fromUnit" class="form-label">Đơn vị gốc</label>
-                <select id="fromUnit" class="form-control">
-                    <option value="seconds">Giây</option>
-                    <option value="minutes">Phút</option>
-                    <option value="hours">Giờ</option>
-                    <option value="days">Ngày</option>
-                    <option value="weeks">Tuần</option>
-                    <option value="months">Tháng</option>
-                    <option value="years">Năm</option>
-                </select>
+    <!-- Chuyển đổi đơn vị thời gian -->
+    <div class="section">
+        <h2>Chuyển Đổi Đơn Vị</h2>
+        <div class="input-group unit-conversion">
+            <input type="number" id="value" placeholder="Nhập giá trị" min="0" step="any">
+            <select id="fromUnit">
+                <option value="seconds">Giây</option>
+                <option value="minutes">Phút</option>
+                <option value="hours">Giờ</option>
+                <option value="days">Ngày</option>
+                <option value="weeks">Tuần</option>
+                <option value="months">Tháng</option>
+                <option value="years">Năm</option>
+            </select>
+            <div class="checkbox-group">
+                <label><input type="checkbox" id="showYearUnit" checked> Năm</label>
+                <label><input type="checkbox" id="showMonthUnit" checked> Tháng</label>
+                <label><input type="checkbox" id="showDayUnit" checked> Ngày</label>
+                <label><input type="checkbox" id="showHourUnit" checked> Giờ</label>
+                <label><input type="checkbox" id="showMinuteUnit" checked> Phút</label>
+                <label><input type="checkbox" id="showSecondUnit" checked> Giây</label>
             </div>
-            <div class="form-group">
-                <label class="form-label">Đơn vị hiển thị</label>
-                <div class="checkbox-group">
-                    <label><input type="checkbox" id="showYearUnit" checked> Năm</label>
-                    <label><input type="checkbox" id="showMonthUnit" checked> Tháng</label>
-                    <label><input type="checkbox" id="showDayUnit" checked> Ngày</label>
-                    <label><input type="checkbox" id="showHourUnit" checked> Giờ</label>
-                    <label><input type="checkbox" id="showMinuteUnit" checked> Phút</label>
-                    <label><input type="checkbox" id="showSecondUnit" checked> Giây</label>
-                </div>
-            </div>
+            <button class="btn-dark" onclick="convertTime()">Chuyển Đổi</button>
         </div>
-
-        <div class="button-group">
-            <button onclick="convertTime()" class="btn btn-dark">Chuyển Đổi</button>
-        </div>
-
-        <div class="col-12">
-            <label for="result" class="form-label">Kết quả</label>
-            <textarea rows="5" readonly id="result" class="form-control" placeholder="Kết quả sẽ hiển thị ở đây"></textarea>
-        </div>
+        <div id="result"></div>
     </div>
 
-    <div class="row mt-4">
-        <div class="col-12 mb-3">
-            <label for="timestamp" class="form-label">Timestamp</label>
-            <textarea id="timestamp" class="form-control" placeholder="Nhập timestamp (mặc định: giờ hiện tại)"></textarea>
-        </div>
-
-        <div class="input-group mb-3">
-            <div class="form-group">
-                <label for="timestampType" class="form-label">Đơn vị Timestamp</label>
-                <select id="timestampType" class="form-control">
-                    <option value="seconds">Giây</option>
-                    <option value="milliseconds" selected>Mili-giây</option>
-                </select>
+    <!-- Chuyển đổi timestamp -->
+    <div class="section">
+        <h2>Chuyển Đổi Từ Timestamp</h2>
+        <div class="input-group timestamp-conversion">
+            <input type="number" id="timestamp" placeholder="Nhập timestamp (mặc định: giờ hiện tại)">
+            <select id="timestampType">
+                <option value="seconds">Giây</option>
+                <option value="milliseconds" selected>Mili-giây</option>
+            </select>
+            <select id="timezone">
+                <option value="client">Múi giờ máy (mặc định)</option>
+                <option value="UTC">UTC</option>
+                <option value="Asia/Ho_Chi_Minh">Asia/Ho_Chi_Minh (GMT+7)</option>
+                <option value="America/New_York">America/New_York (GMT-4/-5)</option>
+                <option value="Europe/London">Europe/London (GMT+0/+1)</option>
+                <option value="Asia/Tokyo">Asia/Tokyo (GMT+9)</option>
+                <option value="Australia/Sydney">Australia/Sydney (GMT+10/+11)</option>
+            </select>
+            <div class="checkbox-group">
+                <label><input type="checkbox" id="showYear" checked> Năm</label>
+                <label><input type="checkbox" id="showMonth" checked> Tháng</label>
+                <label><input type="checkbox" id="showDay" checked> Ngày</label>
+                <label><input type="checkbox" id="showHour" checked> Giờ</label>
+                <label><input type="checkbox" id="showMinute" checked> Phút</label>
+                <label><input type="checkbox" id="showSecond" checked> Giây</label>
             </div>
-            <div class="form-group">
-                <label for="timezone" class="form-label">Múi giờ</label>
-                <select id="timezone" class="form-control">
-                    <option value="client">Múi giờ máy (mặc định)</option>
-                    <option value="UTC">UTC</option>
-                    <option value="Asia/Ho_Chi_Minh">Asia/Ho_Chi_Minh (GMT+7)</option>
-                    <option value="America/New_York">America/New_York (GMT-4/-5)</option>
-                    <option value="Europe/London">Europe/London (GMT+0/+1)</option>
-                    <option value="Asia/Tokyo">Asia/Tokyo (GMT+9)</option>
-                    <option value="Australia/Sydney">Australia/Sydney (GMT+10/+11)</option>
-                </select>
-            </div>
+            <button class="btn-info" onclick="convertTimestamp()">Chuyển Đổi</button>
         </div>
-
-        <div class="input-group mb-3">
-            <div class="form-group">
-                <label class="form-label">Thành phần thời gian</label>
-                <div class="checkbox-group">
-                    <label><input type="checkbox" id="showYear" checked> Năm</label>
-                    <label><input type="checkbox" id="showMonth" checked> Tháng</label>
-                    <label><input type="checkbox" id="showDay" checked> Ngày</label>
-                    <label><input type="checkbox" id="showHour" checked> Giờ</label>
-                    <label><input type="checkbox" id="showMinute" checked> Phút</label>
-                    <label><input type="checkbox" id="showSecond" checked> Giây</label>
-                </div>
-            </div>
-        </div>
-
-        <div class="button-group">
-            <button onclick="convertTimestamp()" class="btn btn-dark">Chuyển Đổi</button>
-        </div>
-
-        <div class="col-12">
-            <label for="timestampResult" class="form-label">Kết quả</label>
-            <textarea rows="5" readonly id="timestampResult" class="form-control" placeholder="Kết quả sẽ hiển thị ở đây"></textarea>
-        </div>
+        <div id="timestampResult"></div>
     </div>
 
-    <div class="row mt-4">
-        <div class="col-12 mb-3">
-            <label for="distanceTimestamp" class="form-label">Timestamp</label>
-            <textarea id="distanceTimestamp" class="form-control" placeholder="Nhập timestamp"></textarea>
-        </div>
-
-        <div class="input-group mb-3">
-            <div class="form-group">
-                <label for="distanceTimestampType" class="form-label">Đơn vị Timestamp</label>
-                <select id="distanceTimestampType" class="form-control">
-                    <option value="seconds">Giây</option>
-                    <option value="milliseconds" selected>Mili-giây</option>
-                </select>
+    <!-- Tính khoảng cách thời gian -->
+    <div class="section">
+        <h2>Tính Khoảng Cách Thời Gian</h2>
+        <div class="input-group distance-conversion">
+            <input type="number" id="distanceTimestamp" placeholder="Nhập timestamp">
+            <select id="distanceTimestampType">
+                <option value="seconds">Giây</option>
+                <option value="milliseconds" selected>Mili-giây</option>
+            </select>
+            <select id="distanceDirection">
+                <option value="toNow">Từ timestamp đến hiện tại</option>
+                <option value="fromNow">Từ hiện tại đến timestamp</option>
+            </select>
+            <div class="checkbox-group">
+                <label><input type="checkbox" id="showYearDistance" checked> Năm</label>
+                <label><input type="checkbox" id="showMonthDistance" checked> Tháng</label>
+                <label><input type="checkbox" id="showDayDistance" checked> Ngày</label>
+                <label><input type="checkbox" id="showHourDistance" checked> Giờ</label>
+                <label><input type="checkbox" id="showMinuteDistance" checked> Phút</label>
+                <label><input type="checkbox" id="showSecondDistance" checked> Giây</label>
             </div>
-            <div class="form-group">
-                <label for="distanceDirection" class="form-label">Hướng tính</label>
-                <select id="distanceDirection" class="form-control">
-                    <option value="toNow">Từ timestamp đến hiện tại</option>
-                    <option value="fromNow">Từ hiện tại đến timestamp</option>
-                </select>
-            </div>
+            <button class="btn-dark" onclick="calculateDistance()">Tính Khoảng Cách</button>
         </div>
-
-        <div class="input-group mb-3">
-            <div class="form-group">
-                <label class="form-label">Đơn vị hiển thị</label>
-                <div class="checkbox-group">
-                    <label><input type="checkbox" id="showYearDistance" checked> Năm</label>
-                    <label><input type="checkbox" id="showMonthDistance" checked> Tháng</label>
-                    <label><input type="checkbox" id="showDayDistance" checked> Ngày</label>
-                    <label><input type="checkbox" id="showHourDistance" checked> Giờ</label>
-                    <label><input type="checkbox" id="showMinuteDistance" checked> Phút</label>
-                    <label><input type="checkbox" id="showSecondDistance" checked> Giây</label>
-                </div>
-            </div>
-        </div>
-
-        <div class="button-group">
-            <button onclick="calculateDistance()" class="btn btn-dark">Tính Khoảng Cách</button>
-        </div>
-
-        <div class="col-12">
-            <label for="distanceResult" class="form-label">Kết quả</label>
-            <textarea rows="5" readonly id="distanceResult" class="form-control" placeholder="Kết quả sẽ hiển thị ở đây"></textarea>
-        </div>
+        <div id="distanceResult"></div>
     </div>
 </div>
 
 <script>
   const clientTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
   document.getElementById('timezone').options[0].text = `Múi giờ máy (${clientTimezone})`;
+
   const timestampInput = document.getElementById('timestamp');
   timestampInput.value = Date.now();
   convertTimestamp();
 
   function convertTime() {
-    const value = parseFloat(document.getElementById('value').value.trim());
+    const value = parseFloat(document.getElementById('value').value);
     const fromUnit = document.getElementById('fromUnit').value;
     const showYear = document.getElementById('showYearUnit').checked;
     const showMonth = document.getElementById('showMonthUnit').checked;
@@ -246,12 +247,12 @@
     const showSecond = document.getElementById('showSecondUnit').checked;
 
     if (isNaN(value) || value < 0) {
-      document.getElementById('result').value = 'Vui lòng nhập một giá trị số hợp lệ!';
+      document.getElementById('result').innerText = 'Vui lòng nhập một giá trị hợp lệ!';
       return;
     }
 
     if (!showYear && !showMonth && !showDay && !showHour && !showMinute && !showSecond) {
-      document.getElementById('result').value = 'Vui lòng chọn ít nhất một đơn vị hiển thị!';
+      document.getElementById('result').innerText = 'Vui lòng chọn ít nhất một đơn vị hiển thị!';
       return;
     }
 
@@ -266,6 +267,7 @@
     };
 
     const totalSeconds = value * conversionsToSeconds[fromUnit];
+
     let seconds = Math.floor(totalSeconds);
     let minutes = Math.floor(seconds / 60);
     seconds %= 60;
@@ -297,11 +299,11 @@
     };
 
     const resultStr = resultParts.length > 0 ? resultParts.join(', ') : '0 giây';
-    document.getElementById('result').value = `${value} ${unitsVi[fromUnit]} = ${resultStr}`;
+    document.getElementById('result').innerText = `${value} ${unitsVi[fromUnit]} = ${resultStr}`;
   }
 
   function convertTimestamp() {
-    let timestamp = parseFloat(document.getElementById('timestamp').value.trim());
+    let timestamp = parseFloat(timestampInput.value);
     const timestampType = document.getElementById('timestampType').value;
     const timezone = document.getElementById('timezone').value;
     const showYear = document.getElementById('showYear').checked;
@@ -313,16 +315,17 @@
 
     if (isNaN(timestamp)) {
       timestamp = Date.now();
-      document.getElementById('timestamp').value = timestamp;
+      timestampInput.value = timestamp;
     }
 
     if (!showYear && !showMonth && !showDay && !showHour && !showMinute && !showSecond) {
-      document.getElementById('timestampResult').value = 'Vui lòng chọn ít nhất một thành phần thời gian!';
+      document.getElementById('timestampResult').innerText = 'Vui lòng chọn ít nhất một thành phần thời gian!';
       return;
     }
 
     const milliseconds = timestampType === 'seconds' ? timestamp * 1000 : timestamp;
     const date = new Date(milliseconds);
+
     const options = {
       timeZone: timezone === 'client' ? clientTimezone : timezone,
       year: showYear ? 'numeric' : undefined,
@@ -338,13 +341,13 @@
     const formattedDate = formatter.format(date);
     const tzName = timezone === 'client' ? clientTimezone : timezone;
 
-    document.getElementById('timestampResult').value = `${timestamp} ${timestampType === 'seconds' ? 'giây' : 'mili-giây'} = ${formattedDate} (${tzName})`;
+    document.getElementById('timestampResult').innerText = `${timestamp} ${timestampType === 'seconds' ? 'giây' : 'mili-giây'} = ${formattedDate} (${tzName})`;
   }
 
   function calculateDistance() {
-    const timestamp = parseFloat(document.getElementById('distanceTimestamp').value.trim());
+    const timestamp = parseFloat(document.getElementById('distanceTimestamp').value);
     const timestampType = document.getElementById('distanceTimestampType').value;
-    const direction = document.getElementById('distanceDirection').value;
+    let direction = document.getElementById('distanceDirection').value;
     const showYear = document.getElementById('showYearDistance').checked;
     const showMonth = document.getElementById('showMonthDistance').checked;
     const showDay = document.getElementById('showDayDistance').checked;
@@ -353,19 +356,20 @@
     const showSecond = document.getElementById('showSecondDistance').checked;
 
     if (isNaN(timestamp)) {
-      document.getElementById('distanceResult').value = 'Vui lòng nhập một timestamp hợp lệ!';
+      document.getElementById('distanceResult').innerText = 'Vui lòng nhập một timestamp hợp lệ!';
       return;
     }
 
     if (!showYear && !showMonth && !showDay && !showHour && !showMinute && !showSecond) {
-      document.getElementById('distanceResult').value = 'Vui lòng chọn ít nhất một đơn vị hiển thị!';
+      document.getElementById('distanceResult').innerText = 'Vui lòng chọn ít nhất một đơn vị hiển thị!';
       return;
     }
 
     const milliseconds = timestampType === 'seconds' ? timestamp * 1000 : timestamp;
     const now = Date.now();
+
     const isFuture = milliseconds > now;
-    const effectiveDirection = direction === 'fromNow' ? (isFuture ? 'fromNow' : 'toNow') : (isFuture ? 'fromNow' : 'toNow');
+    const effectiveDirection = isFuture ? 'fromNow' : 'toNow';
     let diffMs = isFuture ? milliseconds - now : now - milliseconds;
 
     const secondsTotal = Math.floor(diffMs / 1000);
@@ -390,7 +394,7 @@
 
     const resultStr = resultParts.length > 0 ? resultParts.join(', ') : '0 giây';
     const directionText = effectiveDirection === 'toNow' ? 'đến hiện tại' : 'từ hiện tại';
-    document.getElementById('distanceResult').value = `Khoảng cách ${directionText}: ${resultStr}`;
+    document.getElementById('distanceResult').innerText = `Khoảng cách ${directionText}: ${resultStr}`;
   }
 </script>
 </body>
