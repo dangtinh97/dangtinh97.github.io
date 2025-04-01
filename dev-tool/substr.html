@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Substring & Array Slice Demo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #74ebd5, #acb6e5);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+        }
+        .section {
+            margin: 15px 0;
+            padding: 15px;
+            background: #f9f9f9;
+            border-radius: 10px;
+        }
+        h2 {
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+        input, button {
+            padding: 8px;
+            margin: 5px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+            width: calc(100% - 20px);
+            box-sizing: border-box;
+        }
+        button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background: #45a049;
+        }
+        .result {
+            margin-top: 10px;
+            font-weight: bold;
+            color: #555;
+            word-wrap: break-word;
+        }
+        .code-example {
+            background: #eee;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: left;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.9em;
+            overflow-x: auto;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+            .container {
+                padding: 15px;
+            }
+            h1 {
+                font-size: 1.5em;
+            }
+            h2 {
+                font-size: 1.1em;
+            }
+            input, button {
+                font-size: 12px;
+                padding: 6px;
+            }
+            .section {
+                padding: 10px;
+            }
+        }
+        @media (min-width: 601px) {
+            .input-group {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 10px;
+                justify-content: center;
+            }
+            .input-group input {
+                width: 100px;
+            }
+            .input-group input:first-child {
+                flex: 1;
+                width: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Substring & Array Slice Demo</h1>
+
+    <!-- Substring Section -->
+    <div class="section">
+        <h2>Substring (Chuỗi)</h2>
+        <div class="input-group">
+            <input id="stringInput" type="text" placeholder="Nhập chuỗi (VD: Xin chào)">
+            <input id="startSub" type="number" placeholder="Bắt đầu" min="0">
+            <input id="endSub" type="number" placeholder="Kết thúc" min="0">
+        </div>
+        <button onclick="substringDemo()">Cắt Chuỗi</button>
+        <div id="substringResult" class="result"></div>
+        <div class="code-example">
+            "Xin chào".substring(0, 3) // Kết quả: "Xin"
+        </div>
+    </div>
+
+    <!-- Array Slice Section -->
+    <div class="section">
+        <h2>Array Slice (Mảng)</h2>
+        <div class="input-group">
+            <input id="arrayInput" type="text" placeholder="Nhập mảng (VD: 1,2,3,4,5)">
+            <input id="startSlice" type="number" placeholder="Bắt đầu" min="0">
+            <input id="endSlice" type="number" placeholder="Kết thúc" min="0">
+        </div>
+        <button onclick="sliceDemo()">Cắt Mảng</button>
+        <div id="sliceResult" class="result"></div>
+        <div class="code-example">
+            [1, 2, 3, 4, 5].slice(1, 4) // Kết quả: [2, 3, 4]
+        </div>
+    </div>
+</div>
+
+<script>
+  function substringDemo() {
+    const str = document.getElementById('stringInput').value;
+    const start = parseInt(document.getElementById('startSub').value) || 0;
+    const end = parseInt(document.getElementById('endSub').value) || str.length;
+    const result = str.substring(start, end);
+    document.getElementById('substringResult').innerText = `Kết quả: "${result}"`;
+  }
+
+  function sliceDemo() {
+    const input = document.getElementById('arrayInput').value;
+    const array = input.split(',').map(item => item.trim());
+    const start = parseInt(document.getElementById('startSlice').value) || 0;
+    const end = parseInt(document.getElementById('endSlice').value) || array.length;
+    const result = array.slice(start, end);
+    document.getElementById('sliceResult').innerText = `Kết quả: [${result.join(', ')}]`;
+  }
+</script>
+</body>
+</html>
