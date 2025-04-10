@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
-  <title>P2P Share</title>
+  <title>Transfer data</title>
   <style>
     body {
       background-color: #f5f6fa;
@@ -92,11 +92,18 @@
       border-radius: 5px;
       margin-top: 0.5rem;
     }
-    .sending-indicator {
+    .sending-indicator, .receiving-indicator {
       display: none;
       margin-top: 1rem;
       text-align: center;
       color: #3498db;
+    }
+    .progress {
+      height: 1.5rem;
+      margin-top: 0.5rem;
+    }
+    .progress-bar {
+      transition: width 0.3s ease-in-out;
     }
   </style>
 </head>
@@ -106,6 +113,7 @@
 
   <div class="code-display" id="myCode">Đang tạo mã...</div>
   <div class="connection-status disconnected" id="connectionStatus">Chưa kết nối</div>
+  <hr/>
   <div class="mb-4" id="form-connect">
     <label for="peerCode" class="form-label">Nhập mã của người khác (5 ký tự)</label>
     <input type="text" class="form-control" id="peerCode" placeholder="e.g., ABC12">
@@ -120,10 +128,13 @@
     <button class="btn btn-primary mt-2" id="send">Gửi</button>
     <div class="sending-indicator" id="sendingIndicator">
       <div class="spinner-border spinner-border-sm" role="status"></div>
-      <span> Đang gửi...</span>
+      <span> Đang gửi... <span id="sendProgressText">0%</span></span>
+      <div class="progress">
+        <div class="progress-bar" id="sendProgressBar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+      </div>
     </div>
   </div>
-
+  <hr/>
   <div>
     <h2>Nội dung nhận được</h2>
     <div class="received-content" id="received">
@@ -133,6 +144,12 @@
       <div class="file-download" id="fileDownload" style="display:none;">
         <span id="fileName"></span>
         <button class="btn btn-outline-info" id="down-file">Tải</button>
+      </div>
+      <div class="receiving-indicator" id="receivingIndicator">
+        <span>Đang nhận... <span id="receiveProgressText">0%</span></span>
+        <div class="progress">
+          <div class="progress-bar" id="receiveProgressBar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
       </div>
     </div>
   </div>
@@ -239,15 +256,14 @@
     };
     const connectionStatus = document.getElementById('connectionStatus');
     let isConnected = false;
-    peer.oniceconnectionstatechange = event =>{
+    peer.oniceconnectionstatechange = event => {
       if (peer.iceConnectionState === 'connected' || peer.iceConnectionState === 'completed') {
         if (!isConnected) {
           isConnected = true;
           connectionStatus.textContent = `Đã kết nối với ${peerCode}`;
           connectionStatus.classList.remove('disconnected');
           connectionStatus.classList.add('connected');
-          // alert(`Đã kết nối thành công với ${peerCode}`);\
-          $('#form-connect').remove()
+          $('#form-connect').remove();
         }
       } else if (peer.iceConnectionState === 'disconnected' || peer.iceConnectionState === 'failed' || peer.iceConnectionState === 'closed') {
         isConnected = false;
@@ -255,12 +271,13 @@
         connectionStatus.classList.remove('connected');
         connectionStatus.classList.add('disconnected');
       }
-    }
+    };
 
     function setupDataChannel(channel) {
       dataChannel = channel;
       let receivedChunks = [];
       let fileMeta = null;
+      let receivedBytes = 0;
 
       dataChannel.onmessage = (event) => {
         if (typeof event.data === 'string') {
@@ -270,6 +287,8 @@
           } else if (message.type === 'file_start') {
             fileMeta = message.message.file;
             receivedChunks = [];
+            receivedBytes = 0;
+            $('#receivingIndicator').show();
             console.log('Bắt đầu nhận tệp:', fileMeta);
           } else if (message.type === 'file_complete') {
             const blob = new Blob(receivedChunks);
@@ -283,17 +302,23 @@
             });
             receivedChunks = [];
             fileMeta = null;
+            receivedBytes = 0;
+            $('#receivingIndicator').hide();
+            updateReceiveProgress(0);
           }
         } else {
           receivedChunks.push(event.data);
+          receivedBytes += event.data.byteLength;
+          if (fileMeta) {
+            const percentage = Math.min(100, Math.round((receivedBytes / fileMeta.size) * 100));
+            updateReceiveProgress(percentage);
+          }
         }
       };
     }
 
     function generateCode() {
       return Math.floor(10000 + Math.random() * 90000).toString();
-
-      return Math.random().toString(36).substr(2, 5).toUpperCase();
     }
 
     $('#btn-connect').on('click',()=>{
@@ -320,7 +345,8 @@
         setTimeout(() => {
           sendButton.attr('disabled', false);
           sendingIndicator.hide();
-        }, 500); // Giả lập thời gian gửi ngắn cho text
+          updateSendProgress(0);
+        }, 500);
         return;
       }
 
@@ -328,12 +354,11 @@
       if(file){
         const chunkSize = 16384; // 16KB mỗi chunk
         const reader = new FileReader();
+        let sentBytes = 0;
 
-        // Hiển thị hiệu ứng và vô hiệu hóa nút
         sendButton.attr('disabled', true);
         sendingIndicator.show();
 
-        // Gửi metadata trước
         const content = {
           file: {
             name: file.name,
@@ -343,12 +368,14 @@
         };
         dataChannel.send(JSON.stringify({ type: 'file_start', message: content }));
 
-        // Hàm gửi từng chunk
         function sendChunk(offset) {
           const slice = file.slice(offset, offset + chunkSize);
           reader.onload = () => {
             if (dataChannel.readyState === 'open') {
               dataChannel.send(reader.result);
+              sentBytes += slice.size;
+              const percentage = Math.min(100, Math.round((sentBytes / file.size) * 100));
+              updateSendProgress(percentage);
               if (offset + chunkSize < file.size) {
                 sendNextChunk(offset + chunkSize);
               } else {
@@ -356,13 +383,13 @@
                 document.getElementById('fileInput').value = '';
                 sendButton.attr('disabled', false);
                 sendingIndicator.hide();
+                updateSendProgress(0);
               }
             }
           };
           reader.readAsArrayBuffer(slice);
         }
 
-        // Kiểm tra hàng đợi và gửi chunk tiếp theo
         function sendNextChunk(offset) {
           if (dataChannel.bufferedAmount > dataChannel.bufferedAmountLowThreshold) {
             dataChannel.onbufferedamountlow = () => {
@@ -374,10 +401,19 @@
           }
         }
 
-        // Bắt đầu gửi chunk đầu tiên
         sendChunk(0);
       }
     });
+
+    function updateSendProgress(percentage) {
+      $('#sendProgressText').text(`${percentage}%`);
+      $('#sendProgressBar').css('width', `${percentage}%`).attr('aria-valuenow', percentage);
+    }
+
+    function updateReceiveProgress(percentage) {
+      $('#receiveProgressText').text(`${percentage}%`);
+      $('#receiveProgressBar').css('width', `${percentage}%`).attr('aria-valuenow', percentage);
+    }
 
     function displayReceivedContent(content) {
       const receivedText = document.getElementById('receivedText');
