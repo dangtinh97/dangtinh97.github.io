@@ -103,7 +103,7 @@
   <div class="mb-4">
     <label for="peerCode" class="form-label">Nhập mã của người khác (5 ký tự)</label>
     <input type="text" class="form-control" id="peerCode" placeholder="e.g., ABC12">
-    <button class="btn btn-outline-info mt-2" onclick="connectToPeer()">Kết nối</button>
+    <button class="btn btn-outline-info mt-2" id="btn-connect">Kết nối</button>
   </div>
 
   <div class="mb-4">
@@ -111,7 +111,7 @@
     <textarea class="form-control" id="textInput" placeholder="Nhập nội dung để gửi..." rows="3"></textarea>
     <label for="fileInput" class="form-label mt-2">Chọn file hoặc ảnh</label>
     <input type="file" class="form-control" id="fileInput">
-    <button class="btn btn-primary mt-2" onclick="sendContent()">Gửi</button>
+    <button class="btn btn-primary mt-2" id="send">Gửi</button>
   </div>
 
   <div>
@@ -127,109 +127,223 @@
     </div>
   </div>
 </div>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.8.1/socket.io.js" integrity="sha512-8BHxHDLsOHx+flIrQ0DrZcea7MkHqRU5GbTHmbdzMRnAaoCIkZ97PqZcXJkKZckMMhqfoeaJE+DNUVuyoQsO3Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 <script>
-  const ws = new WebSocket('wss://your-websocket-server'); // Thay bằng server WebSocket của bạn
-  let myCode = generateCode();
-  let peerConnection;
+  document.addEventListener("DOMContentLoaded",()=>{
+    let myCode = generateCode();
+    document.getElementById('myCode').textContent = myCode;
+    let peerCode = '';
+    let peer = new RTCPeerConnection();
+    let dataChannel;
+    const socket = io('https://tool.myoupip.com/p2p-connect',{
+      transports:['websocket','polling'],
+      auth:{
+        room_id: myCode
+      }
+    }); // Thay bằng server WebSocket của bạn
+    socket.on('connect',()=>{
+      console.log(socket.id)
+      socket.on('JOIN',(data)=>{
+        $('#btn-connect').attr('disabled',true)
+        $('#peerCode').attr('readonly',true)
+        if(peerCode===''){
+          $('#peerCode').val(data.room_id)
+          peerCode = data.room_id
+          dataChannel = peer.createDataChannel('chat');
+          setupDataChannel(dataChannel);
+          peer.createOffer().then(offer => {
+            peer.setLocalDescription(offer);
+            socket.emit('SIGNALING', {
+              room_id: peerCode,
+              type: 'offer',
+              offer: offer
+            });
+          });
+        }
+      })
 
-  document.getElementById('myCode').textContent = myCode;
+      socket.on('SIGNALING',(res)=>{
+        console.log(res);
+        const {type} = res
+        if(type==='offer'){
+          handlerOffer(res.offer)
+        }
 
-  function generateCode() {
-    return Math.random().toString(36).substr(2, 5).toUpperCase();
-  }
+        if(type==='answer'){
+          handlerAnswer(res.answer)
+        }
+        if(type==='ice-candidate'){
+          handlerCandidate(res.candidate)
+        }
+      })
+    })
 
-  ws.onmessage = (event) => {
-    const data = JSON.parse(event.data);
-    if (data.type === 'connect' && data.code === myCode) {
-      peerConnection = data.from;
-      alert('Đã kết nối với ' + peerConnection);
-    } else if (data.type === 'message' && data.from === peerConnection) {
-      displayReceivedContent(data.content);
+    const handlerCandidate = async (candidate)=>{
+      try {
+        await peer.addIceCandidate(candidate);
+      } catch (err) {
+        console.error(err);
+      }
     }
-  };
 
-  function connectToPeer() {
-    const peerCode = document.getElementById('peerCode').value.trim().toUpperCase();
-    if (peerCode.length !== 5) {
-      alert('Mã phải có 5 ký tự!');
-      return;
-    }
-    ws.send(JSON.stringify({ type: 'connect', code: peerCode, from: myCode }));
-  }
+    const handlerOffer =async (offer)=>{
+      await peer.setRemoteDescription(offer);
+      peer.ondatachannel = event => setupDataChannel(event.channel);
 
-  function sendContent() {
-    const text = document.getElementById('textInput').value;
-    const file = document.getElementById('fileInput').files[0];
-    if (!peerConnection) {
-      alert('Chưa kết nối với ai!');
-      return;
+      const answer = await peer.createAnswer();
+      await peer.setLocalDescription(answer);
+      socket.emit('SIGNALING', {
+        room_id: peerCode,
+        type: 'answer',
+        answer: answer
+      });
     }
 
-    const content = {};
-    if (text) content.text = text;
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        content.file = {
-          name: file.name,
-          data: reader.result
-        };
-        ws.send(JSON.stringify({ type: 'message', from: myCode, to: peerConnection, content }));
+    const handlerAnswer =async (answer)=>{
+      await peer.setRemoteDescription(answer);
+    }
+
+    peer.onicecandidate = event => {
+      if (event.candidate) {
+        socket.emit('ice-candidate', event.candidate);
+        socket.emit('SIGNALING', {
+          room_id: peerCode,
+          type: 'ice-candidate',
+          candidate: event.candidate
+        });
+      }
+    };
+
+    function setupDataChannel(channel) {
+      dataChannel = channel;
+      dataChannel.onmessage = (event) => {
+        const {type,message} = JSON.parse(event.data);
+        console.log({type,message})
+        if (type === 'text') {
+          displayReceivedContent({
+            text: message
+          })
+        }
+        // if (data.type === 'text') {
+        //   log(`Peer: ${data.message}`);
+        // } else if (data.type === 'file') {
+        //   const blob = new Blob([new Uint8Array(data.data)]);
+        //   const a = document.createElement('a');
+        //   a.href = URL.createObjectURL(blob);
+        //   a.download = data.filename;
+        //   a.textContent = `📥 Download ${data.filename}`;
+        //   chatLog.appendChild(a);
+        //   chatLog.appendChild(document.createElement('br'));
+        // }
       };
-      if (file.type.startsWith('image/')) {
-        reader.readAsDataURL();
-      } else {
-        reader.readAsDataURL();
+    }
+    function generateCode() {
+      return Math.random().toString(36).substr(2, 5).toUpperCase();
+    }
+
+    // ws.onmessage = (event) => {
+    //   const data = JSON.parse(event.data);
+    //   if (data.type === 'connect' && data.code === myCode) {
+    //     peerConnection = data.from;
+    //     alert('Đã kết nối với ' + peerConnection);
+    //   } else if (data.type === 'message' && data.from === peerConnection) {
+    //     displayReceivedContent(data.content);
+    //   }
+    // };
+    $('#btn-connect').on('click',()=>{
+      peerCode = document.getElementById('peerCode').value.trim().toUpperCase();
+      if (peerCode.length !== 5) {
+        alert('Mã phải có 5 ký tự!');
+        return;
       }
-    } else {
-      ws.send(JSON.stringify({ type: 'message', from: myCode, to: peerConnection, content }));
-    }
-    document.getElementById('textInput').value = '';
-    document.getElementById('fileInput').value = '';
-  }
+      socket.emit('JOIN',{
+        room_id: peerCode
+      })
+    })
 
-  function displayReceivedContent(content) {
-    const receivedText = document.getElementById('receivedText');
-    const copyBtn = document.getElementById('copyBtn');
-    const receivedImg = document.getElementById('receivedImg');
-    const fileDownload = document.getElementById('fileDownload');
-    const fileName = document.getElementById('fileName');
+    $('#send').on('click',()=>{
+      const text = document.getElementById('textInput').value.trim();
+      if(text!==''){
+        dataChannel.send(JSON.stringify({ type: 'text', message: text }));
+        document.getElementById('textInput').value = '';
+      }
+    })
 
-    receivedText.textContent = '';
-    copyBtn.style.display = 'none';
-    receivedImg.style.display = 'none';
-    fileDownload.style.display = 'none';
+    function sendContent() {
+      const text = document.getElementById('textInput').value;
+      const file = document.getElementById('fileInput').files[0];
+      if (!peerConnection) {
+        alert('Chưa kết nối với ai!');
+        return;
+      }
 
-    if (content.text) {
-      receivedText.textContent = content.text;
-      copyBtn.style.display = 'inline-block';
-    }
-    if (content.file) {
-      if (content.file.data.startsWith('data:image')) {
-        receivedImg.src = content.file.data;
-        receivedImg.style.display = 'block';
+      const content = {};
+      if (text) content.text = text;
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = () => {
+          content.file = {
+            name: file.name,
+            data: reader.result
+          };
+          ws.send(JSON.stringify({ type: 'message', from: myCode, to: peerConnection, content }));
+        };
+        if (file.type.startsWith('image/')) {
+          reader.readAsDataURL();
+        } else {
+          reader.readAsDataURL();
+        }
       } else {
-        fileName.textContent = content.file.name;
-        fileDownload.style.display = 'flex';
-        fileDownload.dataset.fileData = content.file.data;
+        ws.send(JSON.stringify({ type: 'message', from: myCode, to: peerConnection, content }));
+      }
+      document.getElementById('textInput').value = '';
+      document.getElementById('fileInput').value = '';
+    }
+
+    function displayReceivedContent(content) {
+      const receivedText = document.getElementById('receivedText');
+      const copyBtn = document.getElementById('copyBtn');
+      const receivedImg = document.getElementById('receivedImg');
+      const fileDownload = document.getElementById('fileDownload');
+      const fileName = document.getElementById('fileName');
+
+      receivedText.textContent = '';
+      copyBtn.style.display = 'none';
+      receivedImg.style.display = 'none';
+      fileDownload.style.display = 'none';
+
+      if (content.text) {
+        receivedText.textContent = content.text;
+        copyBtn.style.display = 'inline-block';
+      }
+      if (content.file) {
+        if (content.file.data.startsWith('data:image')) {
+          receivedImg.src = content.file.data;
+          receivedImg.style.display = 'block';
+        } else {
+          fileName.textContent = content.file.name;
+          fileDownload.style.display = 'flex';
+          fileDownload.dataset.fileData = content.file.data;
+        }
       }
     }
-  }
 
-  function copyText() {
-    const text = document.getElementById('receivedText').textContent;
-    navigator.clipboard.writeText(text);
-    alert('Đã sao chép!');
-  }
+    function copyText() {
+      const text = document.getElementById('receivedText').textContent;
+      navigator.clipboard.writeText(text);
+      alert('Đã sao chép!');
+    }
 
-  function downloadFile() {
-    const fileData = document.getElementById('fileDownload').dataset.fileData;
-    const link = document.createElement('a');
-    link.href = fileData;
-    link.download = document.getElementById('fileName').textContent;
-    link.click();
-  }
+    function downloadFile() {
+      const fileData = document.getElementById('fileDownload').dataset.fileData;
+      const link = document.createElement('a');
+      link.href = fileData;
+      link.download = document.getElementById('fileName').textContent;
+      link.click();
+    }
+  })
+
 </script>
 </body>
 </html>
