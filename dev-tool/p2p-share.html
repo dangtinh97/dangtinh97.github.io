@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+  <title>P2P Share</title>
+  <style>
+    body {
+      background-color: #f5f6fa;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    .container {
+      max-width: 900px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      padding: 2rem;
+      margin-top: 3rem;
+    }
+    h1 {
+      color: #2c3e50;
+      text-align: center;
+      margin-bottom: 2rem;
+      font-weight: 600;
+    }
+    h2 {
+      color: #34495e;
+      font-size: 1.25rem;
+      font-weight: 500;
+      margin-bottom: 1rem;
+    }
+    .form-label {
+      font-weight: 500;
+      color: #34495e;
+      margin-bottom: 0.5rem;
+    }
+    .form-control {
+      border-radius: 5px;
+      border: 1px solid #dcdcdc;
+      transition: border-color 0.3s;
+    }
+    .form-control:focus {
+      border-color: #3498db;
+      box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
+    }
+    .btn {
+      padding: 0.5rem 1.5rem;
+      font-weight: 500;
+      transition: transform 0.2s, background-color 0.2s;
+    }
+    .btn:hover {
+      transform: translateY(-2px);
+    }
+    .btn-primary {
+      background-color: #3498db;
+      border-color: #3498db;
+    }
+    .btn-outline-info {
+      color: #3498db;
+      border-color: #3498db;
+    }
+    .btn-outline-info:hover {
+      background-color: #3498db;
+      color: white;
+    }
+    .code-display {
+      font-size: 1.25rem;
+      text-align: center;
+      padding: 0.75rem;
+      background: #f8f9fa;
+      border-radius: 5px;
+      letter-spacing: 2px;
+      color: #2c3e50;
+      margin-bottom: 2rem;
+    }
+    .received-content {
+      background-color: #f8f9fa;
+      border-radius: 5px;
+      padding: 1rem;
+      color: #2c3e50;
+    }
+    .file-download {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 0.5rem;
+    }
+    img {
+      max-width: 100%;
+      border-radius: 5px;
+      margin-top: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>Transfer data</h1>
+
+  <div class="code-display" id="myCode">Đang tạo mã...</div>
+
+  <div class="mb-4">
+    <label for="peerCode" class="form-label">Nhập mã của người khác (5 ký tự)</label>
+    <input type="text" class="form-control" id="peerCode" placeholder="e.g., ABC12">
+    <button class="btn btn-outline-info mt-2" onclick="connectToPeer()">Kết nối</button>
+  </div>
+
+  <div class="mb-4">
+    <label for="textInput" class="form-label">Nội dung gửi</label>
+    <textarea class="form-control" id="textInput" placeholder="Nhập nội dung để gửi..." rows="3"></textarea>
+    <label for="fileInput" class="form-label mt-2">Chọn file hoặc ảnh</label>
+    <input type="file" class="form-control" id="fileInput">
+    <button class="btn btn-primary mt-2" onclick="sendContent()">Gửi</button>
+  </div>
+
+  <div>
+    <h2>Nội dung nhận được</h2>
+    <div class="received-content" id="received">
+      <p id="receivedText" class="mb-2"></p>
+      <button id="copyBtn" class="btn btn-outline-info mb-2" style="display:none;" onclick="copyText()">Copy</button>
+      <img id="receivedImg" style="display:none;">
+      <div class="file-download" id="fileDownload" style="display:none;">
+        <span id="fileName"></span>
+        <button class="btn btn-outline-info" onclick="downloadFile()">Tải</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const ws = new WebSocket('wss://your-websocket-server'); // Thay bằng server WebSocket của bạn
+  let myCode = generateCode();
+  let peerConnection;
+
+  document.getElementById('myCode').textContent = myCode;
+
+  function generateCode() {
+    return Math.random().toString(36).substr(2, 5).toUpperCase();
+  }
+
+  ws.onmessage = (event) => {
+    const data = JSON.parse(event.data);
+    if (data.type === 'connect' && data.code === myCode) {
+      peerConnection = data.from;
+      alert('Đã kết nối với ' + peerConnection);
+    } else if (data.type === 'message' && data.from === peerConnection) {
+      displayReceivedContent(data.content);
+    }
+  };
+
+  function connectToPeer() {
+    const peerCode = document.getElementById('peerCode').value.trim().toUpperCase();
+    if (peerCode.length !== 5) {
+      alert('Mã phải có 5 ký tự!');
+      return;
+    }
+    ws.send(JSON.stringify({ type: 'connect', code: peerCode, from: myCode }));
+  }
+
+  function sendContent() {
+    const text = document.getElementById('textInput').value;
+    const file = document.getElementById('fileInput').files[0];
+    if (!peerConnection) {
+      alert('Chưa kết nối với ai!');
+      return;
+    }
+
+    const content = {};
+    if (text) content.text = text;
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        content.file = {
+          name: file.name,
+          data: reader.result
+        };
+        ws.send(JSON.stringify({ type: 'message', from: myCode, to: peerConnection, content }));
+      };
+      if (file.type.startsWith('image/')) {
+        reader.readAsDataURL();
+      } else {
+        reader.readAsDataURL();
+      }
+    } else {
+      ws.send(JSON.stringify({ type: 'message', from: myCode, to: peerConnection, content }));
+    }
+    document.getElementById('textInput').value = '';
+    document.getElementById('fileInput').value = '';
+  }
+
+  function displayReceivedContent(content) {
+    const receivedText = document.getElementById('receivedText');
+    const copyBtn = document.getElementById('copyBtn');
+    const receivedImg = document.getElementById('receivedImg');
+    const fileDownload = document.getElementById('fileDownload');
+    const fileName = document.getElementById('fileName');
+
+    receivedText.textContent = '';
+    copyBtn.style.display = 'none';
+    receivedImg.style.display = 'none';
+    fileDownload.style.display = 'none';
+
+    if (content.text) {
+      receivedText.textContent = content.text;
+      copyBtn.style.display = 'inline-block';
+    }
+    if (content.file) {
+      if (content.file.data.startsWith('data:image')) {
+        receivedImg.src = content.file.data;
+        receivedImg.style.display = 'block';
+      } else {
+        fileName.textContent = content.file.name;
+        fileDownload.style.display = 'flex';
+        fileDownload.dataset.fileData = content.file.data;
+      }
+    }
+  }
+
+  function copyText() {
+    const text = document.getElementById('receivedText').textContent;
+    navigator.clipboard.writeText(text);
+    alert('Đã sao chép!');
+  }
+
+  function downloadFile() {
+    const fileData = document.getElementById('fileDownload').dataset.fileData;
+    const link = document.createElement('a');
+    link.href = fileData;
+    link.download = document.getElementById('fileName').textContent;
+    link.click();
+  }
+</script>
+</body>
+</html>
