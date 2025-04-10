@@ -92,6 +92,12 @@
       border-radius: 5px;
       margin-top: 0.5rem;
     }
+    .sending-indicator {
+      display: none;
+      margin-top: 1rem;
+      text-align: center;
+      color: #3498db;
+    }
   </style>
 </head>
 <body>
@@ -99,8 +105,8 @@
   <h1>Transfer data</h1>
 
   <div class="code-display" id="myCode">Đang tạo mã...</div>
-
-  <div class="mb-4">
+  <div class="connection-status disconnected" id="connectionStatus">Chưa kết nối</div>
+  <div class="mb-4" id="form-connect">
     <label for="peerCode" class="form-label">Nhập mã của người khác (5 ký tự)</label>
     <input type="text" class="form-control" id="peerCode" placeholder="e.g., ABC12">
     <button class="btn btn-outline-info mt-2" id="btn-connect">Kết nối</button>
@@ -112,6 +118,10 @@
     <label for="fileInput" class="form-label mt-2">Chọn file hoặc ảnh</label>
     <input type="file" class="form-control" id="fileInput">
     <button class="btn btn-primary mt-2" id="send">Gửi</button>
+    <div class="sending-indicator" id="sendingIndicator">
+      <div class="spinner-border spinner-border-sm" role="status"></div>
+      <span> Đang gửi...</span>
+    </div>
   </div>
 
   <div>
@@ -155,15 +165,16 @@
       auth:{
         room_id: myCode
       }
-    }); // Thay bằng server WebSocket của bạn
+    });
+
     socket.on('connect',()=>{
-      console.log(socket.id)
+      console.log(socket.id);
       socket.on('JOIN',(data)=>{
-        $('#btn-connect').attr('disabled',true)
-        $('#peerCode').attr('readonly',true)
+        $('#btn-connect').attr('disabled',true);
+        $('#peerCode').attr('readonly',true);
         if(peerCode===''){
-          $('#peerCode').val(data.room_id)
-          peerCode = data.room_id
+          $('#peerCode').val(data.room_id);
+          peerCode = data.room_id;
           dataChannel = peer.createDataChannel('chat');
           setupDataChannel(dataChannel);
           peer.createOffer().then(offer => {
@@ -175,23 +186,22 @@
             });
           });
         }
-      })
+      });
 
       socket.on('SIGNALING',(res)=>{
         console.log(res);
-        const {type} = res
+        const {type} = res;
         if(type==='offer'){
-          handlerOffer(res.offer)
+          handlerOffer(res.offer);
         }
-
         if(type==='answer'){
-          handlerAnswer(res.answer)
+          handlerAnswer(res.answer);
         }
         if(type==='ice-candidate'){
-          handlerCandidate(res.candidate)
+          handlerCandidate(res.candidate);
         }
-      })
-    })
+      });
+    });
 
     const handlerCandidate = async (candidate)=>{
       try {
@@ -199,12 +209,11 @@
       } catch (err) {
         console.error(err);
       }
-    }
+    };
 
-    const handlerOffer =async (offer)=>{
+    const handlerOffer = async (offer)=>{
       await peer.setRemoteDescription(offer);
       peer.ondatachannel = event => setupDataChannel(event.channel);
-
       const answer = await peer.createAnswer();
       await peer.setLocalDescription(answer);
       socket.emit('SIGNALING', {
@@ -212,11 +221,11 @@
         type: 'answer',
         answer: answer
       });
-    }
+    };
 
-    const handlerAnswer =async (answer)=>{
+    const handlerAnswer = async (answer)=>{
       await peer.setRemoteDescription(answer);
-    }
+    };
 
     peer.onicecandidate = event => {
       if (event.candidate) {
@@ -228,48 +237,65 @@
         });
       }
     };
+    const connectionStatus = document.getElementById('connectionStatus');
+    let isConnected = false;
+    peer.oniceconnectionstatechange = event =>{
+      if (peer.iceConnectionState === 'connected' || peer.iceConnectionState === 'completed') {
+        if (!isConnected) {
+          isConnected = true;
+          connectionStatus.textContent = `Đã kết nối với ${peerCode}`;
+          connectionStatus.classList.remove('disconnected');
+          connectionStatus.classList.add('connected');
+          // alert(`Đã kết nối thành công với ${peerCode}`);\
+          $('#form-connect').remove()
+        }
+      } else if (peer.iceConnectionState === 'disconnected' || peer.iceConnectionState === 'failed' || peer.iceConnectionState === 'closed') {
+        isConnected = false;
+        connectionStatus.textContent = 'Mất kết nối';
+        connectionStatus.classList.remove('connected');
+        connectionStatus.classList.add('disconnected');
+      }
+    }
 
     function setupDataChannel(channel) {
       dataChannel = channel;
+      let receivedChunks = [];
+      let fileMeta = null;
+
       dataChannel.onmessage = (event) => {
-        const {type,message} = JSON.parse(event.data);
-        console.log({type,message})
-        if (type === 'text') {
-          displayReceivedContent({
-            text: message
-          })
+        if (typeof event.data === 'string') {
+          const message = JSON.parse(event.data);
+          if (message.type === 'text') {
+            displayReceivedContent({ text: message.message });
+          } else if (message.type === 'file_start') {
+            fileMeta = message.message.file;
+            receivedChunks = [];
+            console.log('Bắt đầu nhận tệp:', fileMeta);
+          } else if (message.type === 'file_complete') {
+            const blob = new Blob(receivedChunks);
+            const url = URL.createObjectURL(blob);
+            displayReceivedContent({
+              file: {
+                name: fileMeta.name,
+                data: url,
+                type: fileMeta.type
+              }
+            });
+            receivedChunks = [];
+            fileMeta = null;
+          }
+        } else {
+          receivedChunks.push(event.data);
         }
-        if(type==='file'){
-          displayReceivedContent({
-            file: message.file
-          })
-        }
-        // if (data.type === 'text') {
-        //   log(`Peer: ${data.message}`);
-        // } else if (data.type === 'file') {
-        //   const blob = new Blob([new Uint8Array(data.data)]);
-        //   const a = document.createElement('a');
-        //   a.href = URL.createObjectURL(blob);
-        //   a.download = data.filename;
-        //   a.textContent = `📥 Download ${data.filename}`;
-        //   chatLog.appendChild(a);
-        //   chatLog.appendChild(document.createElement('br'));
-        // }
       };
     }
+
     function generateCode() {
+      return Math.floor(10000 + Math.random() * 90000).toString();
+
       return Math.random().toString(36).substr(2, 5).toUpperCase();
     }
 
-    // ws.onmessage = (event) => {
-    //   const data = JSON.parse(event.data);
-    //   if (data.type === 'connect' && data.code === myCode) {
-    //     peerConnection = data.from;
-    //     alert('Đã kết nối với ' + peerConnection);
-    //   } else if (data.type === 'message' && data.from === peerConnection) {
-    //     displayReceivedContent(data.content);
-    //   }
-    // };
     $('#btn-connect').on('click',()=>{
       peerCode = document.getElementById('peerCode').value.trim().toUpperCase();
       if (peerCode.length !== 5) {
@@ -278,64 +304,80 @@
       }
       socket.emit('JOIN',{
         room_id: peerCode
-      })
-    })
+      });
+    });
 
     $('#send').on('click',()=>{
+      const sendButton = $('#send');
+      const sendingIndicator = $('#sendingIndicator');
       const text = document.getElementById('textInput').value.trim();
+
       if(text!==''){
+        sendButton.attr('disabled', true);
+        sendingIndicator.show();
         dataChannel.send(JSON.stringify({ type: 'text', message: text }));
         document.getElementById('textInput').value = '';
+        setTimeout(() => {
+          sendButton.attr('disabled', false);
+          sendingIndicator.hide();
+        }, 500); // Giả lập thời gian gửi ngắn cho text
         return;
       }
+
       const file = document.getElementById('fileInput').files[0];
       if(file){
-        const content = {};
+        const chunkSize = 16384; // 16KB mỗi chunk
         const reader = new FileReader();
-        reader.onload = () => {
-          content.file = {
-            name: file.name,
-            data: reader.result
-          };
-          dataChannel.send(JSON.stringify({ type: 'file', message: content }));
-          setTimeout(()=>{
-            document.getElementById('fileInput').value = '';
-          },1000)
-        };
-        reader.readAsDataURL(file);
-      }
-    })
 
-    function sendContent() {
-      const text = document.getElementById('textInput').value;
-      const file = document.getElementById('fileInput').files[0];
-      if (!peerConnection) {
-        alert('Chưa kết nối với ai!');
-        return;
-      }
+        // Hiển thị hiệu ứng và vô hiệu hóa nút
+        sendButton.attr('disabled', true);
+        sendingIndicator.show();
 
-      const content = {};
-      if (text) content.text = text;
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = () => {
-          content.file = {
+        // Gửi metadata trước
+        const content = {
+          file: {
             name: file.name,
-            data: reader.result
-          };
-          ws.send(JSON.stringify({ type: 'message', from: myCode, to: peerConnection, content }));
+            size: file.size,
+            type: file.type
+          }
         };
-        if (file.type.startsWith('image/')) {
-          reader.readAsDataURL();
-        } else {
-          reader.readAsDataURL();
+        dataChannel.send(JSON.stringify({ type: 'file_start', message: content }));
+
+        // Hàm gửi từng chunk
+        function sendChunk(offset) {
+          const slice = file.slice(offset, offset + chunkSize);
+          reader.onload = () => {
+            if (dataChannel.readyState === 'open') {
+              dataChannel.send(reader.result);
+              if (offset + chunkSize < file.size) {
+                sendNextChunk(offset + chunkSize);
+              } else {
+                dataChannel.send(JSON.stringify({ type: 'file_complete', name: file.name }));
+                document.getElementById('fileInput').value = '';
+                sendButton.attr('disabled', false);
+                sendingIndicator.hide();
+              }
+            }
+          };
+          reader.readAsArrayBuffer(slice);
         }
-      } else {
-        ws.send(JSON.stringify({ type: 'message', from: myCode, to: peerConnection, content }));
+
+        // Kiểm tra hàng đợi và gửi chunk tiếp theo
+        function sendNextChunk(offset) {
+          if (dataChannel.bufferedAmount > dataChannel.bufferedAmountLowThreshold) {
+            dataChannel.onbufferedamountlow = () => {
+              dataChannel.onbufferedamountlow = null;
+              sendChunk(offset);
+            };
+          } else {
+            sendChunk(offset);
+          }
+        }
+
+        // Bắt đầu gửi chunk đầu tiên
+        sendChunk(0);
       }
-      document.getElementById('textInput').value = '';
-      document.getElementById('fileInput').value = '';
-    }
+    });
 
     function displayReceivedContent(content) {
       const receivedText = document.getElementById('receivedText');
@@ -354,7 +396,7 @@
         copyBtn.style.display = 'inline-block';
       }
       if (content.file) {
-        if (content.file.data.startsWith('data:image')) {
+        if (content.file.type && content.file.type.startsWith('image/')) {
           receivedImg.src = content.file.data;
           receivedImg.style.display = 'block';
         } else {
@@ -367,16 +409,18 @@
 
     $('#copyBtn').on('click',()=>{
       copyText();
-    })
+    });
 
     function copyText() {
       const text = document.getElementById('receivedText').textContent;
       navigator.clipboard.writeText(text);
       alert('Đã sao chép!');
     }
+
     $('#down-file').on('click',()=>{
-      downloadFile()
-    })
+      downloadFile();
+    });
+
     function downloadFile() {
       const fileData = document.getElementById('fileDownload').dataset.fileData;
       const link = document.createElement('a');
@@ -384,8 +428,7 @@
       link.download = document.getElementById('fileName').textContent;
       link.click();
     }
-  })
-
+  });
 </script>
 </body>
 </html>
