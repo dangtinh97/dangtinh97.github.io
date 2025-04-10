@@ -118,7 +118,7 @@
     <h2>Nội dung nhận được</h2>
     <div class="received-content" id="received">
       <p id="receivedText" class="mb-2"></p>
-      <button id="copyBtn" class="btn btn-outline-info mb-2" style="display:none;" onclick="copyText()">Copy</button>
+      <button id="copyBtn" class="btn btn-outline-info mb-2" style="display:none;">Copy</button>
       <img id="receivedImg" style="display:none;">
       <div class="file-download" id="fileDownload" style="display:none;">
         <span id="fileName"></span>
@@ -131,10 +131,24 @@
 <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 <script>
   document.addEventListener("DOMContentLoaded",()=>{
+    const config = {
+      iceServers: [
+        { urls: "stun:stun.l.google.com:19302" },
+        { urls: "stun:stun.l.google.com:5349" },
+        { urls: "stun:stun1.l.google.com:3478" },
+        { urls: "stun:stun1.l.google.com:5349" },
+        { urls: "stun:stun2.l.google.com:19302" },
+        { urls: "stun:stun2.l.google.com:5349" },
+        { urls: "stun:stun3.l.google.com:3478" },
+        { urls: "stun:stun3.l.google.com:5349" },
+        { urls: "stun:stun4.l.google.com:19302" },
+        { urls: "stun:stun4.l.google.com:5349" }
+      ]
+    };
     let myCode = generateCode();
     document.getElementById('myCode').textContent = myCode;
     let peerCode = '';
-    let peer = new RTCPeerConnection();
+    let peer = new RTCPeerConnection(config);
     let dataChannel;
     const socket = io('https://tool.myoupip.com/p2p-connect',{
       transports:['websocket','polling'],
@@ -328,6 +342,10 @@
         }
       }
     }
+
+    $('#copyBtn').on('click',()=>{
+      copyText();
+    })
 
     function copyText() {
       const text = document.getElementById('receivedText').textContent;
