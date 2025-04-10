@@ -122,7 +122,7 @@
       <img id="receivedImg" style="display:none;">
       <div class="file-download" id="fileDownload" style="display:none;">
         <span id="fileName"></span>
-        <button class="btn btn-outline-info" onclick="downloadFile()">Tải</button>
+        <button class="btn btn-outline-info" id="down-file">Tải</button>
       </div>
     </div>
   </div>
@@ -239,6 +239,11 @@
             text: message
           })
         }
+        if(type==='file'){
+          displayReceivedContent({
+            file: message.file
+          })
+        }
         // if (data.type === 'text') {
         //   log(`Peer: ${data.message}`);
         // } else if (data.type === 'file') {
@@ -281,6 +286,23 @@
       if(text!==''){
         dataChannel.send(JSON.stringify({ type: 'text', message: text }));
         document.getElementById('textInput').value = '';
+        return;
+      }
+      const file = document.getElementById('fileInput').files[0];
+      if(file){
+        const content = {};
+        const reader = new FileReader();
+        reader.onload = () => {
+          content.file = {
+            name: file.name,
+            data: reader.result
+          };
+          dataChannel.send(JSON.stringify({ type: 'file', message: content }));
+          setTimeout(()=>{
+            document.getElementById('fileInput').value = '';
+          },1000)
+        };
+        reader.readAsDataURL(file);
       }
     })
 
@@ -352,7 +374,9 @@
       navigator.clipboard.writeText(text);
       alert('Đã sao chép!');
     }
-
+    $('#down-file').on('click',()=>{
+      downloadFile()
+    })
     function downloadFile() {
       const fileData = document.getElementById('fileDownload').dataset.fileData;
       const link = document.createElement('a');
