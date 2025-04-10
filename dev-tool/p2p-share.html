@@ -169,7 +169,27 @@
         { urls: "stun:stun3.l.google.com:3478" },
         { urls: "stun:stun3.l.google.com:5349" },
         { urls: "stun:stun4.l.google.com:19302" },
-        { urls: "stun:stun4.l.google.com:5349" }
+        { urls: "stun:stun4.l.google.com:5349" },
+        {
+          urls: "turn:global.relay.metered.ca:80",
+          username: "54ed65db0aad025d8260edec",
+          credential: "ZcuTU21CoQ+kpY/x",
+        },
+        {
+          urls: "turn:global.relay.metered.ca:80?transport=tcp",
+          username: "54ed65db0aad025d8260edec",
+          credential: "ZcuTU21CoQ+kpY/x",
+        },
+        {
+          urls: "turn:global.relay.metered.ca:443",
+          username: "54ed65db0aad025d8260edec",
+          credential: "ZcuTU21CoQ+kpY/x",
+        },
+        {
+          urls: "turns:global.relay.metered.ca:443?transport=tcp",
+          username: "54ed65db0aad025d8260edec",
+          credential: "ZcuTU21CoQ+kpY/x",
+        },
       ]
     };
     let myCode = generateCode();
