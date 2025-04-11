@@ -11,90 +11,135 @@
         body {
             background-color: #f5f6fa;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 2rem 1rem;
         }
         .container {
-            max-width: 900px;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            padding: 2rem;
-            margin-top: 3rem;
+            max-width: 1200px;
+            margin: 0 auto;
         }
         h1 {
             color: #2c3e50;
             text-align: center;
-            margin-bottom: 2rem;
+            margin-bottom: 2.5rem;
             font-weight: 600;
+            font-size: 2rem;
         }
-        ul {
-            list-style: none;
+        .tool-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
             padding: 0;
+            list-style: none;
         }
-        li {
+        .tool-card {
             background: #2c3e50;
-            display: block;
-            padding: 12px 20px;
-            margin-bottom: 12px;
-            border-radius: 5px;
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
             transition: background-color 0.3s, transform 0.2s;
             cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
-        li:hover {
+        .tool-card:hover {
             background: #3498db;
-            transform: translateY(-2px);
+            transform: translateY(-3px);
         }
-        li a {
+        .tool-card.selected {
+            background: #e74c3c;
+            transform: scale(1.05);
+        }
+        .tool-card a {
             color: white;
             text-decoration: none;
             font-weight: 500;
+            font-size: 1.1rem;
             display: block;
         }
-        li a:hover {
+        .tool-card a:hover {
             color: white;
+        }
+        @media (max-width: 576px) {
+            .tool-grid {
+                grid-template-columns: 1fr;
+            }
+            .tool-card {
+                padding: 1.2rem;
+            }
+            h1 {
+                font-size: 1.5rem;
+            }
         }
     </style>
 </head>
 <body>
 <div class="container">
     <h1>Tool Dashboard</h1>
-    <ul>
-        <li>
-            <a href="./lat-long.html">Calculate Distance Between Coordinates</a>
+    <ul class="tool-grid">
+        <li class="tool-card">
+            <a href="./lat-long.html" target="_blank">Calculate Distance Between Coordinates</a>
         </li>
-        <li>
-            <a href="./md5.html">MD5/SHA1 Generator</a>
+        <li class="tool-card">
+            <a href="./md5.html" target="_blank">MD5/SHA1 Generator</a>
         </li>
-        <li>
-            <a href="./uuidv4.html">Random UUID V4 Generator</a>
+        <li class="tool-card">
+            <a href="./uuidv4.html" target="_blank">Random UUID V4 Generator</a>
         </li>
-        <li>
-            <a href="./AES.html">AES CBC 256 Encryption</a>
+        <li class="tool-card">
+            <a href="./AES.html" target="_blank">AES CBC 256 Encryption</a>
         </li>
-        <li>
-            <a href="../json2table">JSON to Table Converter</a>
+        <li class="tool-card">
+            <a href="../json2table" target="_blank">JSON to Table Converter</a>
         </li>
-        <li>
-            <a href="./substr.html">Substring & Array Slice Demo</a>
+        <li class="tool-card">
+            <a href="./substr.html" target="_blank">Substring & Array Slice Demo</a>
         </li>
-        <li>
-            <a href="./random.html">Random Number Generator</a>
+        <li class="tool-card">
+            <a href="./random.html" target="_blank">Random Number Generator</a>
         </li>
-        <li>
-            <a href="./convert-time.html">Time Converter</a>
+        <li class="tool-card">
+            <a href="./convert-time.html" target="_blank">Time Converter</a>
         </li>
-        <li>
-            <a href="./base64.html">Base64 Encode/Decode</a>
+        <li class="tool-card">
+            <a href="./base64.html" target="_blank">Base64 Encode/Decode</a>
         </li>
-        <li>
-            <a href="./url-encode.html">Url Encode/Decode</a>
+        <li class="tool-card">
+            <a href="./url-encode.html" target="_blank">Url Encode/Decode</a>
         </li>
-        <li>
-            <a href="./qrcode.html">QR Code Generator</a>
+        <li class="tool-card">
+            <a href="./qrcode.html" target="_blank">QR Code Generator</a>
         </li>
-        <li>
-            <a href="./p2p-share.html">Transfer data</a>
+        <li class="tool-card">
+            <a href="./p2p-share.html" target="_blank">Transfer data</a>
         </li>
     </ul>
 </div>
+<script>
+  const toolCards = document.querySelectorAll('.tool-card');
+  let selectedLinks = [];
+
+  toolCards.forEach(card => {
+    card.addEventListener('click', (e) => {
+      if (e.shiftKey) {
+        e.preventDefault();
+        card.classList.toggle('selected');
+        const link = card.querySelector('a').href;
+        if (card.classList.contains('selected')) {
+          selectedLinks.push(link);
+        } else {
+          selectedLinks = selectedLinks.filter(l => l !== link);
+        }
+      } else if (selectedLinks.length > 0 && !e.ctrlKey) {
+        e.preventDefault();
+        if (selectedLinks.length > 0) {
+          const encodedLinks = encodeURIComponent(JSON.stringify(selectedLinks));
+          window.open(`split-view.html?links=${encodedLinks}`, '_blank');
+          // Reset selection
+          selectedLinks = [];
+          toolCards.forEach(c => c.classList.remove('selected'));
+        }
+      }
+    });
+  });
+</script>
 </body>
 </html>
