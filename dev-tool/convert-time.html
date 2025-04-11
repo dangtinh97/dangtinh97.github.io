@@ -267,24 +267,102 @@
     };
 
     // Quy đổi giá trị đầu vào sang giây
-    const totalSeconds = value * conversionsToSeconds[fromUnit];
+    let totalSeconds = value * conversionsToSeconds[fromUnit];
 
-    // Tính các đơn vị (không làm tròn xuống ngay)
-    let years = showYear ? totalSeconds / conversionsToSeconds.years : 0;
-    let months = showMonth ? totalSeconds / conversionsToSeconds.months : 0;
-    let days = showDay ? totalSeconds / conversionsToSeconds.days : 0;
-    let hours = showHour ? totalSeconds / conversionsToSeconds.hours : 0;
-    let minutes = showMinute ? totalSeconds / conversionsToSeconds.minutes : 0;
-    let seconds = showSecond ? totalSeconds : 0;
+    // Khởi tạo các đơn vị
+    let years = 0,
+      months = 0,
+      days = 0,
+      hours = 0,
+      minutes = 0,
+      seconds = 0;
 
-    // Tạo kết quả với làm tròn 2 chữ số thập phân
+    // Kiểm tra nếu chỉ chọn một đơn vị
+    const onlyOneUnit =
+      (showYear && !showMonth && !showDay && !showHour && !showMinute && !showSecond) ||
+      (!showYear && showMonth && !showDay && !showHour && !showMinute && !showSecond) ||
+      (!showYear && !showMonth && showDay && !showHour && !showMinute && !showSecond) ||
+      (!showYear && !showMonth && !showDay && showHour && !showMinute && !showSecond) ||
+      (!showYear && !showMonth && !showDay && !showHour && showMinute && !showSecond) ||
+      (!showYear && !showMonth && !showDay && !showHour && !showMinute && showSecond);
+
+    if (onlyOneUnit) {
+      // Hiển thị giá trị thập phân nếu chỉ chọn một đơn vị
+      if (showYear) years = totalSeconds / conversionsToSeconds.years;
+      if (showMonth) months = totalSeconds / conversionsToSeconds.months;
+      if (showDay) days = totalSeconds / conversionsToSeconds.days;
+      if (showHour) hours = totalSeconds / conversionsToSeconds.hours;
+      if (showMinute) minutes = totalSeconds / conversionsToSeconds.minutes;
+      if (showSecond) seconds = totalSeconds;
+    } else {
+      // Tính các đơn vị tuần tự nếu chọn nhiều đơn vị
+      if (showYear) {
+        years = Math.floor(totalSeconds / conversionsToSeconds.years);
+        totalSeconds %= conversionsToSeconds.years;
+      }
+      if (showMonth) {
+        months = Math.floor(totalSeconds / conversionsToSeconds.months);
+        totalSeconds %= conversionsToSeconds.months;
+      }
+      if (showDay) {
+        days = Math.floor(totalSeconds / conversionsToSeconds.days);
+        totalSeconds %= conversionsToSeconds.days;
+      }
+      if (showHour) {
+        hours = Math.floor(totalSeconds / conversionsToSeconds.hours);
+        totalSeconds %= conversionsToSeconds.hours;
+      }
+      if (showMinute) {
+        minutes = Math.floor(totalSeconds / conversionsToSeconds.minutes);
+        totalSeconds %= conversionsToSeconds.minutes;
+      }
+      if (showSecond) {
+        seconds = Math.floor(totalSeconds);
+      }
+    }
+
+    // Tạo kết quả
     let resultParts = [];
-    if (showYear) resultParts.push(`${Number(years).toFixed(2)} năm`);
-    if (showMonth) resultParts.push(`${Number(months).toFixed(2)} tháng`);
-    if (showDay) resultParts.push(`${Number(days).toFixed(2)} ngày`);
-    if (showHour) resultParts.push(`${Number(hours).toFixed(2)} giờ`);
-    if (showMinute) resultParts.push(`${Number(minutes).toFixed(2)} phút`);
-    if (showSecond) resultParts.push(`${Number(seconds).toFixed(2)} giây`);
+    if (showYear) {
+      resultParts.push(
+        onlyOneUnit ? `${Number(years).toFixed(2)} năm` : `${years} năm`
+      );
+    }
+    if (showMonth) {
+      resultParts.push(
+        onlyOneUnit
+          ? `${Number(months).toFixed(2)} tháng`
+          : `${months.toString().padStart(2, '0')} tháng`
+      );
+    }
+    if (showDay) {
+      resultParts.push(
+        onlyOneUnit
+          ? `${Number(days).toFixed(2)} ngày`
+          : `${days.toString().padStart(2, '0')} ngày`
+      );
+    }
+    if (showHour) {
+      resultParts.push(
+        onlyOneUnit
+          ? `${Number(hours).toFixed(2)} giờ`
+          : `${hours.toString().padStart(2, '0')} giờ`
+      );
+    }
+    if (showMinute) {
+      resultParts.push(
+        onlyOneUnit
+          ? `${Number(minutes).toFixed(2)} phút`
+          : `${minutes.toString().padStart(2, '0')} phút`
+      );
+    }
+    if (showSecond) {
+      resultParts.push(
+        onlyOneUnit
+          ? `${Number(seconds).toFixed(2)} giây`
+          : `${seconds.toString().padStart(2, '0')} giây`
+      );
+    }
 
     const unitsVi = {
       seconds: 'giây',
@@ -304,7 +382,7 @@
     else if (showHour) defaultUnit = 'giờ';
     else if (showMinute) defaultUnit = 'phút';
 
-    const resultStr = resultParts.length > 0 ? resultParts.join(', ') : `0.00 ${unitsVi[defaultUnit]}`;
+    const resultStr = resultParts.length > 0 ? resultParts.join(', ') : `0 ${unitsVi[defaultUnit]}`;
     document.getElementById('result').innerText = `${value} ${unitsVi[fromUnit]} = ${resultStr}`;
   }
 
