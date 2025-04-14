@@ -3,113 +3,102 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Substring & Array Slice Demo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, #74ebd5, #acb6e5);
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
+            background-color: #f5f6fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         .container {
+            max-width: 900px;
             background: white;
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 600px;
-            text-align: center;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            padding: 2rem;
+            margin-top: 3rem;
         }
         h1 {
-            color: #333;
-            margin-bottom: 20px;
-            font-size: 1.8em;
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 2rem;
+            font-weight: 600;
         }
         .section {
-            margin: 15px 0;
-            padding: 15px;
-            background: #f9f9f9;
-            border-radius: 10px;
+            margin: 1.5rem 0;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 5px;
         }
         h2 {
-            font-size: 1.2em;
-            margin-bottom: 10px;
+            color: #34495e;
+            font-size: 1.25em;
+            font-weight: 500;
+            margin-bottom: 1rem;
         }
-        input, button {
-            padding: 8px;
-            margin: 5px;
-            border: 1px solid #ddd;
+        .form-label {
+            font-weight: 500;
+            color: #34495e;
+            margin-bottom: 0.5rem;
+        }
+        .form-control {
             border-radius: 5px;
-            font-size: 14px;
-            width: calc(100% - 20px);
-            box-sizing: border-box;
+            border: 1px solid #dcdcdc;
+            transition: border-color 0.3s;
         }
-        button {
-            background: #4CAF50;
-            color: white;
-            border: none;
-            cursor: pointer;
-            transition: background 0.3s;
+        .form-control:focus {
+            border-color: #3498db;
+            box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
         }
-        button:hover {
-            background: #45a049;
+        .btn {
+            padding: 0.5rem 1.5rem;
+            font-weight: 500;
+            transition: transform 0.2s, background-color 0.2s;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+        .btn-primary {
+            background-color: #3498db;
+            border-color: #3498db;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 1rem 0;
         }
         .result {
-            margin-top: 10px;
-            font-weight: bold;
-            color: #555;
-            word-wrap: break-word;
+            margin-top: 1rem;
+            font-size: 18px;
+            color: #2c3e50;
+            text-align: center;
+        }
+        .result span {
+            font-weight: 600;
+            color: #3498db;
+            word-break: break-all;
         }
         .code-example {
             background: #eee;
-            padding: 10px;
+            padding: 0.5rem;
             border-radius: 5px;
             text-align: left;
             font-family: 'Courier New', Courier, monospace;
             font-size: 0.9em;
-            overflow-x: auto;
+            margin-top: 1rem;
+            color: #2c3e50;
         }
-
-        /* Responsive Design */
-        @media (max-width: 600px) {
-            body {
-                padding: 10px;
-            }
-            .container {
-                padding: 15px;
-            }
-            h1 {
-                font-size: 1.5em;
-            }
-            h2 {
-                font-size: 1.1em;
-            }
-            input, button {
-                font-size: 12px;
-                padding: 6px;
-            }
-            .section {
-                padding: 10px;
-            }
+        .input-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
         }
-        @media (min-width: 601px) {
-            .input-group {
-                display: flex;
-                flex-wrap: wrap;
-                gap: 10px;
-                justify-content: center;
-            }
-            .input-group input {
-                width: 100px;
-            }
-            .input-group input:first-child {
-                flex: 1;
-                width: auto;
-            }
+        .input-group input {
+            flex: 1;
+            min-width: 100px;
         }
     </style>
 </head>
@@ -121,12 +110,14 @@
     <div class="section">
         <h2>Substring (Chuỗi)</h2>
         <div class="input-group">
-            <input id="stringInput" type="text" placeholder="Nhập chuỗi (VD: Xin chào)">
-            <input id="startSub" type="number" placeholder="Bắt đầu" min="0">
-            <input id="endSub" type="number" placeholder="Kết thúc" min="0">
+            <input id="stringInput" type="text" class="form-control" placeholder="Nhập chuỗi (VD: Xin chào)">
+            <input id="startSub" type="number" class="form-control" placeholder="Bắt đầu" min="0">
+            <input id="endSub" type="number" class="form-control" placeholder="Kết thúc" min="0">
         </div>
-        <button onclick="substringDemo()">Cắt Chuỗi</button>
-        <div id="substringResult" class="result"></div>
+        <div class="button-group">
+            <button type="button" onclick="substringDemo()" class="btn btn-primary">Cắt Chuỗi</button>
+        </div>
+        <div class="result" id="substringResult"><span></span></div>
         <div class="code-example">
             "Xin chào".substring(0, 3) // Kết quả: "Xin"
         </div>
@@ -136,12 +127,14 @@
     <div class="section">
         <h2>Array Slice (Mảng)</h2>
         <div class="input-group">
-            <input id="arrayInput" type="text" placeholder="Nhập mảng (VD: 1,2,3,4,5)">
-            <input id="startSlice" type="number" placeholder="Bắt đầu" min="0">
-            <input id="endSlice" type="number" placeholder="Kết thúc" min="0">
+            <input id="arrayInput" type="text" class="form-control" placeholder="Nhập mảng (VD: 1,2,3,4,5)">
+            <input id="startSlice" type="number" class="form-control" placeholder="Bắt đầu" min="0">
+            <input id="endSlice" type="number" class="form-control" placeholder="Kết thúc" min="0">
         </div>
-        <button onclick="sliceDemo()">Cắt Mảng</button>
-        <div id="sliceResult" class="result"></div>
+        <div class="button-group">
+            <button type="button" onclick="sliceDemo()" class="btn btn-primary">Cắt Mảng</button>
+        </div>
+        <div class="result" id="sliceResult"><span></span></div>
         <div class="code-example">
             [1, 2, 3, 4, 5].slice(1, 4) // Kết quả: [2, 3, 4]
         </div>
@@ -154,7 +147,7 @@
     const start = parseInt(document.getElementById('startSub').value) || 0;
     const end = parseInt(document.getElementById('endSub').value) || str.length;
     const result = str.substring(start, end);
-    document.getElementById('substringResult').innerText = `Kết quả: "${result}"`;
+    document.getElementById('substringResult').querySelector('span').innerText = `"${result}"`;
   }
 
   function sliceDemo() {
@@ -163,7 +156,7 @@
     const start = parseInt(document.getElementById('startSlice').value) || 0;
     const end = parseInt(document.getElementById('endSlice').value) || array.length;
     const result = array.slice(start, end);
-    document.getElementById('sliceResult').innerText = `Kết quả: [${result.join(', ')}]`;
+    document.getElementById('sliceResult').querySelector('span').innerText = `[${result.join(', ')}]`;
   }
 </script>
 </body>
