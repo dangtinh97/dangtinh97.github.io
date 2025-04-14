@@ -2,41 +2,137 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>RANDOM UUID V4</title>
-    <link rel="stylesheet" href="bootstrap.css">
+    <title>Random UUID V4 Generator</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <style>
+        body {
+            background-color: #f5f6fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .container {
+            max-width: 900px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            padding: 2rem;
+            margin-top: 3rem;
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 2rem;
+            font-weight: 600;
+        }
+        .btn {
+            padding: 0.5rem 1.5rem;
+            font-weight: 500;
+            transition: transform 0.2s, background-color 0.2s;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+        .btn-primary {
+            background-color: #3498db;
+            border-color: #3498db;
+        }
+        .btn-secondary {
+            background-color: #6c757d;
+            border-color: #6c757d;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 1.5rem 0 2rem;
+        }
+        .result {
+            background-color: #f8f9fa;
+            border-radius: 5px;
+            padding: 1rem;
+            font-size: 18px;
+            color: #2c3e50;
+            text-align: center;
+        }
+        .uuid {
+            font-weight: 600;
+            color: #3498db;
+            word-break: break-all;
+        }
+    </style>
 </head>
 <body>
-<div class="container py-5">
-    <div class="text-lg-center fs-2 mb-5">Online UUID Generator</div>
-    <div class="align-content-center w-100">
-        <div class="text-lg-center fs-2 badge bg-dark" id="uuid"></div>
+<div class="container">
+    <h1>Random UUID V4 Generator</h1>
+    <div class="row">
+        <div class="col-12">
+            <div class="result">
+                <div class="uuid" id="uuid"></div>
+            </div>
+        </div>
+        <div class="button-group">
+            <button type="button" onclick="onClick()" class="btn btn-primary">Generate UUID</button>
+            <button type="button" onclick="copyUUID()" class="btn btn-secondary">Copy UUID</button>
+        </div>
     </div>
-
-    <button type="button" onclick="onClick()" class="btn btn-outline-dark d-block mt-5">Random</button>
 </div>
-<script>
-    function generateUUID() { // Public Domain/MIT
-        var d = new Date().getTime();//Timestamp
-        var d2 = ((typeof performance !== 'undefined') && performance.now && (performance.now()*1000)) || 0;//Time in microseconds since page-load or 0 if unsupported
-        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-            var r = Math.random() * 16;//random number between 0 and 16
-            if(d > 0){//Use timestamp until depleted
-                r = (d + r)%16 | 0;
-                d = Math.floor(d/16);
-            } else {//Use microseconds since page-load if supported
-                r = (d2 + r)%16 | 0;
-                d2 = Math.floor(d2/16);
-            }
-            return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
-        });
-    }
 
-    var onClick = function(){
-        document.getElementById('uuid').textContent = generateUUID();
+<script>
+  function generateUUID() { // Public Domain/MIT
+    var d = new Date().getTime();
+    var d2 = ((typeof performance !== 'undefined') && performance.now && (performance.now()*1000)) || 0;
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+      var r = Math.random() * 16;
+      if(d > 0){
+        r = (d + r)%16 | 0;
+        d = Math.floor(d/16);
+      } else {
+        r = (d2 + r)%16 | 0;
+        d2 = Math.floor(d2/16);
+      }
+      return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+    });
+  }
+
+  function onClick() {
+    document.getElementById('uuid').textContent = generateUUID();
+  }
+
+  function copyUUID() {
+    const uuidText = document.getElementById('uuid').textContent;
+    if (!uuidText) {
+      alert('No UUID to copy! Please generate a UUID first.');
+      return;
     }
-    onClick();
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(uuidText).then(() => {
+        alert('UUID copied to clipboard!');
+      }).catch(err => {
+        console.error('Failed to copy UUID: ', err);
+        fallbackCopy(uuidText);
+      });
+    } else {
+      fallbackCopy(uuidText);
+    }
+  }
+
+  function fallbackCopy(text) {
+    const textArea = document.createElement('textarea');
+    textArea.value = text;
+    document.body.appendChild(textArea);
+    textArea.select();
+    try {
+      document.execCommand('copy');
+      alert('UUID copied to clipboard!');
+    } catch (err) {
+      alert('Failed to copy UUID. Please copy it manually.');
+      console.error('Fallback copy failed: ', err);
+    }
+    document.body.removeChild(textArea);
+  }
+
+  onClick();
 </script>
 </body>
 </html>
