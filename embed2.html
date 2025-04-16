@@ -11,7 +11,7 @@
 <div>
     <button type="button" onclick="startRec()">Start</button>
     <button type="button" onclick="stopRec()">Stop</button>
-    <p>Version 1.22</p>
+    <p>Version 1.23</p>
     <p id="transcript"></p>
     <p id="timeout" style="max-width: 90vw"></p>
     <div id="logs"></div>
@@ -52,7 +52,7 @@
     let isStop = false;
     const userAgent = navigator.userAgent;
     if (!('webkitSpeechRecognition' in window)) {
-      console.error('Thiết bị của bạn không hỗ trợ tính năng nhận diện giọng nói. Vui lòng mở trang này bằng Chrome hoặc trình duyệt hiện đại.');
+      addLog('Thiết bị của bạn không hỗ trợ tính năng nhận diện giọng nói. Vui lòng mở trang này bằng Chrome hoặc trình duyệt hiện đại.');
       setTimeout(()=>{
         console.error('Thiết bị của bạn không hỗ trợ tính năng nhận diện giọng nói. Vui lòng mở trang này bằng Chrome hoặc trình duyệt hiện đại.');
       })
@@ -60,7 +60,7 @@
     }
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     if(!SpeechRecognition){
-      console.error("not support SpeechRecognition")
+      addLog("not support SpeechRecognition")
     }
     const recognition = new SpeechRecognition();
     recognition.continuous = true;
