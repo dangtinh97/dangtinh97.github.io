@@ -11,10 +11,11 @@
 <div>
     <button type="button" onclick="startRec()">Start</button>
     <button type="button" onclick="stopRec()">Stop</button>
-    <p>Version 1.18</p>
+    <p>Version 1.19</p>
     <p id="transcript"></p>
     <p id="timeout" style="max-width: 90vw"></p>
     <div id="logs"></div>
+    <div id="log2"></div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/eruda/3.4.0/eruda.min.js"
         integrity="sha512-/7Y4uCcl4KzbwpY59NKj2a/GH3akyZYzUr304N784k9MRNe6NomNhaqzVr2G3zNewy9ncuS/aqsr9Q19V4f3Kg=="
@@ -39,11 +40,11 @@
           .catch(function(error) {
             // Lỗi: Người dùng từ chối hoặc có vấn đề
             // document.getElementById('status').innerText = 'Trạng thái: Lỗi - ' + error.message;
-            alert('Lỗi khi xin quyền micro:', error);
+            console.error('Lỗi khi xin quyền micro:', error);
           });
       } else {
         // document.getElementById('status').innerText = 'Trạng thái: Trình duyệt không hỗ trợ getUserMedia!';
-        alert('getUserMedia không được hỗ trợ');
+        console.error('getUserMedia không được hỗ trợ');
       }
     }
     let data = [];
