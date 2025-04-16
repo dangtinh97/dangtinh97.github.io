@@ -35,6 +35,7 @@
             data = [];
             recognition.lang = 'vi-VN';
             recognition.start();
+            addLog('start-rec.............')
             // startRec()
           })
           .catch(function(error) {
@@ -165,6 +166,7 @@
       })
     }
     window.startRec = ()=>{
+      addLog('click start')
       requestMicrophone()
       // isStop = false;
 
