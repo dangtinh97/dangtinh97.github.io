@@ -16,8 +16,12 @@
     <p id="timeout" style="max-width: 90vw"></p>
     <div id="logs"></div>
 </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/eruda/3.4.0/eruda.min.js"
+        integrity="sha512-/7Y4uCcl4KzbwpY59NKj2a/GH3akyZYzUr304N784k9MRNe6NomNhaqzVr2G3zNewy9ncuS/aqsr9Q19V4f3Kg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
   document.addEventListener("DOMContentLoaded",()=>{
+    eruda.init()
     function requestMicrophone() {
       // Kiểm tra xem trình duyệt có hỗ trợ getUserMedia không
       if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
