@@ -27,7 +27,10 @@
             // document.getElementById('status').innerText = 'Trạng thái: Quyền micro đã được cấp!';
             // console.log('Micro stream:', stream);
             // Bạn có thể sử dụng stream để ghi âm hoặc xử lý âm thanh
-            startRec()
+            data = [];
+            recognition.lang = lang;
+            recognition.start();
+            // startRec()
           })
           .catch(function(error) {
             // Lỗi: Người dùng từ chối hoặc có vấn đề
@@ -152,9 +155,7 @@
     window.startRec = ()=>{
       requestMicrophone()
       // isStop = false;
-      // data = [];
-      // recognition.lang = lang;
-      // recognition.start();
+
     }
   })
 </script>
