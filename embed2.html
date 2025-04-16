@@ -23,6 +23,10 @@
 <script>
   document.addEventListener("DOMContentLoaded",()=>{
     eruda.init()
+    setTimeout(()=>{
+      console.log('SpeechRecognition','SpeechRecognition' in window); // true or false
+      console.log('webkitSpeechRecognition','webkitSpeechRecognition' in window); // true or false
+    },3000)
     function requestMicrophone() {
       // Kiểm tra xem trình duyệt có hỗ trợ getUserMedia không
       if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
