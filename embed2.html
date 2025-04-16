@@ -9,172 +9,49 @@
 </head>
 <body style="height: 100vh;width: 90vw;">
 <div>
-    <button type="button" onclick="startRec()">Start</button>
-    <button type="button" onclick="stopRec()">Stop</button>
-    <p>Version 1.25</p>
+    <button type="button" id="start-rec">Start</button>
+    <button type="button" id="stop-rec">Stop</button>
+    <p>Version 1.26</p>
     <p id="transcript"></p>
-    <p id="timeout" style="max-width: 90vw"></p>
-    <div id="logs"></div>
-    <div id="log2"></div>
+    <p id="logs"></p>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/eruda/3.4.0/eruda.min.js"
         integrity="sha512-/7Y4uCcl4KzbwpY59NKj2a/GH3akyZYzUr304N784k9MRNe6NomNhaqzVr2G3zNewy9ncuS/aqsr9Q19V4f3Kg=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+        crossorigin="anonymous"></script>
 <script>
-  document.addEventListener("DOMContentLoaded",()=>{
+  document.addEventListener('DOMContentLoaded', () => {
     eruda.init()
-    setTimeout(()=>{
-      console.log('SpeechRecognition','SpeechRecognition' in window); // true or false
-      console.log('webkitSpeechRecognition','webkitSpeechRecognition' in window); // true or false
-    },3000)
-    function requestMicrophone() {
-      // Kiểm tra xem trình duyệt có hỗ trợ getUserMedia không
-      if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-        navigator.mediaDevices.getUserMedia({ audio: true })
-          .then(function(stream) {
-            // Thành công: Người dùng đã cấp quyền
-            // document.getElementById('status').innerText = 'Trạng thái: Quyền micro đã được cấp!';
-            // console.log('Micro stream:', stream);
-            // Bạn có thể sử dụng stream để ghi âm hoặc xử lý âm thanh
-            data = [];
-            recognition.lang = 'vi-VN';
-            recognition.start();
-            addLog('start-rec.............')
-            // startRec()
-          })
-          .catch(function(error) {
-            // Lỗi: Người dùng từ chối hoặc có vấn đề
-            // document.getElementById('status').innerText = 'Trạng thái: Lỗi - ' + error.message;
-            console.error('Lỗi khi xin quyền micro:', error);
-          });
-      } else {
-        // document.getElementById('status').innerText = 'Trạng thái: Trình duyệt không hỗ trợ getUserMedia!';
-        console.error('getUserMedia không được hỗ trợ');
-      }
-    }
-    let data = [];
-    let isBreak = true;
-    let isStop = false;
-    const userAgent = navigator.userAgent;
-    if (!('webkitSpeechRecognition' in window)) {
-      addLog('Thiết bị của bạn không hỗ trợ tính năng nhận diện giọng nói. Vui lòng mở trang này bằng Chrome hoặc trình duyệt hiện đại.');
-      setTimeout(()=>{
-        console.error('Thiết bị của bạn không hỗ trợ tính năng nhận diện giọng nói. Vui lòng mở trang này bằng Chrome hoặc trình duyệt hiện đại.');
-      })
-      return
-    }
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    if(!SpeechRecognition){
-      addLog("not support SpeechRecognition")
-    }
-    const recognition = new SpeechRecognition();
-    recognition.continuous = true;
-    recognition.interimResults = true;
-    let href = window.location.href;
-    let textOld = '';
-    const urlParams = new URLSearchParams(new URL(href).search);
-    let lang = urlParams.get('lang') ?? 'vi-VN';
-    let vLogs = document.getElementById('logs');
-    addLog(lang)
-    addLog(userAgent)
-    recognition.onresult = (event) => {
-      let transcript = ''
-      if(userAgent.toLowerCase().includes('android')){
-        for (let i = event.resultIndex; i < event.results.length; i++) {
-          transcript = event.results[i][0].transcript
-        }
-      }else {
-        for (let i = event.resultIndex; i < event.results.length; i++) {
-          transcript += event.results[i][0].transcript
-        }
-      }
-      transcript = transcript.trim();
-      if(transcript.toLowerCase()===textOld.toLowerCase()){
-        return;
-      }
-      sendDataToMobile({
-        text: transcript,
-        is_final: false
-      })
-      textOld = transcript;
-      document.getElementById('transcript').innerText = transcript;
-      if(isBreak){
-        data.push(transcript)
-        isBreak = false;
-      }else{
-        data[data.length-1] = transcript;
-      }
-      // if(sendTimeOut){
-      //   clearTimeout(sendTimeOut)
-      // }
-      // sendTimeOut = setTimeout(()=>{
-      //   stopRec()
-      // },TIME_OUT)
-      sendData(false)
-    };
-
-    const sendData = (isFinal = false)=>{
-      let send = data.filter((item)=>{
-        return item.trim() !==''
-      })
-
-      sendDataToMobile({
-        text: send.join(" ").trim(),
-        is_final: isFinal
-      })
-    }
+    const SpeechRecognition =
+      window.SpeechRecognition || window.webkitSpeechRecognition
+    const recognition = new SpeechRecognition()
+    recognition.lang = 'vi-VN'
+    recognition.continuous = true
+    recognition.interimResults = true
 
     recognition.onstart = ()=>{
       addLog("recognition started....");
     }
-    recognition.onend = (e)=>{
-      console.log(e)
-      addLog(e.type)
-      isBreak = true;
-      if(!isStop){
-        recognition.start();
-      }
+    recognition.onresult = (event)=>{
+      addLog('Has onresult...')
     }
-    recognition.onerror = (event)=>{
-      addLog(event.error)
+
+    recognition.onend = ()=>{
+      addLog("recognition ended....");
     }
+
     function addLog(text){
-      let timeNew = new Date();
-      vLogs.innerText += `${timeNew.getHours()}:${timeNew.getMinutes()}:${timeNew.getSeconds()} - ${text}\n`
+      $('#logs').append(`${text}\n`)
     }
-    const sendDataToMobile = (data) => {
-      console.log('send mobile', data)
-      document.getElementById('timeout').innerText = JSON.stringify(data,null,4);
-      try {
-        if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.buttonClicked) {
-          window.webkit.messageHandlers.buttonClicked.postMessage(data);
-        }
-        if (window.Android) {
-          const messageToPost = JSON.stringify(data);
-          window.Android.postMessage(messageToPost);
-        }
-      } catch (error) {
-        console.error('cannot send mobile', error);
-      }
-    }
-    window.stopRec = ()=>{
-      recognition.stop();
-      isStop = true;
-      let send = data.filter((item)=>{
-        return item.trim() !==''
-      })
 
-      sendDataToMobile({
-        text: send.join(" ").trim(),
-        is_final: true
-      })
-    }
-    window.startRec = ()=>{
-      addLog('click start')
-      requestMicrophone()
-      // isStop = false;
+    $('#start-rec').on('click',()=>{
+      recognition.start()
+    })
 
-    }
+    $('#stop-rec').on('click',()=>{
+      recognition.stop()
+    })
   })
 </script>
 </body>
