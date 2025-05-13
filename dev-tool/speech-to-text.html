@@ -85,7 +85,7 @@
 <body>
 <div class="container">
   <h1>Speech to Text Converter</h1>
-  <strong>v1.1</strong>
+  <strong>v1.2</strong>
   <div class="row">
     <div class="col-12 mb-3">
       <label for="transcript" class="form-label">Transcription Output</label>
@@ -158,7 +158,7 @@
         }
       }
       transcript = finalTranscript + interimTranscript;
-      transcriptArea.value = transcripts.join(' ') + ' '+ transcript;
+      transcriptArea.value = transcripts.join('<=====>') + ' '+ transcript;
       transcriptArea.scrollTop = transcriptArea.scrollHeight;
     };
 
