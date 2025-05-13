@@ -85,7 +85,7 @@
 <body>
 <div class="container">
   <h1>Speech to Text Converter</h1>
-  <strong>v1.0</strong>
+  <strong>v1.1</strong>
   <div class="row">
     <div class="col-12 mb-3">
       <label for="transcript" class="form-label">Transcription Output</label>
@@ -117,6 +117,7 @@
     const btnStop = document.getElementById('btn-stop');
     const btnClear = document.getElementById('btn-clear');
     const status = document.getElementById('status');
+    let isStop = true;
     let transcript = '';
     let transcripts = [];
     let recognition;
@@ -176,7 +177,9 @@
       btnStop.disabled = true;
       logEvent('END', 'Speech recognition stopped');
       transcripts.push(transcript);
-      recognition.start()
+      if(!isStop){
+        recognition.start()
+      }
     };
 
     recognition.onerror = (event) => {
@@ -188,12 +191,14 @@
     };
 
     $('#btn-start').on('click', () => {
+      isStop = false;
       if (!isRecording) {
         recognition.start();
       }
     });
 
     $('#btn-stop').on('click', () => {
+      isStop = true;
       if (isRecording) {
         recognition.stop();
       }
