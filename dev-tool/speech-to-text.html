@@ -85,7 +85,7 @@
 <body>
 <div class="container">
   <h1>Speech to Text Converter</h1>
-  <strong>v1.2</strong>
+  <strong>v1.3</strong>
   <div class="row">
     <div class="col-12 mb-3">
       <label for="transcript" class="form-label">Transcription Output</label>
@@ -176,7 +176,7 @@
       btnStart.disabled = false;
       btnStop.disabled = true;
       logEvent('END', 'Speech recognition stopped');
-      if(transcript.trim()>0){
+      if(transcript.trim()!==''){
         transcripts.push(transcript);
       }
       if(!isStop){
