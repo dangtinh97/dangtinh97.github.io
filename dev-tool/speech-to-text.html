@@ -176,7 +176,9 @@
       btnStart.disabled = false;
       btnStop.disabled = true;
       logEvent('END', 'Speech recognition stopped');
-      transcripts.push(transcript);
+      if(transcript.trim()>0){
+        transcripts.push(transcript);
+      }
       if(!isStop){
         recognition.start()
       }
