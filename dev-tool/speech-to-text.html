@@ -81,6 +81,7 @@
       margin-top: 1rem;
     }
   </style>
+  <script src="scripts/utils.js"></script>
 </head>
 <body>
 <div class="container">
@@ -115,7 +116,6 @@
     const logArea = document.getElementById('log');
     const btnStart = document.getElementById('btn-start');
     const btnStop = document.getElementById('btn-stop');
-    const btnClear = document.getElementById('btn-clear');
     const status = document.getElementById('status');
     let isStop = true;
     let transcript = '';
@@ -135,7 +135,7 @@
     recognition = new SpeechRecognition();
     recognition.continuous = true;
     recognition.interimResults = true;
-    recognition.lang = 'vi-VN';
+    recognition.lang = getParam('lang') || 'vi-VN';
 
     // Function to log events with timestamp
     function logEvent(eventType, message) {
