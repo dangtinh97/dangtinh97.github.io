@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>LocaAI Speaker</title>
+</head>
+<body>
+<div>
+  <div><strong>Version: 1.0</strong></div>
+  <div id="transcript"></div>
+  <div id="log-result"></div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/eruda"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.8.1/socket.io.js" integrity="sha512-8BHxHDLsOHx+flIrQ0DrZcea7MkHqRU5GbTHmbdzMRnAaoCIkZ97PqZcXJkKZckMMhqfoeaJE+DNUVuyoQsO3Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<script>
+  const URL_ADD_SPACE = '';
+  const URL_SPLIT = '';
+  const SOCKET_URL = 'https://websocket.dev.locaai.io';
+  document.addEventListener("DOMContentLoaded",()=>{
+    eruda.init();
+    /*Config Speech to text*/
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      return;
+    }
+    let recognition = new SpeechRecognition();
+    recognition.continuous = true;
+    recognition.interimResults = true;
+    recognition.lang = 'zh-CN';
+
+    /*OnEvent*/
+    recognition.onstart = ()=>{
+      addLog('Started')
+    }
+
+    recognition.onresult = (event)=>{
+      let interimTranscript = '';
+      let finalTranscript = '';
+
+      for (let i = event.resultIndex; i < event.results.length; i++) {
+        const transcript = event.results[i][0].transcript;
+        if (event.results[i].isFinal) {
+          finalTranscript += transcript + ' ';
+          console.log(finalTranscript);
+        } else {
+          interimTranscript += transcript;
+        }
+      }
+      let transcriptNew = finalTranscript + interimTranscript;
+      $('#transcript').html(transcriptNew);
+    }
+
+    /*Action*/
+    recognition.start()
+    /*End Action*/
+
+    function addLog(text){
+      let time = new Date()
+
+      $('#log-result').prepend(`<p>${time.getMinutes()}:${time.getSeconds()} | ${text}</p>`)
+    }
+  })
+</script>
+</body>
+</html>
