@@ -51,7 +51,7 @@
         const transcript = event.results[i][0].transcript;
         if (event.results[i].isFinal) {
           finalTranscript += transcript + ' ';
-          console.info("isFinal", finalTranscript);
+          // console.info("isFinal", finalTranscript);
         } else {
           interimTranscript += transcript;
         }
@@ -63,7 +63,7 @@
       if(transcriptNew === transcript){
         return console.warn('duplicate');
       }
-      console.log(finalTranscript);
+      console.info(finalTranscript);
       transcript = transcriptNew;
       $('#transcript').html(transcriptNew);
     }
