@@ -37,6 +37,11 @@
       addLog('Started')
     }
 
+    recognition.onend = ()=>{
+      addLog('Ended')
+      recognition.start()
+    }
+
     recognition.onresult = (event)=>{
       let interimTranscript = '';
       let finalTranscript = '';
