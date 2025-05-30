@@ -22,6 +22,7 @@
   const SOCKET_URL = 'https://websocket.dev.locaai.io';
   document.addEventListener("DOMContentLoaded",()=>{
     eruda.init();
+    let transcript = '';
     /*Config Speech to text*/
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!SpeechRecognition) {
@@ -56,6 +57,13 @@
         }
       }
       let transcriptNew = finalTranscript + interimTranscript;
+      if(transcriptNew.trim()===''){
+        return;
+      }
+      if(transcriptNew === transcript){
+        return console.warn('duplicate');
+      }
+      transcript = transcriptNew;
       $('#transcript').html(transcriptNew);
     }
 
