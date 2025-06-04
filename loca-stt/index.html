@@ -9,7 +9,7 @@
 </head>
 <body>
 <div>
-  <div><strong>Version: 1.4</strong></div>
+  <div><strong>Version: 1.5</strong></div>
   <div id="transcript"></div>
   <div id="log-result"></div>
 </div>
@@ -40,8 +40,11 @@
     }
 
     recognition.onend = ()=>{
-      addLog('Ended')
+      // addLog('Ended')
       recognition.start()
+    }
+    recognition.onerror = (event) => {
+      addLog("Lỗi nhận diện: "+ event.error);
     }
 
     recognition.onresult = (event)=>{
