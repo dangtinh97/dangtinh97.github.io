@@ -44,7 +44,7 @@
       recognition.start()
     }
     recognition.onerror = (event) => {
-      addLog("Lỗi nhận diện: "+ event.error);
+      addLog("Lỗi nhận diện: "+ event.error.toString());
     }
 
     recognition.onresult = (event)=>{
