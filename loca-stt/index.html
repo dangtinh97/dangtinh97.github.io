@@ -62,9 +62,9 @@
         return;
       }
       if(transcriptNew === transcript){
-        return console.warn('duplicate');
+        return addLog('duplicate');
       }
-      console.info(finalTranscript);
+      addLog(finalTranscript);
       transcript = transcriptNew;
       $('#transcript').html(transcriptNew);
     }
