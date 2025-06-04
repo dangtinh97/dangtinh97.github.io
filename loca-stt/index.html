@@ -9,7 +9,7 @@
 </head>
 <body>
 <div>
-  <div><strong>Version: 1.3</strong></div>
+  <div><strong>Version: 1.4</strong></div>
   <div id="transcript"></div>
   <div id="log-result"></div>
 </div>
@@ -36,6 +36,7 @@
     /*OnEvent*/
     recognition.onstart = ()=>{
       addLog('Started')
+      console.warn('===>Started');
     }
 
     recognition.onend = ()=>{
