@@ -232,7 +232,9 @@
     socket.on('connect',()=>{
       if(codeInit){
         peerCode = codeInit;
-        connectSocket(codeInit)
+        setTimeout(()=>{
+          connectSocket(codeInit)
+        },1000)
       }
       socket.on('JOIN',(data)=>{
         $('#btn-connect').attr('disabled',true);
