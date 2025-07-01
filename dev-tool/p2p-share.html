@@ -105,6 +105,19 @@
     .progress-bar {
       transition: width 0.3s ease-in-out;
     }
+    .connected{
+      color: #0aa82f;
+      font-weight: bold;
+    }
+    .qr-code {
+      display: flex;
+      justify-content: center;
+      margin: 1rem auto;
+      padding: 0.5rem;
+      background: #fff;
+      border-radius: 5px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
   </style>
 </head>
 <body>
@@ -112,11 +125,11 @@
   <h1>Transfer data</h1>
 
   <div class="code-display" id="myCode">Đang tạo mã...</div>
-  <div class="connection-status disconnected" id="connectionStatus">Chưa kết nối</div>
-  <hr/>
-  <div class="mb-4" id="form-connect">
-    <label for="peerCode" class="form-label">Nhập mã của người khác (5 ký tự)</label>
-    <input type="text" class="form-control" id="peerCode" placeholder="e.g., ABC12">
+  <div id="qrcode" class="qr-code"></div>
+  <div class="connection-status disconnected mb-2" id="connectionStatus">Chưa kết nối</div>
+  <div class="mb-4 mt-2" id="form-connect">
+    <label for="peerCode" class="form-label d-none">Nhập mã của người khác (5 ký tự)</label>
+    <input type="text" class="form-control" id="peerCode" placeholder="Nhập mã của người khác (5 ký tự)">
     <button class="btn btn-outline-info mt-2" id="btn-connect">Kết nối</button>
   </div>
 
@@ -154,6 +167,7 @@
     </div>
   </div>
 </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.8.1/socket.io.js" integrity="sha512-8BHxHDLsOHx+flIrQ0DrZcea7MkHqRU5GbTHmbdzMRnAaoCIkZ97PqZcXJkKZckMMhqfoeaJE+DNUVuyoQsO3Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 <script>
@@ -194,6 +208,15 @@
     };
     let myCode = generateCode();
     document.getElementById('myCode').textContent = myCode;
+    // Tạo QR code
+    new QRCode(document.getElementById('qrcode'), {
+      text: `https://dangtinh97.github.io/dev-tool/p2p-share.html?code=${myCode}`, // Mã QR chứa giá trị myCode
+      width: 200,
+      height: 200,
+      colorDark: '#2c3e50',
+      colorLight: '#ffffff',
+      correctLevel: QRCode.CorrectLevel.L // Mức sửa lỗi cao
+    });
     let peerCode = '';
     let peer = new RTCPeerConnection(config);
     let dataChannel;
@@ -284,6 +307,7 @@
           connectionStatus.classList.remove('disconnected');
           connectionStatus.classList.add('connected');
           $('#form-connect').remove();
+          $('#qrcode').remove()
         }
       } else if (peer.iceConnectionState === 'disconnected' || peer.iceConnectionState === 'failed' || peer.iceConnectionState === 'closed') {
         isConnected = false;
@@ -292,6 +316,10 @@
         connectionStatus.classList.add('disconnected');
       }
     };
+    const codeInit = getParam('code')
+    if(codeInit){
+      connectSocket(codeInit)
+    }
 
     function setupDataChannel(channel) {
       dataChannel = channel;
@@ -347,10 +375,14 @@
         alert('Mã phải có 5 ký tự!');
         return;
       }
+      connectSocket(peerCode)
+    });
+
+    function connectSocket(peerCode){
       socket.emit('JOIN',{
         room_id: peerCode
       });
-    });
+    }
 
     $('#send').on('click',()=>{
       const sendButton = $('#send');
