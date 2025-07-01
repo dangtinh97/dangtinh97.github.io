@@ -119,6 +119,7 @@
       box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
   </style>
+  <script src="scripts/utils.js"></script>
 </head>
 <body>
 <div class="container">
@@ -484,13 +485,13 @@
         copyBtn.style.display = 'inline-block';
       }
       if (content.file) {
+        fileName.textContent = content.file.name;
+        fileDownload.style.display = 'flex';
+        fileDownload.dataset.fileData = content.file.data;
+
         if (content.file.type && content.file.type.startsWith('image/')) {
           receivedImg.src = content.file.data;
           receivedImg.style.display = 'block';
-        } else {
-          fileName.textContent = content.file.name;
-          fileDownload.style.display = 'flex';
-          fileDownload.dataset.fileData = content.file.data;
         }
       }
     }
