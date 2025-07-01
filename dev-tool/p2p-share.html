@@ -231,6 +231,7 @@
 
     socket.on('connect',()=>{
       if(codeInit){
+        peerCode = codeInit;
         connectSocket(codeInit)
       }
       socket.on('JOIN',(data)=>{
