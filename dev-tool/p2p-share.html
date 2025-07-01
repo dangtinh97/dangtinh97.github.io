@@ -229,7 +229,6 @@
     });
 
     socket.on('connect',()=>{
-      console.log(socket.id);
       socket.on('JOIN',(data)=>{
         $('#btn-connect').attr('disabled',true);
         $('#peerCode').attr('readonly',true);
@@ -308,7 +307,7 @@
           connectionStatus.classList.remove('disconnected');
           connectionStatus.classList.add('connected');
           $('#form-connect').remove();
-          $('#qrcode').remove()
+          $('#qrcode').remove();
         }
       } else if (peer.iceConnectionState === 'disconnected' || peer.iceConnectionState === 'failed' || peer.iceConnectionState === 'closed') {
         isConnected = false;
@@ -317,10 +316,6 @@
         connectionStatus.classList.add('disconnected');
       }
     };
-    const codeInit = getParam('code')
-    if(codeInit){
-      connectSocket(codeInit)
-    }
 
     function setupDataChannel(channel) {
       dataChannel = channel;
@@ -378,6 +373,10 @@
       }
       connectSocket(peerCode)
     });
+    const codeInit = getParam('code')
+    if(codeInit){
+      connectSocket(codeInit)
+    }
 
     function connectSocket(peerCode){
       socket.emit('JOIN',{
