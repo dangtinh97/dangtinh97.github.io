@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Bộ ứng dụng của bạn</title>
+  <meta name="description" content="Trang giới thiệu các ứng dụng nổi bật: mô tả ngắn, ảnh, nút tải nhanh." />
+  <meta property="og:title" content="Bộ ứng dụng của bạn" />
+  <meta property="og:description" content="Trang giới thiệu các ứng dụng nổi bật: mô tả ngắn, ảnh, nút tải nhanh." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="cover.jpg" />
+  <meta name="theme-color" content="#0ea5e9" />
+  <link rel="icon" href="favicon.png" />
+  <style>
+    /* ---------- Reset & base ---------- */
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body { margin: 0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji"; line-height: 1.5; }
+
+    /* ---------- Theme ---------- */
+    :root {
+      --bg: #0b1220;
+      --bg-soft: #0f172a;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --card: #111827cc;
+      --card-border: #1f2937;
+      --brand: #38bdf8; /* sky-400 */
+      --accent: #22c55e; /* green-500 */
+      --shadow: 0 10px 25px rgba(0,0,0,.35);
+    }
+    .light {
+      --bg: #f8fafc;
+      --bg-soft: #ffffff;
+      --text: #0f172a;
+      --muted: #475569;
+      --card: #ffffffcc;
+      --card-border: #e2e8f0;
+      --shadow: 0 8px 20px rgba(2,6,23,.08);
+    }
+
+    body { background: radial-gradient(1200px 800px at 80% -10%, rgba(56,189,248,.25), transparent 60%),
+    radial-gradient(800px 600px at 0% 100%, rgba(34,197,94,.18), transparent 60%), var(--bg); color: var(--text); }
+
+    /* ---------- Layout ---------- */
+    .container { width: 100%; max-width: 1100px; margin: 0 auto; padding: 24px; }
+    header { display: grid; grid-template-columns: 1fr auto; gap: 16px; align-items: center; margin-top: 8px; }
+    .brand { display: flex; align-items: center; gap: 12px; }
+    .logo { width: 40px; height: 40px; border-radius: 12px; background: linear-gradient(135deg, var(--brand), var(--accent)); box-shadow: var(--shadow); }
+    .title { font-size: clamp(20px, 3vw, 28px); font-weight: 700; letter-spacing: 0.3px; }
+
+    .actions { display: flex; align-items: center; gap: 12px; }
+    .btn { border: 1px solid var(--card-border); background: var(--card); color: var(--text); padding: 9px 14px; border-radius: 12px; cursor: pointer; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); box-shadow: var(--shadow); transition: transform .15s ease, border-color .15s ease; }
+    .btn:hover { transform: translateY(-1px); border-color: var(--brand); }
+
+    .hero { display: grid; gap: 10px; margin: 28px 0 8px; }
+    .hero h1 { margin: 0; font-size: clamp(28px, 4.5vw, 44px); line-height: 1.1; }
+    .hero p { margin: 0; color: var(--muted); max-width: 68ch; }
+
+    .toolbar { display: grid; grid-template-columns: 1fr auto; gap: 12px; margin: 24px 0 16px; }
+    .search { position: relative; }
+    .search input { width: 100%; padding: 12px 44px 12px 44px; border-radius: 12px; border: 1px solid var(--card-border); background: var(--bg-soft); color: var(--text); outline: none; box-shadow: var(--shadow); }
+    .search .icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); opacity: .7; }
+    .search .clear { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); opacity: .6; cursor: pointer; display: none; }
+
+    .grid { display: grid; grid-template-columns: repeat( auto-fill, minmax(260px, 1fr) ); gap: 16px; }
+
+    .card { border: 1px solid var(--card-border); background: var(--card); border-radius: 16px; overflow: clip; box-shadow: var(--shadow); display: grid; grid-template-rows: auto 1fr auto; transition: transform .18s ease, border-color .15s ease; }
+    .card:hover { transform: translateY(-2px); border-color: color-mix(in oklab, var(--brand), #ffffff 20%); }
+
+    .thumb { aspect-ratio: 16/9; background: linear-gradient(135deg, #0ea5e9, #22c55e); display: grid; place-items: center; }
+    .thumb img { width: 100%; height: 100%; object-fit: cover; }
+
+    .content { padding: 14px 14px 4px; display: grid; gap: 8px; }
+    .name { font-weight: 700; font-size: 18px; }
+    .tags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .tag { font-size: 12px; padding: 3px 8px; border-radius: 999px; border: 1px dashed var(--card-border); color: var(--muted); }
+
+    .desc { color: var(--muted); font-size: 14px; }
+
+    .actions-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 10px 14px 14px; }
+    .store { display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--card-border); background: var(--bg-soft); color: var(--text); padding: 8px 12px; border-radius: 12px; text-decoration: none; font-weight: 600; white-space: nowrap; }
+    .store:hover { border-color: var(--brand); }
+    .stat { font-size: 12px; color: var(--muted); }
+
+    footer { text-align: center; color: var(--muted); font-size: 13px; padding: 40px 0 24px; }
+
+    /* Small helper for "New" badge */
+    .pill { padding: 2px 8px; border-radius: 999px; font-size: 12px; border: 1px solid var(--card-border); color: var(--muted); }
+
+    @media (max-width: 480px) {
+      .actions { gap: 8px; }
+      .btn { padding: 8px 12px; }
+      .actions-row { flex-direction: column; align-items: stretch; }
+      .store { justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+<div class="container" id="top">
+  <header>
+    <div class="brand" aria-label="Thương hiệu">
+      <div class="logo" aria-hidden="true"></div>
+      <div>
+        <div class="title">Bộ ứng dụng của <span id="brandName">Bạn</span></div>
+        <div class="pill" title="Cập nhật hôm nay">Bản giới thiệu</div>
+      </div>
+    </div>
+    <div class="actions">
+      <button class="btn" id="toggleTheme" aria-label="Đổi theme">Đổi theme</button>
+      <a class="btn" href="#contact" aria-label="Liên hệ">Liên hệ</a>
+    </div>
+  </header>
+
+  <section class="hero" aria-labelledby="h1">
+    <h1 id="h1">Làm một trang, bán cả hệ sinh thái.</h1>
+    <p>Tổng hợp tất cả app bạn đã xuất bản. Giao diện gọn, tải nhanh, có ô tìm kiếm, badge cửa hàng, và số liệu cơ bản. Một link duy nhất để chia sẻ ở bio, profile, hay QR tại sự kiện.</p>
+  </section>
+
+  <div class="toolbar">
+    <div class="search">
+      <svg class="icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+      <input id="q" type="search" placeholder="Tìm app theo tên, danh mục, mô tả..." autocomplete="off" />
+      <svg id="clearBtn" class="clear" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+    </div>
+    <div class="pill" id="count">0 app</div>
+  </div>
+
+  <section class="grid" id="grid" aria-live="polite"></section>
+
+  <footer id="contact">
+    <p>© <span id="year"></span> <span id="owner">Bạn</span>. Mọi quyền được bảo lưu.</p>
+    <p>Liên hệ: <a href="mailto:dangtinha2@gmail.com">dangtinha2@gmail.com</a> • Facebook: <a href="https://www.facebook.com/dangtinhhaui">Vũ Đăng Tính</a></p>
+  </footer>
+</div>
+
+<script>
+  // ======= EDIT CHỖ NÀY: Data app ======= //
+  // Điền danh sách app của bạn vào đây. thumb có thể là URL ảnh (PNG/JPG/WebP/SVG) hoặc để trống.
+  const APPS = [
+    {
+      name: "EmoDesk",
+      desc: "Trợ lý cảm xúc mini: wake word, chat AI, chơi game cử chỉ.",
+      tags: ["AI", "Tool", "Lifestyle"],
+      thumb: "thumbs/emodesk.jpg",
+      playUrl: "https://play.google.com/store/apps/details?id=com.dangtinh.emodesk",
+      iosUrl: "", // nếu có
+      installs: "10k+",
+      updated: "2025-08-01"
+    },
+    {
+      name: "TrapPhone",
+      desc: "Chống trộm: báo động khi bị rút sạc, di chuyển, lén mở máy.",
+      tags: ["Security", "Utilities"],
+      thumb: "thumbs/trapphone.jpg",
+      playUrl: "https://play.google.com/store/apps/details?id=com.example.trapphone",
+      iosUrl: "",
+      installs: "100k+",
+      updated: "2025-06-12"
+    },
+    {
+      name: "YouPiP",
+      desc: "Xem video YOUTUBE không quảng cáo",
+      tags: ["Video", "PiP","No ads"],
+      thumb: "",
+      playUrl: "https://play.google.com/store/apps/details?id=org.youpip.app&hl=vi",
+      iosUrl: "",
+      installs: "10k+",
+      updated: "2025-05-05"
+    },
+    {
+      name: "LinaFeel",
+      desc: "Ghi nhật ký cảm xúc hàng ngày, gợi ý hành động nhẹ nhàng.",
+      tags: ["Health", "Diary"],
+      thumb: "thumbs/linafeel.jpg",
+      playUrl: "https://play.google.com/store/apps/details?id=com.example.linafeel",
+      iosUrl: "",
+      installs: "50k+",
+      updated: "2025-08-08"
+    }
+  ];
+
+  // ======= Script hiển thị ======= //
+  const grid = document.getElementById('grid');
+  const q = document.getElementById('q');
+  const clearBtn = document.getElementById('clearBtn');
+  const count = document.getElementById('count');
+
+  function iconGooglePlay() {
+    return `<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3.6 2.2c-.4.2-.6.6-.6 1.1v17.4c0 .5.2.9.6 1.1l9.7-9.8L3.6 2.2zm10.9 9.7 3.5-2.1c1.1-.7 1.1-2.3 0-3l-2.2-1.3-3.9 4 2.6 2.4zM12 13.2l-8 8c.3.1.7.1 1-.1l13-7.7-6-3.5 0 3.3z"/></svg>`
+  }
+  function iconApple() {
+    return `<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.5 12.1c0-2.4 1.9-3.6 2-3.7-1.1-1.6-2.8-1.8-3.4-1.8-1.4-.1-2.8.8-3.5.8-.7 0-1.8-.8-3-.8-1.5 0-2.9.9-3.7 2.2-1.6 2.6-.4 6.3 1.1 8.4.8 1.2 1.7 2.5 3 2.4 1.2 0 1.7-.8 3.1-.8 1.4 0 1.8.8 3 0 1-.7 1.7-1.6 2.3-2.6-2.4-1.1-2.9-4.2-2.9-4.1z"/><path d="M14.9 5.3c.6-.7 1-1.7.9-2.7-1 .1-2 .6-2.7 1.3-.6.7-1 1.7-.9 2.7 1 0 2-.5 2.7-1.3z"/></svg>`
+  }
+
+  function appCard(a) {
+    const tags = a.tags.map(t => `<span class="tag">${t}</span>`).join('');
+    const hasIOS = a.iosUrl && a.iosUrl.trim() !== '';
+    return `
+        <article class="card" data-name="${a.name.toLowerCase()}" data-tags="${a.tags.join(' ').toLowerCase()}" data-desc="${a.desc.toLowerCase()}">
+          <div class="thumb">${a.thumb ? `<img src="${a.thumb}" alt="${a.name}" loading="lazy"/>` : ''}</div>
+          <div class="content">
+            <div class="name">${a.name}</div>
+            <div class="tags">${tags}</div>
+            <p class="desc">${a.desc}</p>
+          </div>
+          <div class="actions-row">
+            <div style="display:flex; gap:8px; flex-wrap:wrap;">
+              ${a.playUrl ? `<a class="store" href="${a.playUrl}" target="_blank" rel="noopener" aria-label="Tải trên Google Play">${iconGooglePlay()} <span>Google Play</span></a>` : ''}
+              ${hasIOS ? `<a class="store" href="${a.iosUrl}" target="_blank" rel="noopener" aria-label="Tải trên App Store">${iconApple()} <span>App Store</span></a>` : ''}
+            </div>
+            <div class="stat" aria-label="Thống kê">${a.installs ? a.installs + ' lượt cài' : ''}${a.updated ? (a.installs ? ' • ' : '') + 'Cập nhật ' + a.updated : ''}</div>
+          </div>
+        </article>`;
+  }
+
+  function render(list) {
+    grid.innerHTML = list.map(appCard).join('');
+    count.textContent = `${list.length} app`;
+  }
+
+  render(APPS);
+
+  // Search
+  q.addEventListener('input', () => {
+    const v = q.value.trim().toLowerCase();
+    clearBtn.style.display = v ? 'block' : 'none';
+    const filtered = APPS.filter(a => (a.name + ' ' + a.desc + ' ' + a.tags.join(' ')).toLowerCase().includes(v));
+    render(filtered);
+  });
+  clearBtn.addEventListener('click', () => { q.value = ''; clearBtn.style.display = 'none'; render(APPS); q.focus(); });
+
+  // Theme toggle (light/dark)
+  const toggleTheme = document.getElementById('toggleTheme');
+  const key = 'apps-landing-theme';
+  const saved = localStorage.getItem(key);
+  if (saved === 'light') document.body.classList.add('light');
+  toggleTheme.addEventListener('click', () => {
+    document.body.classList.toggle('light');
+    localStorage.setItem(key, document.body.classList.contains('light') ? 'light' : 'dark');
+  });
+
+  // Footer info
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // Optional: chỉnh brand/owner (đổi ở đây hoặc bind từ domain)
+  const ownerName = 'Đại ca';
+  document.getElementById('brandName').textContent = ownerName;
+  document.getElementById('owner').textContent = ownerName;
+
+  // Tiny interaction: anchor smooth scroll
+  document.querySelectorAll('a[href^="#"]').forEach(a => a.addEventListener('click', e => {
+    const id = a.getAttribute('href').slice(1);
+    const el = document.getElementById(id);
+    if (el) { e.preventDefault(); el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+  }));
+</script>
+</body>
+</html>
