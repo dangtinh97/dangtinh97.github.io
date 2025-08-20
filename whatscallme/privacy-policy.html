@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>WhatsCallMe — Privacy Policy</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --fg: #0f172a;
+      --muted: #475569;
+      --accent: #2563eb;
+      --card: #f8fafc;
+      --border: #e2e8f0;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0b1220;
+        --fg: #e6edf7;
+        --muted: #9fb0cc;
+        --accent: #60a5fa;
+        --card: #0f172a;
+        --border: #1f2937;
+      }
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; line-height: 1.6; }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .container { max-width: 860px; margin: 0 auto; padding: 32px 20px 80px; }
+    header { margin-bottom: 24px; }
+    h1 { font-size: 1.9rem; margin: 0 0 8px; }
+    .subtitle { color: var(--muted); margin: 0 0 12px; }
+    .badge { display: inline-block; padding: 4px 10px; border: 1px solid var(--border); border-radius: 999px; font-size: 0.85rem; color: var(--muted); background: var(--card); }
+    .toc { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; margin: 24px 0; }
+    .toc h2 { font-size: 1.1rem; margin: 0 0 8px; }
+    .toc ul { margin: 0; padding-left: 18px; }
+    section { margin-top: 32px; }
+    h2 { font-size: 1.4rem; margin-top: 0; }
+    h3 { font-size: 1.12rem; margin-bottom: 8px; }
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+    .muted { color: var(--muted); }
+    footer { margin-top: 48px; padding-top: 24px; border-top: 1px dashed var(--border); color: var(--muted); font-size: 0.95rem; }
+    ol, ul { padding-left: 20px; }
+    .small { font-size: 0.9rem; }
+    code { background: rgba(148,163,184,0.16); padding: 2px 6px; border-radius: 6px; }
+    .pill { display:inline-block; border:1px solid var(--border); background: var(--card); padding: 2px 8px; border-radius: 999px; font-size: .82rem; color: var(--muted); margin:0 6px 6px 0; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>WhatsCallMe — Privacy Policy</h1>
+      <p class="subtitle">This Privacy Policy explains what information we collect, how we use it, and your rights.</p>
+      <span class="badge">Last Updated: <time datetime="2025-08-20">August 20, 2025</time></span>
+    </header>
+
+    <div class="toc">
+      <h2>Contents</h2>
+      <ul>
+        <li><a href="#scope">1. Scope</a></li>
+        <li><a href="#data">2. Information We Collect</a></li>
+        <li><a href="#use">3. How We Use the Information</a></li>
+        <li><a href="#permissions">4. Permissions Used</a></li>
+        <li><a href="#sharing">5. Sharing Information</a></li>
+        <li><a href="#security">6. Data Storage &amp; Security</a></li>
+        <li><a href="#rights">7. Your Rights</a></li>
+        <li><a href="#children">8. Children’s Privacy</a></li>
+        <li><a href="#changes">9. Changes to This Policy</a></li>
+        <li><a href="#contact">10. Contact Us</a></li>
+      </ul>
+    </div>
+
+    <section id="scope">
+      <h2>1. Scope</h2>
+      <div class="card">
+        <p>This policy applies to the WhatsCallMe mobile application and related services.</p>
+      </div>
+    </section>
+
+    <section id="data">
+      <h2>2. Information We Collect</h2>
+      <div class="card">
+        <ul>
+          <li><strong>Device information</strong>: OS version, device model, app identifier (for performance monitoring).</li>
+          <li><strong>Reported phone numbers</strong>: numbers you report to help warn the community about spam or fraud calls.</li>
+          <li><strong>Usage data</strong>: session counts, feature usage, crash logs (collected in an anonymized form).</li>
+        </ul>
+        <p><strong>Note:</strong> We <u>do not</u> access SMS content, your personal contacts list, or call recordings.</p>
+      </div>
+    </section>
+
+    <section id="use">
+      <h2>3. How We Use the Information</h2>
+      <div class="card">
+        <ul>
+          <li>Detect and warn about spam or fraudulent calls.</li>
+          <li>Improve stability, performance, and user experience.</li>
+          <li>Maintain security and prevent fraudulent use.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="permissions">
+      <h2>4. Permissions Used</h2>
+      <div class="card">
+        <p>To provide caller ID, spam protection, and notification features, WhatsCallMe requests only the permissions necessary for core functionality.</p>
+
+        <h3>4.1 In‑app permission prompts (user‑visible)</h3>
+        <ul>
+          <li><em>Allow WhatsCallMe to make and manage phone calls</em></li>
+          <li><em>Allow WhatsCallMe to act as your caller ID and block unwanted calls</em></li>
+          <li><em>Allow notifications from WhatsCallMe</em></li>
+        </ul>
+
+        <h3>4.2 Android permission mapping</h3>
+        <ul>
+          <li><span class="pill">Phone / Calls</span> <code>CALL_PHONE</code>, <code>READ_PHONE_STATE</code>, <code>MANAGE_OWN_CALLS</code> — detect/manage call events for caller ID and protection.</li>
+          <li><span class="pill">Default phone app</span> Role / Call screening — allow caller ID and blocking features to function.</li>
+          <li><span class="pill">Notifications</span> Post notifications — show call alerts and status updates.</li>
+          <li><span class="pill">Overlay</span> Draw over other apps — display warning pop‑ups on top of the call screen.</li>
+          <li style="display: none"><span class="pill" >Contacts (optional)</span> Read contacts — improve caller identification from your address book.</li>
+          <li><span class="pill">Network</span> Internet access — update the spam number database.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="sharing">
+      <h2>5. Sharing Information</h2>
+      <div class="card">
+        <p>We do not sell or rent your personal information. Data may be shared only when required by law or to protect the rights, safety, or security of users and the community.</p>
+      </div>
+    </section>
+
+    <section id="security">
+      <h2>6. Data Storage &amp; Security</h2>
+      <div class="card">
+        <ul>
+          <li>Data is transmitted and stored securely with encryption.</li>
+          <li>We apply technical and organizational measures to prevent unauthorized access, misuse, or loss.</li>
+          <li>Data is retained only as long as necessary for the stated purposes or as required by law.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="rights">
+      <h2>7. Your Rights</h2>
+      <div class="card">
+        <ul>
+          <li>Request access to, correction, or deletion of your personal data.</li>
+          <li>Withdraw consent where processing is based on consent, without affecting prior lawful processing.</li>
+          <li>Contact us if you believe your data is being misused.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="children">
+      <h2>8. Children’s Privacy</h2>
+      <div class="card">
+        <p>WhatsCallMe is not intended for children under 13 (or the minimum age specified by local law). If we learn that data has been collected from a child, we will delete it promptly.</p>
+      </div>
+    </section>
+
+    <section id="changes">
+      <h2>9. Changes to This Policy</h2>
+      <div class="card">
+        <p>We may update this Privacy Policy to comply with legal requirements or improve services. Updates will be posted in the app or on our official website. Continued use of the app after changes take effect constitutes acceptance.</p>
+      </div>
+    </section>
+
+    <section id="contact">
+      <h2>10. Contact Us</h2>
+      <div class="card">
+        <ul>
+          <li>Email: <a href="mailto:dangtinha2@gmail.com">dangtinha2@gmail.com</a></li>
+          <li style="display: none">Website: <a href="https://www.whatscallme.com">www.whatscallme.com</a></li>
+        </ul>
+        <p class="small muted">This document is provided for informational purposes and does not constitute legal advice. You may need to adjust it to reflect your local laws.</p>
+      </div>
+    </section>
+
+    <footer>
+      © <span id="year">2025</span> WhatsCallMe. All rights reserved.
+    </footer>
+  </div>
+
+  <script>
+    // Update footer year automatically
+    const y = new Date().getFullYear();
+    document.getElementById('year').textContent = y;
+  </script>
+</body>
+</html>
