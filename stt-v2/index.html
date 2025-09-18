@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Speech to Text</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: "Segoe UI", sans-serif;
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            min-height: 100vh;
+            padding: 20px;
+            color: #fff;
+            box-sizing: border-box;
+        }
+
+        h1 {
+            margin: 20px 0 10px;
+            font-size: clamp(20px, 5vw, 32px);
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .output {
+            flex: 1;
+            width: 100%;
+            max-width: 800px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(8px);
+            border-radius: 12px;
+            padding: 16px;
+            font-size: clamp(14px, 2.5vw, 18px);
+            line-height: 1.6;
+            min-height: 120px;
+            white-space: pre-wrap;
+            overflow-y: auto;
+        }
+
+        .wave {
+            display: flex;
+            align-items: flex-end;
+            height: 40px;
+            margin: 20px 0;
+        }
+        .bar {
+            width: 5px;
+            height: 10px;
+            margin: 0 2px;
+            background: #fff;
+            border-radius: 3px;
+            animation: bounce 1.2s infinite ease-in-out;
+        }
+        .bar:nth-child(2) { animation-delay: -1.1s; }
+        .bar:nth-child(3) { animation-delay: -1.0s; }
+        .bar:nth-child(4) { animation-delay: -0.9s; }
+        .bar:nth-child(5) { animation-delay: -0.8s; }
+
+        @keyframes bounce {
+            0%, 40%, 100% { transform: scaleY(0.3); }
+            20% { transform: scaleY(1); }
+        }
+
+        /* Nút ghi âm */
+        .record-btn {
+            width: 80px;
+            height: 80px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .start {
+            background: #fff;
+            border-radius: 50%; /* hình tròn */
+        }
+        .stop {
+            background: #ff4b5c;
+            border-radius: 12px; /* vuông bo nhẹ */
+        }
+
+        @media (max-width: 600px) {
+            .record-btn {
+                width: 60px;
+                height: 60px;
+            }
+        }
+    </style>
+</head>
+<body>
+<h1>🎤 Speech to Text</h1>
+<div class="output" id="output">Your speech will appear here...</div>
+<div class="wave" id="wave">
+    <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
+</div>
+<button id="recordBtn" class="record-btn start"></button>
+
+<script>
+  const output = document.getElementById("output");
+  const wave = document.getElementById("wave");
+  const recordBtn = document.getElementById("recordBtn");
+
+  let isRecording = false;
+  let recognition;
+
+  wave.style.display = "none";
+
+  if ('webkitSpeechRecognition' in window) {
+    recognition = new webkitSpeechRecognition();
+  } else if ('SpeechRecognition' in window) {
+    recognition = new SpeechRecognition();
+  }
+
+  if (recognition) {
+    recognition.continuous = true;
+    recognition.interimResults = true;
+    recognition.lang = "vi-VN";
+
+    recognition.onresult = (event) => {
+      let transcript = "";
+      for (let i = event.resultIndex; i < event.results.length; i++) {
+        transcript += event.results[i][0].transcript;
+      }
+      output.textContent = transcript;
+    };
+
+    recognition.onstart = () => {
+      wave.style.display = "flex";
+      recordBtn.classList.remove("start");
+      recordBtn.classList.add("stop");
+      isRecording = true;
+    };
+
+    recognition.onend = () => {
+      wave.style.display = "none";
+      recordBtn.classList.remove("stop");
+      recordBtn.classList.add("start");
+      isRecording = false;
+    };
+
+    recordBtn.onclick = () => {
+      if (!isRecording) {
+        recognition.start();
+      } else {
+        recognition.stop();
+      }
+    };
+  } else {
+    output.textContent = "Your browser does not support Speech Recognition API.";
+    recordBtn.disabled = true;
+  }
+</script>
+</body>
+</html>
