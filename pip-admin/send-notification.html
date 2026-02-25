@@ -1,139 +1,289 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gửi thông báo</title>
-  <link rel="stylesheet" href="./assets/app.css">
-</head>
-<body>
-<div class="card">
-  <h2>Gửi thông báo</h2>
-  <div id="infoForm">
-    <div class="form-group">
-      <label for="passcode">Passcode</label>
-      <input
-              type="password"
-              id="passcode"
-              placeholder="Nhập passcode"
-              required
-              minlength="6"
-              aria-describedby="passcode-error"
-      >
-      <span id="passcode-error" class="error-message">Passcode phải có ít nhất 6 ký tự</span>
-    </div>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gửi thông báo</title>
 
-    <div class="form-group">
-      <label for="title">Tiêu đề</label>
-      <input
-              type="text"
-              id="title"
-              placeholder="Nhập tiêu đề"
-              required
-              aria-describedby="title-error"
-        value="YouPiP is Ad-Free"
-      >
-      <span id="title-error" class="error-message">Vui lòng nhập tiêu đề</span>
-    </div>
+    <script src="assets/jquery-3.7.1.min.js"></script>
+    <script src="assets/common.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"></script>
 
-    <div class="form-group">
-      <label for="content">Nội dung</label>
-      <textarea
-              id="content"
-              placeholder="Nhập nội dung..."
-              required
-              aria-describedby="content-error"
-        
-      >No ads. No interruptions. One-time $1.59.</textarea>
-      <span id="content-error" class="error-message">Vui lòng nhập nội dung</span>
-    </div>
-
-    <button type="button" id="send">Xác nhận</button>
-    <div id="success-message" class="success-message">
-      Đã gửi thông tin thành công!
-    </div>
-  </div>
-</div>
-<script src="assets/common.js"></script>
-<script src="assets/jquery-3.7.1.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"></script>
-<script>
-  document.addEventListener("DOMContentLoaded",()=>{
-    const form = document.getElementById('infoForm');
-    const successMessage = document.getElementById('success-message');
-    $('#passcode').val(window.localStorage.getItem('passcode'))
-    $('#send').on('click',()=>{
-      const passcode = document.getElementById('passcode');
-      let url = getUrl(passcode.value);
-      if(!url){
-        return alert('PASSCODE FAILED!')
-      }
-      window.localStorage.setItem('passcode',passcode.value)
-      const title = document.getElementById('title');
-      const content = document.getElementById('content');
-
-      // Reset error messages
-      document.querySelectorAll('.error-message').forEach(error => {
-        error.style.display = 'none';
-      });
-
-      // Validate form
-      let isValid = true;
-
-      if (passcode.value.length < 6) {
-        document.getElementById('passcode-error').style.display = 'block';
-        passcode.focus();
-        isValid = false;
-      }
-
-      if (!title.value.trim()) {
-        document.getElementById('title-error').style.display = 'block';
-        if (isValid) title.focus();
-        isValid = false;
-      }
-
-      if (!content.value.trim()) {
-        document.getElementById('content-error').style.display = 'block';
-        if (isValid) content.focus();
-        isValid = false;
-      }
-      if(!isValid){
-        return alert("Vui lòng điền đủ thông tin.")
-      }
-      $.ajax({
-        url:`${url}/notifications/send`,
-        type:'POST',
-        dataType:"JSON",
-        data:{
-          "message": {
-            "topic": "daily",
-            "notification": {
-              "title": title.value,
-              "body": content.value
-            }
-          }
-        },
-        success:(res)=>{
-          if(res.status!==200){
-            return alert(res.message)
-          }
-          successMessage.style.display = 'block';
-          // Hide success message after 3 seconds
-          setTimeout(() => {
-            successMessage.style.display = 'none';
-          }, 3000);
+    <style>
+        body{
+            margin:0;
+            font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto;
+            background: linear-gradient(135deg,#667eea,#764ba2);
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            height:100vh;
         }
-      })
-    })
 
-    // Xử lý sự kiện input để ẩn thông báo lỗi khi người dùng bắt đầu nhập
-    // ['passcode', 'title', 'content'].forEach(id => {
-    //   document.getElementById(id).addEventListener('input', function() {
-    //     document.getElementById(`${id}-error`).style.display = 'none';
-    //   });
-    // });
-  })
+        .card{
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(20px);
+            padding:30px;
+            width:420px;
+            border-radius:20px;
+            box-shadow:0 20px 40px rgba(0,0,0,0.2);
+            color:white;
+        }
+
+        h2{
+            text-align:center;
+            margin-bottom:20px;
+        }
+
+        .form-group{
+            margin-bottom:15px;
+        }
+
+        input, textarea, select{
+            width:100%;
+            padding:10px;
+            border-radius:10px;
+            border:none;
+            margin-top:5px;
+            font-size:14px;
+            outline:none;
+        }
+
+        textarea{
+            resize:none;
+            height:80px;
+        }
+
+        button{
+            width:100%;
+            padding:12px;
+            border:none;
+            border-radius:12px;
+            font-weight:bold;
+            background:#ffffff;
+            color:#764ba2;
+            cursor:pointer;
+            transition:0.3s;
+        }
+
+        button:hover{
+            transform:translateY(-2px);
+            box-shadow:0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        .template-list{
+            margin-top:10px;
+            max-height:120px;
+            overflow-y:auto;
+            background:rgba(255,255,255,0.15);
+            border-radius:10px;
+            padding:5px;
+        }
+
+        .template-item{
+            padding:6px;
+            border-radius:8px;
+            cursor:pointer;
+            font-size:13px;
+        }
+
+        .template-item:hover{
+            background:rgba(255,255,255,0.3);
+        }
+
+        .success-message{
+            display:none;
+            text-align:center;
+            margin-top:10px;
+            color:#00ffcc;
+        }
+
+        .add-template{
+            margin-top:10px;
+            font-size:12px;
+            text-align:right;
+            cursor:pointer;
+            opacity:0.8;
+        }
+
+        .add-template:hover{
+            opacity:1;
+            text-decoration:underline;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="card">
+    <h2>Gửi thông báo</h2>
+
+    <div class="form-group">
+        <label>Passcode</label>
+        <input type="password" id="passcode" placeholder="Nhập passcode">
+    </div>
+
+    <div class="form-group">
+        <label>Tiêu đề</label>
+        <input type="text" id="title" placeholder="Nhập tiêu đề">
+    </div>
+
+    <div class="form-group">
+        <label>Nội dung</label>
+        <textarea id="content" placeholder="Nhập nội dung"></textarea>
+    </div>
+
+    <div class="form-group">
+        <label>Danh sách mẫu</label>
+        <div class="template-list" id="templateList"></div>
+        <div class="add-template" id="saveTemplate">+ Lưu mẫu hiện tại</div>
+    </div>
+
+    <button id="send">Xác nhận</button>
+
+    <div class="success-message" id="success-message">
+        Đã gửi thành công!
+    </div>
+
+</div>
+
+<script>
+
+    document.addEventListener("DOMContentLoaded",()=>{
+
+        const passcodeInput = $('#passcode');
+        const titleInput = $('#title');
+        const contentInput = $('#content');
+        const templateList = $('#templateList');
+        const successMessage = $('#success-message');
+
+        passcodeInput.val(localStorage.getItem('passcode'));
+
+        let templates = JSON.parse(localStorage.getItem('templates')) || [
+            {
+                title: "Go Ad-Free 🎧",
+                content: "Unlock unlimited music with a one-time purchase."
+            },
+            {
+                title: "Upgrade to Premium",
+                content: "No ads. No interruptions. Just music."
+            },
+            {
+                title: "Support YouPiP ❤️",
+                content: "Enjoy an ad-free experience for only $1.59."
+            },
+            {
+                title: "One-Time Purchase",
+                content: "Pay once. Listen forever."
+            },
+            {
+                title: "Unlock Full Experience",
+                content: "Remove ads and enjoy seamless playback."
+            },
+            {
+                title: "Music Awaits 🎶",
+                content: "Open YouPiP and start listening now."
+            },
+            {
+                title: "Press Play ▶️",
+                content: "Your favorite tracks are waiting."
+            },
+            {
+                title: "Ready to Relax?",
+                content: "Launch YouPiP and enjoy your music."
+            },
+            {
+                title: "Back to Your Playlist",
+                content: "Continue where you left off."
+            },
+            {
+                title: "Turn Up the Volume 🔊",
+                content: "Dive back into your music world."
+            },
+            {
+                title: "Thank You 💙",
+                content: "We appreciate you using YouPiP."
+            },
+            {
+                title: "Thanks for Listening",
+                content: "Your support keeps YouPiP growing."
+            },
+            {
+                title: "You're Awesome!",
+                content: "Thanks for being part of the YouPiP community."
+            },
+            {
+                title: "Grateful for You 🙌",
+                content: "Thanks for choosing YouPiP."
+            },
+            {
+                title: "Music Made Better",
+                content: "Thanks for making YouPiP part of your day."
+            }
+        ];
+
+        function renderTemplates(){
+            templateList.empty();
+            templates.forEach((tpl,index)=>{
+                const item = $(`<div class="template-item">${tpl.title}</div>`);
+                item.on('click',()=>{
+                    titleInput.val(tpl.title);
+                    contentInput.val(tpl.content);
+                });
+                templateList.append(item);
+            });
+        }
+
+        renderTemplates();
+
+        $('#saveTemplate').on('click',()=>{
+            const title = titleInput.val().trim();
+            const content = contentInput.val().trim();
+            if(!title || !content){
+                return alert("Nhập tiêu đề và nội dung trước khi lưu mẫu.");
+            }
+            templates.unshift({title,content});
+            localStorage.setItem('templates',JSON.stringify(templates));
+            renderTemplates();
+            alert("Đã lưu mẫu!");
+        });
+
+        $('#send').on('click',()=>{
+            const passcode = passcodeInput.val();
+            const url = getUrl(passcode);
+            if(!url){
+                return alert("PASSCODE FAILED!");
+            }
+
+            localStorage.setItem('passcode',passcode);
+
+            $.ajax({
+                url:`${url}/notifications/send`,
+                type:'POST',
+                dataType:"JSON",
+                data:{
+                    "message":{
+                        "topic":"daily",
+                        "notification":{
+                            "title":titleInput.val(),
+                            "body":contentInput.val()
+                        }
+                    }
+                },
+                success:(res)=>{
+                    if(res.status!==200){
+                        return alert(res.message);
+                    }
+                    successMessage.show();
+                    setTimeout(()=>successMessage.hide(),3000);
+                }
+            });
+        });
+
+    });
 
 </script>
+
 </body>
 </html>
