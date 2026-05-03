@@ -149,9 +149,10 @@
 <script>
   const urls = {
     'dev':'ws://54.151.162.201:8000/ws',
+    'prod':'wss://sach.myoupip.com/ws',
     'localhost':'ws://localhost:8000/ws'
   }
-  const MODE = 'dev'
+  const MODE = 'prod'
   const ws = new WebSocket(`${urls[MODE]}?mac=11111111`)
   function send(cmd) {
     if (!ws || ws.readyState !== WebSocket.OPEN) {
