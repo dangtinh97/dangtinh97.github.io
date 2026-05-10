@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Remote Controller</title>
+
+  <style>
+      body{
+          font-family: Arial, sans-serif;
+          background:#111;
+          color:white;
+          text-align:center;
+          padding:20px;
+      }
+
+      .row{
+          display:flex;
+          justify-content:center;
+          flex-wrap:wrap;
+          gap:10px;
+          margin-bottom:25px;
+      }
+
+      button{
+          width:70px;
+          height:70px;
+          border:none;
+          border-radius:12px;
+          background:#222;
+          color:white;
+          font-size:24px;
+          cursor:pointer;
+      }
+
+      button:hover{
+          background:#444;
+      }
+
+      .selected{
+          background:#00aaff !important;
+      }
+
+      #status{
+          margin-bottom:20px;
+          font-weight:bold;
+      }
+
+      .value{
+          margin-top:20px;
+          font-size:30px;
+          font-weight:bold;
+      }
+  </style>
+</head>
+<body>
+
+<h2>WebSocket Remote</h2>
+
+<div id="status">Đang kết nối...</div>
+
+<h3>Chọn hàng chục</h3>
+<div class="row" id="tensRow"></div>
+
+<h3>Nhấn số 1-9</h3>
+<div class="row" id="numberRow"></div>
+
+<div class="value">
+  Giá trị gửi: <span id="currentValue">0</span>
+</div>
+
+<script>
+
+  const socket = new WebSocket(
+    "ws://54.151.162.201:8000/ws?mac=c8:3b:27:6a:5c:8c"
+  );
+
+  const statusEl = document.getElementById("status");
+  const tensRow = document.getElementById("tensRow");
+  const numberRow = document.getElementById("numberRow");
+  const currentValueEl = document.getElementById("currentValue");
+
+  let tens = 0;
+
+  socket.onopen = () => {
+    statusEl.innerText = "🟢 Connected";
+  };
+
+  socket.onclose = () => {
+    statusEl.innerText = "🔴 Disconnected";
+  };
+
+  socket.onerror = () => {
+    statusEl.innerText = "⚠️ Error";
+  };
+
+  // ===== Chọn hàng chục =====
+  // x0 x1 x2 ...
+  for(let i = 0; i <= 10; i++){
+
+    const btn = document.createElement("button");
+    btn.innerText = "x" + i;
+
+    if(i === 0){
+      btn.classList.add("selected");
+    }
+
+    btn.onclick = () => {
+
+      tens = i;
+
+      document
+        .querySelectorAll("#tensRow button")
+        .forEach(b => b.classList.remove("selected"));
+
+      btn.classList.add("selected");
+    };
+
+    tensRow.appendChild(btn);
+  }
+
+  // ===== Nút số 1-9 =====
+  for(let i = 1; i <= 9; i++){
+
+    const btn = document.createElement("button");
+    btn.innerText = i;
+
+    btn.onclick = () => {
+
+      // x0 + 1 = 1
+      // x1 + 1 = 11
+      // x2 + 1 = 21
+
+      let result = (tens * 10) + i;
+
+      if(result > 100){
+        result = 100;
+      }
+
+      currentValueEl.innerText = result;
+
+      const payload = {
+        type: "remote",
+        data: `1,${result},3,4`
+      };
+
+      console.log("SEND:", payload);
+
+      if(socket.readyState === WebSocket.OPEN){
+        socket.send(JSON.stringify(payload));
+      }
+    };
+
+    numberRow.appendChild(btn);
+  }
+
+</script>
+
+</body>
+</html>
