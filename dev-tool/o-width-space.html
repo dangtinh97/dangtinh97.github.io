@@ -1,735 +1,877 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Zero Width Space Tool</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Zero Width Space Tool</title>
 
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    body {
-      min-height: 100vh;
-      background:
-        radial-gradient(circle at top left, rgba(139, 92, 246, 0.35), transparent 35%),
-        radial-gradient(circle at top right, rgba(6, 182, 212, 0.25), transparent 35%),
-        linear-gradient(135deg, #020617, #0f172a 55%, #111827);
-      color: #fff;
-      font-family: 'Inter', sans-serif;
-      padding: 28px;
-      overflow-x: hidden;
-    }
+        body {
+            min-height: 100vh;
+            background:
+                    radial-gradient(circle at top left, rgba(139, 92, 246, 0.35), transparent 35%),
+                    radial-gradient(circle at top right, rgba(6, 182, 212, 0.25), transparent 35%),
+                    linear-gradient(135deg, #020617, #0f172a 55%, #111827);
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+            padding: 28px;
+            overflow-x: hidden;
+        }
 
-    .container {
-      width: 100%;
-      max-width: 1100px;
-      margin: 0 auto;
-    }
+        .container {
+            width: 100%;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
 
-    .hero {
-      text-align: center;
-      margin: 32px 0 42px;
-    }
+        .hero {
+            text-align: center;
+            margin: 32px 0 42px;
+        }
 
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 9px 15px;
-      border: 1px solid rgba(255,255,255,0.15);
-      border-radius: 999px;
-      background: rgba(255,255,255,0.06);
-      backdrop-filter: blur(12px);
-      color: #cbd5e1;
-      font-size: 13px;
-      margin-bottom: 18px;
-      box-shadow: 0 10px 35px rgba(0,0,0,0.2);
-    }
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 9px 15px;
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 999px;
+            background: rgba(255,255,255,0.06);
+            backdrop-filter: blur(12px);
+            color: #cbd5e1;
+            font-size: 13px;
+            margin-bottom: 18px;
+            box-shadow: 0 10px 35px rgba(0,0,0,0.2);
+        }
 
-    h1 {
-      font-size: clamp(34px, 6vw, 62px);
-      font-weight: 800;
-      line-height: 1.05;
-      margin-bottom: 18px;
-      background: linear-gradient(90deg, #fff, #a78bfa, #22d3ee);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
+        h1 {
+            font-size: clamp(34px, 6vw, 62px);
+            font-weight: 800;
+            line-height: 1.05;
+            margin-bottom: 18px;
+            background: linear-gradient(90deg, #fff, #a78bfa, #22d3ee);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
 
-    .subtitle {
-      color: #94a3b8;
-      font-size: 17px;
-      max-width: 760px;
-      margin: 0 auto;
-      line-height: 1.75;
-    }
+        .subtitle {
+            color: #94a3b8;
+            font-size: 17px;
+            max-width: 760px;
+            margin: 0 auto;
+            line-height: 1.75;
+        }
 
-    .main-tool {
-      position: relative;
-      padding: 30px;
-      border-radius: 30px;
-      background: rgba(255,255,255,0.07);
-      border: 1px solid rgba(255,255,255,0.10);
-      backdrop-filter: blur(18px);
-      box-shadow: 0 28px 90px rgba(0,0,0,0.35);
-      overflow: hidden;
-      margin-bottom: 28px;
-    }
+        .main-tool {
+            position: relative;
+            padding: 30px;
+            border-radius: 30px;
+            background: rgba(255,255,255,0.07);
+            border: 1px solid rgba(255,255,255,0.10);
+            backdrop-filter: blur(18px);
+            box-shadow: 0 28px 90px rgba(0,0,0,0.35);
+            overflow: hidden;
+            margin-bottom: 28px;
+        }
 
-    .main-tool::before {
-      content: "";
-      position: absolute;
-      width: 420px;
-      height: 420px;
-      border-radius: 999px;
-      background: rgba(139,92,246,0.16);
-      filter: blur(60px);
-      top: -220px;
-      right: -160px;
-      pointer-events: none;
-    }
+        .main-tool::before {
+            content: "";
+            position: absolute;
+            width: 420px;
+            height: 420px;
+            border-radius: 999px;
+            background: rgba(139,92,246,0.16);
+            filter: blur(60px);
+            top: -220px;
+            right: -160px;
+            pointer-events: none;
+        }
 
-    .tool-header {
-      position: relative;
-      z-index: 1;
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 18px;
-      margin-bottom: 24px;
-    }
+        .tool-header {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 18px;
+            margin-bottom: 24px;
+        }
 
-    .tool-header h2 {
-      font-size: 28px;
-      margin-bottom: 8px;
-    }
+        .tool-header h2 {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
 
-    .tool-header p {
-      color: #94a3b8;
-      line-height: 1.65;
-      max-width: 720px;
-    }
+        .tool-header p {
+            color: #94a3b8;
+            line-height: 1.65;
+            max-width: 720px;
+        }
 
-    .pill {
-      white-space: nowrap;
-      padding: 10px 14px;
-      border-radius: 999px;
-      background: rgba(34,211,238,0.12);
-      border: 1px solid rgba(34,211,238,0.25);
-      color: #67e8f9;
-      font-size: 13px;
-      font-weight: 700;
-    }
+        .pill {
+            white-space: nowrap;
+            padding: 10px 14px;
+            border-radius: 999px;
+            background: rgba(34,211,238,0.12);
+            border: 1px solid rgba(34,211,238,0.25);
+            color: #67e8f9;
+            font-size: 13px;
+            font-weight: 700;
+        }
 
-    .form-grid {
-      position: relative;
-      z-index: 1;
-      display: grid;
-      grid-template-columns: 1.4fr 0.8fr 0.8fr;
-      gap: 14px;
-      margin-bottom: 14px;
-    }
+        .form-grid {
+            position: relative;
+            z-index: 1;
+            display: grid;
+            grid-template-columns: 1.4fr 0.8fr 0.8fr;
+            gap: 14px;
+            margin-bottom: 14px;
+        }
 
-    label {
-      display: block;
-      color: #cbd5e1;
-      font-size: 13px;
-      font-weight: 700;
-      margin-bottom: 8px;
-    }
+        label {
+            display: block;
+            color: #cbd5e1;
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
 
-    input, select, textarea {
-      width: 100%;
-      border: 1px solid rgba(255,255,255,0.13);
-      background: rgba(2,6,23,0.62);
-      color: white;
-      border-radius: 16px;
-      padding: 15px 16px;
-      outline: none;
-      font-size: 15px;
-      transition: 0.2s ease;
-    }
+        input, select, textarea {
+            width: 100%;
+            border: 1px solid rgba(255,255,255,0.13);
+            background: rgba(2,6,23,0.62);
+            color: white;
+            border-radius: 16px;
+            padding: 15px 16px;
+            outline: none;
+            font-size: 15px;
+            transition: 0.2s ease;
+        }
 
-    input:focus, select:focus, textarea:focus {
-      border-color: rgba(139,92,246,0.75);
-      box-shadow: 0 0 0 4px rgba(139,92,246,0.13);
-    }
+        input:focus, select:focus, textarea:focus {
+            border-color: rgba(139,92,246,0.75);
+            box-shadow: 0 0 0 4px rgba(139,92,246,0.13);
+        }
 
-    textarea {
-      min-height: 125px;
-      resize: vertical;
-      line-height: 1.65;
-      font-family: 'Inter', sans-serif;
-    }
+        textarea {
+            min-height: 125px;
+            resize: vertical;
+            line-height: 1.65;
+            font-family: 'Inter', sans-serif;
+        }
 
-    .button-row {
-      position: relative;
-      z-index: 1;
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 12px;
-      margin-top: 14px;
-    }
+        .button-row {
+            position: relative;
+            z-index: 1;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 12px;
+            margin-top: 14px;
+        }
 
-    button {
-      border: none;
-      padding: 15px 18px;
-      border-radius: 16px;
-      font-size: 15px;
-      font-weight: 800;
-      cursor: pointer;
-      color: white;
-      background: linear-gradient(135deg, #8b5cf6, #06b6d4);
-      transition: 0.22s ease;
-      box-shadow: 0 14px 35px rgba(139,92,246,0.24);
-    }
+        button {
+            width: 100%;
+            border: none;
+            padding: 15px 18px;
+            border-radius: 16px;
+            font-size: 15px;
+            font-weight: 800;
+            cursor: pointer;
+            color: white;
+            background: linear-gradient(135deg, #8b5cf6, #06b6d4);
+            transition: 0.22s ease;
+            box-shadow: 0 14px 35px rgba(139,92,246,0.24);
+        }
 
-    button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 18px 45px rgba(6,182,212,0.26);
-    }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 18px 45px rgba(6,182,212,0.26);
+        }
 
-    button.secondary {
-      background: rgba(255,255,255,0.09);
-      border: 1px solid rgba(255,255,255,0.12);
-      box-shadow: none;
-    }
+        button.secondary {
+            background: rgba(255,255,255,0.09);
+            border: 1px solid rgba(255,255,255,0.12);
+            box-shadow: none;
+        }
 
-    button.danger {
-      background: rgba(239,68,68,0.14);
-      border: 1px solid rgba(239,68,68,0.22);
-      color: #fecaca;
-      box-shadow: none;
-    }
+        button.danger {
+            background: rgba(239,68,68,0.14);
+            border: 1px solid rgba(239,68,68,0.22);
+            color: #fecaca;
+            box-shadow: none;
+        }
 
-    .preview-box {
-      position: relative;
-      z-index: 1;
-      margin-top: 18px;
-    }
+        .preview-box {
+            position: relative;
+            z-index: 1;
+            margin-top: 18px;
+        }
 
-    .meta-row {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 12px;
-      margin: 18px 0;
-    }
+        .meta-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin: 18px 0;
+        }
 
-    .meta-card {
-      padding: 15px;
-      border-radius: 18px;
-      background: rgba(255,255,255,0.055);
-      border: 1px solid rgba(255,255,255,0.08);
-    }
+        .meta-card {
+            padding: 15px;
+            border-radius: 18px;
+            background: rgba(255,255,255,0.055);
+            border: 1px solid rgba(255,255,255,0.08);
+        }
 
-    .meta-card span {
-      display: block;
-      color: #64748b;
-      font-size: 12px;
-      margin-bottom: 6px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
+        .meta-card span {
+            display: block;
+            color: #64748b;
+            font-size: 12px;
+            margin-bottom: 6px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
 
-    .meta-card strong {
-      font-size: 15px;
-      color: #e2e8f0;
-      word-break: break-word;
-    }
+        .meta-card strong {
+            font-size: 15px;
+            color: #e2e8f0;
+            word-break: break-word;
+        }
 
-    .warning {
-      position: relative;
-      z-index: 1;
-      margin-top: 16px;
-      padding: 15px 16px;
-      border-radius: 18px;
-      background: rgba(245,158,11,0.12);
-      border: 1px solid rgba(245,158,11,0.28);
-      color: #fbbf24;
-      font-size: 14px;
-      line-height: 1.65;
-    }
+        .meta-card small {
+            display: block;
+            margin-top: 5px;
+            color: #64748b;
+            font-size: 11px;
+            line-height: 1.35;
+        }
 
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(235px, 1fr));
-      gap: 18px;
-      margin-top: 26px;
-    }
+        .warning {
+            position: relative;
+            z-index: 1;
+            margin-top: 16px;
+            padding: 15px 16px;
+            border-radius: 18px;
+            background: rgba(245,158,11,0.12);
+            border: 1px solid rgba(245,158,11,0.28);
+            color: #fbbf24;
+            font-size: 14px;
+            line-height: 1.65;
+        }
 
-    .card {
-      position: relative;
-      background: rgba(255,255,255,0.055);
-      border: 1px solid rgba(255,255,255,0.09);
-      border-radius: 24px;
-      padding: 22px;
-      overflow: hidden;
-      backdrop-filter: blur(14px);
-      transition: 0.24s ease;
-    }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(235px, 1fr));
+            gap: 18px;
+            margin-top: 26px;
+        }
 
-    .card:hover {
-      transform: translateY(-5px);
-      border-color: rgba(139,92,246,0.45);
-      box-shadow: 0 12px 40px rgba(139,92,246,0.22);
-    }
+        .card {
+            position: relative;
+            background: rgba(255,255,255,0.055);
+            border: 1px solid rgba(255,255,255,0.09);
+            border-radius: 24px;
+            padding: 22px;
+            overflow: hidden;
+            backdrop-filter: blur(14px);
+            transition: 0.24s ease;
+        }
 
-    .glow {
-      position: absolute;
-      width: 160px;
-      height: 160px;
-      border-radius: 50%;
-      background: rgba(139,92,246,0.15);
-      filter: blur(45px);
-      top: -60px;
-      right: -60px;
-      pointer-events: none;
-    }
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(139,92,246,0.45);
+            box-shadow: 0 12px 40px rgba(139,92,246,0.22);
+        }
 
-    .icon {
-      width: 54px;
-      height: 54px;
-      border-radius: 18px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 24px;
-      margin-bottom: 16px;
-      background: linear-gradient(135deg,#8b5cf6,#06b6d4);
-      box-shadow: 0 10px 25px rgba(139,92,246,0.35);
-    }
+        .glow {
+            position: absolute;
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            background: rgba(139,92,246,0.15);
+            filter: blur(45px);
+            top: -60px;
+            right: -60px;
+            pointer-events: none;
+        }
 
-    .title {
-      font-size: 18px;
-      font-weight: 800;
-      margin-bottom: 9px;
-    }
+        .icon {
+            width: 54px;
+            height: 54px;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg,#8b5cf6,#06b6d4);
+            box-shadow: 0 10px 25px rgba(139,92,246,0.35);
+        }
 
-    .desc {
-      color: #94a3b8;
-      line-height: 1.6;
-      font-size: 14px;
-      min-height: 66px;
-    }
+        .title {
+            font-size: 18px;
+            font-weight: 800;
+            margin-bottom: 9px;
+        }
 
-    .char-box {
-      margin: 16px 0;
-      padding: 13px;
-      border-radius: 14px;
-      background: rgba(255,255,255,0.04);
-      border: 1px dashed rgba(255,255,255,0.12);
-      text-align: center;
-      font-size: 13px;
-      color: #cbd5e1;
-    }
+        .desc {
+            color: #94a3b8;
+            line-height: 1.6;
+            font-size: 14px;
+            min-height: 66px;
+        }
 
-    .toast {
-      position: fixed;
-      bottom: 24px;
-      left: 50%;
-      transform: translateX(-50%) translateY(130px);
-      background: #020617;
-      border: 1px solid rgba(255,255,255,0.12);
-      color: white;
-      padding: 14px 20px;
-      border-radius: 16px;
-      transition: 0.35s ease;
-      z-index: 999;
-      font-weight: 800;
-      box-shadow: 0 18px 50px rgba(0,0,0,0.42);
-    }
+        .char-box {
+            margin: 16px 0;
+            padding: 13px;
+            border-radius: 14px;
+            background: rgba(255,255,255,0.04);
+            border: 1px dashed rgba(255,255,255,0.12);
+            text-align: center;
+            font-size: 13px;
+            color: #cbd5e1;
+        }
 
-    .toast.show {
-      transform: translateX(-50%) translateY(0);
-    }
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%) translateY(130px);
+            background: #020617;
+            border: 1px solid rgba(255,255,255,0.12);
+            color: white;
+            padding: 14px 20px;
+            border-radius: 16px;
+            transition: 0.35s ease;
+            z-index: 999;
+            font-weight: 800;
+            box-shadow: 0 18px 50px rgba(0,0,0,0.42);
+        }
 
-    footer {
-      margin: 34px 0 10px;
-      text-align: center;
-      color: #64748b;
-      font-size: 13px;
-    }
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+        }
 
-    @media(max-width: 900px) {
-      .form-grid, .button-row, .meta-row {
-        grid-template-columns: 1fr;
-      }
+        footer {
+            margin: 34px 0 10px;
+            text-align: center;
+            color: #64748b;
+            font-size: 13px;
+        }
 
-      .tool-header {
-        flex-direction: column;
-      }
+        @media(max-width: 900px) {
+            .form-grid, .button-row, .meta-row {
+                grid-template-columns: 1fr;
+            }
 
-      .pill {
-        white-space: normal;
-      }
-    }
+            .tool-header {
+                flex-direction: column;
+            }
 
-    @media(max-width: 560px) {
-      body {
-        padding: 18px;
-      }
+            .pill {
+                white-space: normal;
+            }
+        }
 
-      .main-tool {
-        padding: 22px;
-        border-radius: 24px;
-      }
-    }
-  </style>
+        @media(max-width: 560px) {
+            body {
+                padding: 18px;
+            }
+
+            .main-tool {
+                padding: 22px;
+                border-radius: 24px;
+            }
+        }
+    </style>
 </head>
 <body>
 
 <div class="container">
 
-  <section class="hero">
-    <div class="badge">⚡ Unicode Invisible Link Toolkit</div>
-    <h1>Zero Width Space Tools</h1>
-    <p class="subtitle">
-      Tạo ký tự invisible, chèn zero-width vào link text, copy nhanh và test trực tiếp.
-      Dùng cho kiểm thử Unicode, format text, nickname spacing và xử lý text nâng cao.
-    </p>
-  </section>
-
-  <section class="main-tool">
-    <div class="tool-header">
-      <div>
-        <h2>Invisible Link Generator</h2>
-        <p>
-          Nhập link, chọn loại zero-width, chọn vị trí chèn rồi copy bản link đã thêm invisible character.
-          Tool này sẽ cố chèn vào vị trí ít phá cấu trúc nhất, nhưng không đảm bảo mọi nền tảng đều redirect được.
+    <section class="hero">
+        <div class="badge">⚡ Unicode Invisible Link Toolkit</div>
+        <h1>Zero Width Space Tools</h1>
+        <p class="subtitle">
+            Tạo ký tự invisible, chèn zero-width vào link text, copy nhanh và test trực tiếp.
+            Dùng cho kiểm thử Unicode, format text, nickname spacing và xử lý text nâng cao.
         </p>
-      </div>
-      <div class="pill">Input → Obfuscate → Copy</div>
-    </div>
+    </section>
 
-    <div class="form-grid">
-      <div>
-        <label for="linkInput">Link gốc</label>
-        <input id="linkInput" type="url" placeholder="https://example.com/path?ref=abc" />
-      </div>
+    <section class="main-tool">
+        <div class="tool-header">
+            <div>
+                <h2>Invisible Link Generator</h2>
+                <p>
+                    Nhập link, chọn loại zero-width, chọn vị trí chèn rồi copy bản link đã thêm invisible character. Với shortlink như Shopee, dùng Auto hoặc Short Code. Muốn chèn trước .vn/.com thì dùng Before Last Dot. Nếu URL có ?param thì dùng Before Query.
+                    Tool này sẽ cố chèn vào vị trí ít phá cấu trúc nhất, nhưng không đảm bảo mọi nền tảng đều redirect được.
+                </p>
+            </div>
+            <div class="pill">Input → Obfuscate → Copy</div>
+        </div>
 
-      <div>
-        <label for="zwType">Loại zero-width</label>
-        <select id="zwType">
-          <option value="200B">Zero Width Space — U+200B</option>
-          <option value="200C">Zero Width Non-Joiner — U+200C</option>
-          <option value="200D">Zero Width Joiner — U+200D</option>
-          <option value="2060">Word Joiner — U+2060</option>
-        </select>
-      </div>
+        <div class="form-grid">
+            <div>
+                <label for="linkInput">Link gốc</label>
+                <input id="linkInput" type="url" placeholder="https://example.com/path?ref=abc" />
+            </div>
 
-      <div>
-        <label for="insertMode">Vị trí chèn</label>
-        <select id="insertMode">
-          <option value="safe-text">Safe Text Mode — chèn vào text hiển thị</option>
-          <option value="domain">Domain — dễ né detect, dễ hỏng click</option>
-          <option value="path">Path — ít phá domain hơn</option>
-          <option value="query">Query Value — khả năng redirect tốt hơn nếu site bỏ qua param</option>
-          <option value="all">All Link — rải đều toàn link</option>
-        </select>
-      </div>
-    </div>
+            <div>
+                <label for="zwType">Loại zero-width</label>
+                <select id="zwType">
+                    <option value="200B">Zero Width Space — U+200B</option>
+                    <option value="200C">Zero Width Non-Joiner — U+200C</option>
+                    <option value="200D">Zero Width Joiner — U+200D</option>
+                    <option value="2060">Word Joiner — U+2060</option>
+                </select>
+            </div>
 
-    <div class="meta-row">
-      <div class="meta-card">
-        <span>Host</span>
-        <strong id="hostInfo">—</strong>
-      </div>
-      <div class="meta-card">
-        <span>Protocol</span>
-        <strong id="protocolInfo">—</strong>
-      </div>
-      <div class="meta-card">
-        <span>Characters</span>
-        <strong id="charCount">0</strong>
-      </div>
-      <div class="meta-card">
-        <span>Invisible Added</span>
-        <strong id="invisibleCount">0</strong>
-      </div>
-    </div>
+            <div>
+                <label for="insertMode">Vị trí chèn</label>
+                <select id="insertMode">
+                    <option value="auto">Auto — tự chọn vị trí hợp lý</option>
+                    <option value="before-last-dot">Before Last Dot — chèn trước đuôi cuối .vn/.com/.net</option>
+                    <option value="before-query">Before Query — chèn trước dấu ?</option>
+                    <option value="after-protocol">After Protocol — chèn sau https://</option>
+                    <option value="short-code">Short Code — chèn vào đoạn cuối URL</option>
+                    <option value="safe-text">Safe Text Mode — chèn vào text hiển thị</option>
+                    <option value="domain">Domain — dễ né detect, dễ hỏng click</option>
+                    <option value="path">Path — chèn trong path</option>
+                    <option value="query">Query Value — sẽ bị encode nhưng ít phá cấu trúc hơn</option>
+                    <option value="all">All Link — rải đều toàn link</option>
+                </select>
+            </div>
+        </div>
 
-    <div class="preview-box">
-      <label for="resultText">Kết quả</label>
-      <textarea id="resultText" readonly placeholder="Kết quả sẽ hiện ở đây..."></textarea>
-    </div>
+        <div class="meta-row">
+            <div class="meta-card">
+                <span>Host</span>
+                <strong id="hostInfo">—</strong>
+            </div>
+            <div class="meta-card">
+                <span>Protocol</span>
+                <strong id="protocolInfo">—</strong>
+            </div>
+            <div class="meta-card">
+                <span>Characters</span>
+                <strong id="charCount">0</strong>
+            </div>
+            <div class="meta-card">
+                <span>Invisible Added</span>
+                <strong id="invisibleCount">0</strong>
+                <small id="invisibleInfo">literal: 0 • encoded: 0</small>
+            </div>
+        </div>
 
-    <div class="button-row">
-      <button onclick="generateInvisibleLink()">Generate Link</button>
-      <button onclick="copyGeneratedLink()">Copy Result</button>
-      <button class="secondary" onclick="testOpenResult()">Test Open</button>
-    </div>
+        <div class="preview-box">
+            <label for="resultText">Kết quả</label>
+            <textarea id="resultText" readonly placeholder="Kết quả sẽ hiện ở đây..."></textarea>
+        </div>
 
-    <div class="button-row">
-      <button class="secondary" onclick="copyOriginalLink()">Copy Original</button>
-      <button class="secondary" onclick="removeInvisibleChars()">Remove Invisible</button>
-      <button class="danger" onclick="clearAll()">Clear</button>
-    </div>
+        <div class="button-row">
+            <button onclick="generateInvisibleLink()">Generate Link</button>
+            <button onclick="copyGeneratedLink()">Copy Result</button>
+            <button class="secondary" onclick="testOpenResult()">Test Open</button>
+        </div>
 
-    <div class="warning">
-      Nói thẳng: chèn zero-width vào URL thật có thể làm link bị encode hoặc không mở được.
-      Nếu cần redirect chắc chắn, dùng link sạch hoặc redirect page riêng. Chế độ “Query Value” thường ít phá cấu trúc hơn,
-      còn “Domain” dễ né detect hơn nhưng cũng dễ hỏng click nhất.
-    </div>
-  </section>
+        <div class="button-row">
+            <button class="secondary" onclick="copyOriginalLink()">Copy Original</button>
+            <button class="secondary" onclick="removeInvisibleChars()">Remove Invisible</button>
+            <button class="danger" onclick="clearAll()">Clear</button>
+        </div>
 
-  <section class="grid">
-    <div class="card">
-      <div class="glow"></div>
-      <div class="icon">​</div>
-      <div class="title">Zero Width Space</div>
-      <div class="desc">Invisible separator phổ biến nhất, hay dùng để ngắt text detection.</div>
-      <div class="char-box">Unicode: U+200B</div>
-      <button onclick="copyChar('\u200B','Zero Width Space copied')">Copy Character</button>
-    </div>
+        <div class="warning">
+            Nói thẳng: chèn zero-width vào URL thật có thể làm link bị encode hoặc không mở được.
+            Nếu cần redirect chắc chắn, dùng link sạch hoặc redirect page riêng. Với link dạng https://s.shopee.vn/70H72aoZaC, dùng “Auto” hoặc “Short Code”. Chế độ “Query Value” thường ít phá cấu trúc hơn,
+            còn “Domain” dễ né detect hơn nhưng cũng dễ hỏng click nhất.
+        </div>
+    </section>
 
-    <div class="card">
-      <div class="glow"></div>
-      <div class="icon">‍</div>
-      <div class="title">Zero Width Joiner</div>
-      <div class="desc">Ký tự nối invisible, thường xuất hiện trong emoji và ligature rendering.</div>
-      <div class="char-box">Unicode: U+200D</div>
-      <button onclick="copyChar('\u200D','Zero Width Joiner copied')">Copy Character</button>
-    </div>
+    <section class="grid">
+        <div class="card">
+            <div class="glow"></div>
+            <div class="icon">​</div>
+            <div class="title">Zero Width Space</div>
+            <div class="desc">Invisible separator phổ biến nhất, hay dùng để ngắt text detection.</div>
+            <div class="char-box">Unicode: U+200B</div>
+            <button onclick="copyChar('\u200B','Zero Width Space copied')">Copy Character</button>
+        </div>
 
-    <div class="card">
-      <div class="glow"></div>
-      <div class="icon">‌</div>
-      <div class="title">Zero Width Non-Joiner</div>
-      <div class="desc">Ngăn nối ký tự invisible, hữu dụng trong typography và xử lý Unicode.</div>
-      <div class="char-box">Unicode: U+200C</div>
-      <button onclick="copyChar('\u200C','Zero Width Non-Joiner copied')">Copy Character</button>
-    </div>
+        <div class="card">
+            <div class="glow"></div>
+            <div class="icon">‍</div>
+            <div class="title">Zero Width Joiner</div>
+            <div class="desc">Ký tự nối invisible, thường xuất hiện trong emoji và ligature rendering.</div>
+            <div class="char-box">Unicode: U+200D</div>
+            <button onclick="copyChar('\u200D','Zero Width Joiner copied')">Copy Character</button>
+        </div>
 
-    <div class="card">
-      <div class="glow"></div>
-      <div class="icon">⁠</div>
-      <div class="title">Word Joiner</div>
-      <div class="desc">Ngăn xuống dòng mà không thêm khoảng trắng nhìn thấy.</div>
-      <div class="char-box">Unicode: U+2060</div>
-      <button onclick="copyChar('\u2060','Word Joiner copied')">Copy Character</button>
-    </div>
-  </section>
+        <div class="card">
+            <div class="glow"></div>
+            <div class="icon">‌</div>
+            <div class="title">Zero Width Non-Joiner</div>
+            <div class="desc">Ngăn nối ký tự invisible, hữu dụng trong typography và xử lý Unicode.</div>
+            <div class="char-box">Unicode: U+200C</div>
+            <button onclick="copyChar('\u200C','Zero Width Non-Joiner copied')">Copy Character</button>
+        </div>
 
-  <footer>
-    Built for power users • Unicode Utilities
-  </footer>
+        <div class="card">
+            <div class="glow"></div>
+            <div class="icon">⁠</div>
+            <div class="title">Word Joiner</div>
+            <div class="desc">Ngăn xuống dòng mà không thêm khoảng trắng nhìn thấy.</div>
+            <div class="char-box">Unicode: U+2060</div>
+            <button onclick="copyChar('\u2060','Word Joiner copied')">Copy Character</button>
+        </div>
+    </section>
+
+    <footer>
+        Built for power users • Unicode Utilities
+    </footer>
 
 </div>
 
 <div class="toast" id="toast">Copied!</div>
 
 <script>
-  const INVISIBLE_RE = /[\u200B\u200C\u200D\u2060]/g;
+    const INVISIBLE_RE = /[\u200B\u200C\u200D\u2060]/g;
 
-  function getZeroWidthChar() {
-    const type = document.getElementById('zwType').value;
-    return String.fromCodePoint(parseInt(type, 16));
-  }
-
-  function showToast(message) {
-    const toast = document.getElementById('toast');
-    toast.innerText = message;
-    toast.classList.add('show');
-
-    setTimeout(() => {
-      toast.classList.remove('show');
-    }, 2200);
-  }
-
-  async function copyChar(char, message) {
-    try {
-      await navigator.clipboard.writeText(char);
-      showToast(message);
-    } catch (err) {
-      showToast('Copy failed');
-    }
-  }
-
-  function insertEveryNChars(text, char, n) {
-    if (!text) return text;
-
-    return text
-      .split('')
-      .map((c, i) => (i > 0 && i % n === 0 ? char + c : c))
-      .join('');
-  }
-
-  function insertIntoDomain(raw, url, zwChar) {
-    const host = url.hostname;
-    const parts = host.split('.');
-
-    if (parts.length >= 2) {
-      const name = parts[0];
-      const obfuscatedName = insertEveryNChars(name, zwChar, 2);
-      const obfuscatedHost = host.replace(name, obfuscatedName);
-      return raw.replace(host, obfuscatedHost);
+    function getZeroWidthChar() {
+        const type = document.getElementById('zwType').value;
+        return String.fromCodePoint(parseInt(type, 16));
     }
 
-    return raw.replace(host, insertEveryNChars(host, zwChar, 2));
-  }
+    function showToast(message) {
+        const toast = document.getElementById('toast');
+        toast.innerText = message;
+        toast.classList.add('show');
 
-  function insertIntoPath(raw, url, zwChar) {
-    if (!url.pathname || url.pathname === '/') {
-      return insertEveryNChars(raw, zwChar, 5);
+        setTimeout(() => {
+            toast.classList.remove('show');
+        }, 2200);
     }
 
-    const obfuscatedPath = insertEveryNChars(url.pathname, zwChar, 4);
-    return raw.replace(url.pathname, obfuscatedPath);
-  }
-
-  function insertIntoQueryValue(raw, url, zwChar) {
-    const params = Array.from(url.searchParams.entries());
-
-    if (params.length === 0) {
-      const separator = raw.includes('?') ? '&' : '?';
-      return raw + separator + 'z=' + encodeURIComponent(zwChar);
+    async function copyChar(char, message) {
+        try {
+            await navigator.clipboard.writeText(char);
+            showToast(message);
+        } catch (err) {
+            showToast('Copy failed');
+        }
     }
 
-    const [key, value] = params[0];
+    function insertEveryNChars(text, char, n) {
+        if (!text) return text;
 
-    if (!value) {
-      url.searchParams.set(key, zwChar);
-    } else {
-      url.searchParams.set(key, insertEveryNChars(value, zwChar, 3));
+        return text
+            .split('')
+            .map((c, i) => (i > 0 && i % n === 0 ? char + c : c))
+            .join('');
     }
 
-    return url.toString();
-  }
-
-  function makeSafeTextMode(raw, url, zwChar) {
-    const host = url.hostname;
-    const hostText = insertEveryNChars(host, zwChar, 3);
-    return raw.replace(host, hostText);
-  }
-
-  function updateMeta(raw, result, url) {
-    document.getElementById('hostInfo').innerText = url ? url.hostname : '—';
-    document.getElementById('protocolInfo').innerText = url ? url.protocol : '—';
-    document.getElementById('charCount').innerText = result ? result.length : raw.length;
-    document.getElementById('invisibleCount').innerText = result ? ((result.match(INVISIBLE_RE) || []).length) : 0;
-  }
-
-  function generateInvisibleLink() {
-    const raw = document.getElementById('linkInput').value.trim();
-    const mode = document.getElementById('insertMode').value;
-    const zwChar = getZeroWidthChar();
-    const resultText = document.getElementById('resultText');
-
-    if (!raw) {
-      resultText.value = '';
-      updateMeta('', '', null);
-      showToast('Please enter a link');
-      return;
+    function insertIntoMiddle(text, char) {
+        if (!text || text.length < 2) return text + char;
+        const mid = Math.ceil(text.length / 2);
+        return text.slice(0, mid) + char + text.slice(mid);
     }
 
-    try {
-      const url = new URL(raw);
-      let result = raw;
+    function insertBeforeLastDot(raw, url, zwChar) {
+        const host = url.hostname;
+        const lastDotIndex = host.lastIndexOf('.');
 
-      if (mode === 'safe-text') {
-        result = makeSafeTextMode(raw, url, zwChar);
-      } else if (mode === 'domain') {
-        result = insertIntoDomain(raw, url, zwChar);
-      } else if (mode === 'path') {
-        result = insertIntoPath(raw, url, zwChar);
-      } else if (mode === 'query') {
-        result = insertIntoQueryValue(raw, new URL(raw), zwChar);
-      } else if (mode === 'all') {
-        result = insertEveryNChars(raw, zwChar, 5);
-      }
+        if (lastDotIndex <= 0) {
+            return insertIntoDomain(raw, url, zwChar);
+        }
 
-      resultText.value = result;
-      updateMeta(raw, result, url);
-      showToast('Generated');
-    } catch (err) {
-      resultText.value = '';
-      updateMeta(raw, '', null);
-      showToast('Invalid URL');
-    }
-  }
+        const obfuscatedHost =
+            host.slice(0, lastDotIndex) + zwChar + host.slice(lastDotIndex);
 
-  async function copyGeneratedLink() {
-    const result = document.getElementById('resultText').value;
-
-    if (!result) {
-      showToast('Nothing to copy');
-      return;
+        return raw.replace(host, obfuscatedHost);
     }
 
-    try {
-      await navigator.clipboard.writeText(result);
-      showToast('Copied result');
-    } catch (err) {
-      showToast('Copy failed');
-    }
-  }
+    function insertBeforeQuery(raw, zwChar) {
+        const queryIndex = raw.indexOf('?');
 
-  async function copyOriginalLink() {
-    const raw = document.getElementById('linkInput').value.trim();
+        if (queryIndex === -1) {
+            return raw + zwChar;
+        }
 
-    if (!raw) {
-      showToast('No original link');
-      return;
+        return raw.slice(0, queryIndex) + zwChar + raw.slice(queryIndex);
     }
 
-    try {
-      await navigator.clipboard.writeText(raw);
-      showToast('Original copied');
-    } catch (err) {
-      showToast('Copy failed');
-    }
-  }
+    function insertAfterProtocol(raw, zwChar) {
+        if (raw.startsWith('https://')) {
+            return 'https://' + zwChar + raw.slice(8);
+        }
 
-  function removeInvisibleChars() {
-    const resultText = document.getElementById('resultText');
-    const cleaned = resultText.value.replace(INVISIBLE_RE, '');
-    resultText.value = cleaned;
+        if (raw.startsWith('http://')) {
+            return 'http://' + zwChar + raw.slice(7);
+        }
 
-    try {
-      const url = new URL(cleaned);
-      updateMeta(cleaned, cleaned, url);
-    } catch {
-      updateMeta(cleaned, cleaned, null);
+        return zwChar + raw;
     }
 
-    showToast('Invisible chars removed');
-  }
+    function insertIntoLastPathSegment(raw, url, zwChar) {
+        const pathname = url.pathname || '';
 
-  function testOpenResult() {
-    const result = document.getElementById('resultText').value.trim();
+        if (!pathname || pathname === '/') {
+            return insertIntoDomain(raw, url, zwChar);
+        }
 
-    if (!result) {
-      showToast('Nothing to open');
-      return;
+        const segments = pathname.split('/').filter(Boolean);
+        const lastSegment = segments[segments.length - 1];
+
+        if (!lastSegment) {
+            return insertIntoPath(raw, url, zwChar);
+        }
+
+        const obfuscatedSegment = lastSegment.length <= 12
+            ? insertIntoMiddle(lastSegment, zwChar)
+            : insertEveryNChars(lastSegment, zwChar, 4);
+
+        const oldPath = pathname;
+        const newSegments = [...segments];
+        newSegments[newSegments.length - 1] = obfuscatedSegment;
+        const newPath = '/' + newSegments.join('/') + (pathname.endsWith('/') ? '/' : '');
+
+        return raw.replace(oldPath, newPath);
     }
 
-    window.open(result, '_blank', 'noopener,noreferrer');
-  }
+    function shouldTreatAsShortLink(url) {
+        const hostParts = url.hostname.split('.');
+        const pathSegments = (url.pathname || '').split('/').filter(Boolean);
 
-  function clearAll() {
-    document.getElementById('linkInput').value = '';
-    document.getElementById('resultText').value = '';
-    updateMeta('', '', null);
-    showToast('Cleared');
-  }
-
-  document.getElementById('linkInput').addEventListener('input', () => {
-    const raw = document.getElementById('linkInput').value.trim();
-
-    try {
-      const url = new URL(raw);
-      updateMeta(raw, '', url);
-    } catch {
-      updateMeta(raw, '', null);
+        return (
+            hostParts[0].length <= 2 ||
+            pathSegments.length === 1 ||
+            /shopee|bit\.ly|tinyurl|t\.co|goo\.gl|s\.id|short/i.test(url.hostname)
+        );
     }
-  });
+
+    function insertAuto(raw, url, zwChar) {
+        if (shouldTreatAsShortLink(url)) {
+            return insertIntoLastPathSegment(raw, url, zwChar);
+        }
+
+        if (url.pathname && url.pathname !== '/') {
+            return insertIntoPath(raw, url, zwChar);
+        }
+
+        return insertIntoDomain(raw, url, zwChar);
+    }
+
+    function insertIntoDomain(raw, url, zwChar) {
+        const host = url.hostname;
+        const parts = host.split('.');
+
+        if (parts.length >= 2) {
+            const name = parts[0];
+            const obfuscatedName = insertEveryNChars(name, zwChar, 2);
+            const obfuscatedHost = host.replace(name, obfuscatedName);
+            return raw.replace(host, obfuscatedHost);
+        }
+
+        return raw.replace(host, insertEveryNChars(host, zwChar, 2));
+    }
+
+    function insertIntoPath(raw, url, zwChar) {
+        if (!url.pathname || url.pathname === '/') {
+            return insertEveryNChars(raw, zwChar, 5);
+        }
+
+        const obfuscatedPath = insertEveryNChars(url.pathname, zwChar, 4);
+        return raw.replace(url.pathname, obfuscatedPath);
+    }
+
+    function insertIntoQueryValue(raw, url, zwChar) {
+        const params = Array.from(url.searchParams.entries());
+
+        if (params.length === 0) {
+            const separator = raw.includes('?') ? '&' : '?';
+            return raw + separator + 'z=' + encodeURIComponent(zwChar);
+        }
+
+        const [key, value] = params[0];
+
+        if (!value) {
+            url.searchParams.set(key, zwChar);
+        } else {
+            url.searchParams.set(key, insertEveryNChars(value, zwChar, 3));
+        }
+
+        return url.toString();
+    }
+
+    function makeSafeTextMode(raw, url, zwChar) {
+        const host = url.hostname;
+        const hostText = insertEveryNChars(host, zwChar, 3);
+        return raw.replace(host, hostText);
+    }
+
+    function countInvisible(text) {
+        const literalCount = (text.match(INVISIBLE_RE) || []).length;
+
+        const encodedPatterns = [
+            /%E2%80%8B/gi, // U+200B
+            /%E2%80%8C/gi, // U+200C
+            /%E2%80%8D/gi, // U+200D
+            /%E2%81%A0/gi  // U+2060
+        ];
+
+        const encodedCount = encodedPatterns.reduce((total, regex) => {
+            return total + (text.match(regex) || []).length;
+        }, 0);
+
+        return {
+            literalCount,
+            encodedCount,
+            total: literalCount + encodedCount
+        };
+    }
+
+    function updateMeta(raw, result, url) {
+        const finalText = result || raw || '';
+        const counts = countInvisible(finalText);
+
+        document.getElementById('hostInfo').innerText = url ? url.hostname : '—';
+        document.getElementById('protocolInfo').innerText = url ? url.protocol : '—';
+        document.getElementById('charCount').innerText = finalText.length;
+        document.getElementById('invisibleCount').innerText = counts.total;
+        document.getElementById('invisibleInfo').innerText =
+            'literal: ' + counts.literalCount + ' • encoded: ' + counts.encodedCount;
+    }
+
+    function generateInvisibleLink() {
+        const raw = document.getElementById('linkInput').value.trim();
+        const mode = document.getElementById('insertMode').value;
+        const zwChar = getZeroWidthChar();
+        const resultText = document.getElementById('resultText');
+
+        if (!raw) {
+            resultText.value = '';
+            updateMeta('', '', null);
+            showToast('Please enter a link');
+            return;
+        }
+
+        try {
+            const url = new URL(raw);
+            let result = raw;
+
+            if (mode === 'auto') {
+                result = insertAuto(raw, url, zwChar);
+            } else if (mode === 'before-last-dot') {
+                result = insertBeforeLastDot(raw, url, zwChar);
+            } else if (mode === 'before-query') {
+                result = insertBeforeQuery(raw, zwChar);
+            } else if (mode === 'after-protocol') {
+                result = insertAfterProtocol(raw, zwChar);
+            } else if (mode === 'short-code') {
+                result = insertIntoLastPathSegment(raw, url, zwChar);
+            } else if (mode === 'safe-text') {
+                result = makeSafeTextMode(raw, url, zwChar);
+            } else if (mode === 'domain') {
+                result = insertIntoDomain(raw, url, zwChar);
+            } else if (mode === 'path') {
+                result = insertIntoPath(raw, url, zwChar);
+            } else if (mode === 'query') {
+                result = insertIntoQueryValue(raw, new URL(raw), zwChar);
+            } else if (mode === 'all') {
+                result = insertEveryNChars(raw, zwChar, 5);
+            }
+
+            resultText.value = result;
+            updateMeta(raw, result, url);
+            showToast('Generated');
+        } catch (err) {
+            resultText.value = '';
+            updateMeta(raw, '', null);
+            showToast('Invalid URL');
+        }
+    }
+
+    async function copyGeneratedLink() {
+        const result = document.getElementById('resultText').value;
+
+        if (!result) {
+            showToast('Nothing to copy');
+            return;
+        }
+
+        try {
+            await navigator.clipboard.writeText(result);
+            showToast('Copied result');
+        } catch (err) {
+            showToast('Copy failed');
+        }
+    }
+
+    async function copyOriginalLink() {
+        const raw = document.getElementById('linkInput').value.trim();
+
+        if (!raw) {
+            showToast('No original link');
+            return;
+        }
+
+        try {
+            await navigator.clipboard.writeText(raw);
+            showToast('Original copied');
+        } catch (err) {
+            showToast('Copy failed');
+        }
+    }
+
+    function removeInvisibleChars() {
+        const resultText = document.getElementById('resultText');
+        const cleaned = resultText.value.replace(INVISIBLE_RE, '');
+        resultText.value = cleaned;
+
+        try {
+            const url = new URL(cleaned);
+            updateMeta(cleaned, cleaned, url);
+        } catch {
+            updateMeta(cleaned, cleaned, null);
+        }
+
+        showToast('Invisible chars removed');
+    }
+
+    function testOpenResult() {
+        const result = document.getElementById('resultText').value.trim();
+
+        if (!result) {
+            showToast('Nothing to open');
+            return;
+        }
+
+        window.open(result, '_blank', 'noopener,noreferrer');
+    }
+
+    function clearAll() {
+        document.getElementById('linkInput').value = '';
+        document.getElementById('resultText').value = '';
+        updateMeta('', '', null);
+        showToast('Cleared');
+    }
+
+    document.getElementById('linkInput').addEventListener('input', () => {
+        const raw = document.getElementById('linkInput').value.trim();
+
+        try {
+            const url = new URL(raw);
+            updateMeta(raw, '', url);
+        } catch {
+            updateMeta(raw, '', null);
+        }
+    });
 </script>
 
 </body>
