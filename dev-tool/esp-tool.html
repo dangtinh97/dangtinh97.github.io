@@ -3,7 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ESP32 / ESP8266 Monitor</title>
+
+  <title>ESP32 / ESP8266 Serial Monitor</title>
+
   <style>
     * {
       box-sizing: border-box;
@@ -11,12 +13,14 @@
 
     body {
       margin: 0;
-      font-family: Inter, Arial, sans-serif;
-      background: #0f172a;
+      background: #020617;
       color: #e2e8f0;
+      font-family: Arial, sans-serif;
+      height: 100vh;
+      overflow: hidden;
     }
 
-    .container {
+    .layout {
       display: grid;
       grid-template-columns: 320px 1fr;
       height: 100vh;
@@ -24,73 +28,66 @@
 
     .sidebar {
       border-right: 1px solid #1e293b;
+      background: #0f172a;
       padding: 20px;
       overflow-y: auto;
-      background: #111827;
     }
 
-    .content {
+    .main {
       display: flex;
       flex-direction: column;
       overflow: hidden;
     }
 
     h1 {
-      margin-top: 0;
       font-size: 22px;
+      margin-top: 0;
       margin-bottom: 20px;
     }
 
-    h2 {
+    .card {
+      background: #111827;
+      border: 1px solid #1e293b;
+      border-radius: 14px;
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+
+    .card h2 {
+      margin-top: 0;
       font-size: 15px;
-      margin-bottom: 10px;
       color: #93c5fd;
     }
 
-    .card {
-      background: #1e293b;
-      border-radius: 14px;
-      padding: 16px;
-      margin-bottom: 18px;
-      border: 1px solid #334155;
-    }
-
-    .btn {
+    button {
       width: 100%;
-      padding: 12px;
       border: none;
+      padding: 12px;
       border-radius: 10px;
       cursor: pointer;
       font-weight: bold;
+      margin-top: 10px;
       background: #2563eb;
       color: white;
-      margin-top: 10px;
-      transition: 0.2s;
     }
 
-    .btn:hover {
-      opacity: 0.9;
+    button:hover {
+      opacity: 0.92;
     }
 
-    .btn-danger {
+    .danger {
       background: #dc2626;
     }
 
-    input[type="file"] {
-      width: 100%;
-      margin-top: 10px;
-      color: white;
-    }
-
-    select,
-    input[type="text"] {
+    input,
+    select {
       width: 100%;
       padding: 10px;
-      border-radius: 10px;
-      border: 1px solid #475569;
-      background: #0f172a;
-      color: white;
       margin-top: 10px;
+      border-radius: 10px;
+      border: 1px solid #334155;
+      background: #020617;
+      color: white;
     }
 
     .stats {
@@ -99,41 +96,40 @@
       gap: 12px;
       padding: 16px;
       border-bottom: 1px solid #1e293b;
-      background: #111827;
+      background: #0f172a;
     }
 
-    .stat-box {
-      background: #1e293b;
-      padding: 16px;
+    .stat {
+      background: #111827;
+      border: 1px solid #1e293b;
       border-radius: 12px;
-      border: 1px solid #334155;
+      padding: 14px;
     }
 
     .stat-title {
-      font-size: 13px;
+      font-size: 12px;
       color: #94a3b8;
-      margin-bottom: 8px;
     }
 
     .stat-value {
       font-size: 22px;
       font-weight: bold;
+      margin-top: 6px;
     }
 
     .terminal {
       flex: 1;
-      overflow-y: auto;
+      overflow: auto;
       padding: 20px;
-      background: #020617;
-      font-family: monospace;
+      background: #000;
+      font-family: Consolas, monospace;
       font-size: 14px;
-      line-height: 1.6;
+      line-height: 1.5;
+      white-space: pre;
     }
 
-    .log-line {
-      margin-bottom: 4px;
-      white-space: pre-wrap;
-      word-break: break-word;
+    .line {
+      margin-bottom: 2px;
     }
 
     .info {
@@ -153,66 +149,44 @@
     }
 
     .footer {
-      padding: 10px 16px;
-      border-top: 1px solid #1e293b;
       display: flex;
       gap: 10px;
-      background: #111827;
+      padding: 14px;
+      border-top: 1px solid #1e293b;
+      background: #0f172a;
     }
 
     .footer input {
       flex: 1;
+      margin: 0;
     }
 
-    .tag {
-      display: inline-block;
-      padding: 4px 8px;
-      border-radius: 999px;
-      font-size: 12px;
-      background: #1d4ed8;
-      margin-top: 10px;
+    .footer button {
+      width: 140px;
+      margin: 0;
     }
 
     .file-item {
+      margin-top: 10px;
       padding: 10px;
       border-radius: 10px;
-      background: #0f172a;
-      margin-top: 10px;
-      border: 1px solid #334155;
+      background: #020617;
+      border: 1px solid #1e293b;
       font-size: 13px;
     }
 
-    .topbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 14px 18px;
-      background: #111827;
-      border-bottom: 1px solid #1e293b;
-    }
-
     .status {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 14px;
-    }
-
-    .dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: #22c55e;
+      display: inline-block;
+      margin-top: 10px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: #1e293b;
+      font-size: 13px;
     }
 
     @media (max-width: 900px) {
-      .container {
+      .layout {
         grid-template-columns: 1fr;
-      }
-
-      .sidebar {
-        border-right: none;
-        border-bottom: 1px solid #1e293b;
       }
 
       .stats {
@@ -221,306 +195,402 @@
     }
   </style>
 </head>
+
 <body>
-  <div class="container">
-    <div class="sidebar">
-      <h1>ESP Monitor</h1>
 
-      <div class="card">
-        <h2>Firmware Upload</h2>
+<div class="layout">
 
-        <input type="file" id="binFile" accept=".bin" />
+  <div class="sidebar">
 
-        <button class="btn" onclick="uploadFirmware()">
-          Upload BIN
-        </button>
+    <h1>ESP Monitor</h1>
 
-        <div id="firmwareList"></div>
-      </div>
+    <div class="card">
+      <h2>Serial</h2>
 
-      <div class="card">
-        <h2>Device</h2>
+      <select id="baudRate">
+        <option>9600</option>
+        <option selected>115200</option>
+        <option>230400</option>
+      </select>
 
-        <select id="deviceType">
-          <option>ESP32</option>
-          <option>ESP32-S3</option>
-          <option>ESP8266</option>
-        </select>
+      <button onclick="connectSerial()">
+        Connect Serial
+      </button>
 
-        <input type="text" id="deviceName" placeholder="Device name" />
+      <button onclick="disconnectSerial()" class="danger">
+        Disconnect
+      </button>
 
-        <button class="btn" onclick="connectDevice()">
-          Connect Serial
-        </button>
-
-        <div class="tag" id="deviceStatus">
-          Disconnected
-        </div>
-      </div>
-
-      <div class="card">
-        <h2>Filters</h2>
-
-        <select id="filterLevel" onchange="applyFilter()">
-          <option value="all">All Logs</option>
-          <option value="info">Info</option>
-          <option value="warn">Warning</option>
-          <option value="error">Error</option>
-        </select>
-
-        <input
-          type="text"
-          id="searchInput"
-          placeholder="Search logs"
-          onkeyup="applyFilter()"
-        />
-
-        <button class="btn btn-danger" onclick="clearLogs()">
-          Clear Logs
-        </button>
+      <div class="status" id="status">
+        Disconnected
       </div>
     </div>
 
-    <div class="content">
-      <div class="topbar">
-        <div>
-          <strong>ESP32 / ESP8266 Debug Dashboard</strong>
-        </div>
+    <div class="card">
+      <h2>Firmware BIN</h2>
 
-        <div class="status">
-          <div class="dot"></div>
-          Ready
-        </div>
-      </div>
+      <input type="file" id="binInput" accept=".bin" />
 
-      <div class="stats">
-        <div class="stat-box">
-          <div class="stat-title">Total Logs</div>
-          <div class="stat-value" id="totalLogs">0</div>
-        </div>
+      <button onclick="uploadBin()">
+        Upload BIN
+      </button>
 
-        <div class="stat-box">
-          <div class="stat-title">Errors</div>
-          <div class="stat-value" id="errorLogs">0</div>
-        </div>
-
-        <div class="stat-box">
-          <div class="stat-title">Warnings</div>
-          <div class="stat-value" id="warnLogs">0</div>
-        </div>
-
-        <div class="stat-box">
-          <div class="stat-title">Firmware</div>
-          <div class="stat-value" id="firmwareCount">0</div>
-        </div>
-      </div>
-
-      <div class="terminal" id="terminal"></div>
-
-      <div class="footer">
-        <input
-          type="text"
-          id="manualLog"
-          placeholder="Write fake log for testing"
-        />
-
-        <button class="btn" style="width: 140px" onclick="sendFakeLog()">
-          Add Log
-        </button>
-      </div>
+      <div id="firmwareList"></div>
     </div>
+
+    <div class="card">
+      <h2>Filter</h2>
+
+      <select id="filter" onchange="renderLogs()">
+        <option value="all">All</option>
+        <option value="info">Info</option>
+        <option value="warn">Warn</option>
+        <option value="error">Error</option>
+        <option value="success">Success</option>
+      </select>
+
+      <input
+        type="text"
+        id="search"
+        placeholder="Search logs..."
+        onkeyup="renderLogs()"
+      />
+
+      <button class="danger" onclick="clearLogs()">
+        Clear Logs
+      </button>
+    </div>
+
   </div>
 
-  <script>
-    const terminal = document.getElementById('terminal');
+  <div class="main">
 
-    let logs = [];
-    let firmwareFiles = [];
+    <div class="stats">
 
-    function addLog(message, type = 'info') {
-      const time = new Date().toLocaleTimeString();
+      <div class="stat">
+        <div class="stat-title">TOTAL</div>
+        <div class="stat-value" id="totalLogs">0</div>
+      </div>
 
-      logs.push({
-        message,
-        type,
-        time,
-      });
+      <div class="stat">
+        <div class="stat-title">ERROR</div>
+        <div class="stat-value" id="errorLogs">0</div>
+      </div>
 
-      renderLogs();
-      updateStats();
-    }
+      <div class="stat">
+        <div class="stat-title">WARN</div>
+        <div class="stat-value" id="warnLogs">0</div>
+      </div>
 
-    function renderLogs() {
-      const filter = document.getElementById('filterLevel').value;
-      const keyword = document
-        .getElementById('searchInput')
-        .value.toLowerCase();
+      <div class="stat">
+        <div class="stat-title">FIRMWARE</div>
+        <div class="stat-value" id="firmwareCount">0</div>
+      </div>
 
-      terminal.innerHTML = '';
+    </div>
 
-      logs.forEach((log) => {
-        if (filter !== 'all' && log.type !== filter) {
-          return;
-        }
+    <div class="terminal" id="terminal"></div>
 
-        if (
-          keyword &&
-          !log.message.toLowerCase().includes(keyword)
-        ) {
-          return;
-        }
+    <div class="footer">
 
-        const div = document.createElement('div');
-        div.className = `log-line ${log.type}`;
-        div.textContent = `[${log.time}] [${log.type.toUpperCase()}] ${log.message}`;
+      <input
+        type="text"
+        id="fakeInput"
+        placeholder="Fake log for testing..."
+      />
 
-        terminal.appendChild(div);
-      });
+      <button onclick="fakeLog()">
+        Add Log
+      </button>
 
-      terminal.scrollTop = terminal.scrollHeight;
-    }
+    </div>
 
-    function updateStats() {
-      document.getElementById('totalLogs').textContent = logs.length;
+  </div>
 
-      document.getElementById('errorLogs').textContent = logs.filter(
-        (l) => l.type === 'error'
-      ).length;
+</div>
 
-      document.getElementById('warnLogs').textContent = logs.filter(
-        (l) => l.type === 'warn'
-      ).length;
+<script>
 
-      document.getElementById('firmwareCount').textContent =
-        firmwareFiles.length;
-    }
+  let port = null;
+  let reader = null;
 
-    function clearLogs() {
-      logs = [];
-      renderLogs();
-      updateStats();
-    }
+  let serialBuffer = '';
 
-    function applyFilter() {
-      renderLogs();
-    }
+  let logs = [];
+  let firmwareFiles = [];
 
-    function sendFakeLog() {
-      const input = document.getElementById('manualLog');
+  const terminal = document.getElementById('terminal');
 
-      if (!input.value.trim()) {
-        return;
+  function addLog(message, type = 'info') {
+
+    logs.push({
+      message,
+      type,
+      time: new Date().toLocaleTimeString(),
+    });
+
+    renderLogs();
+    updateStats();
+  }
+
+  function renderLogs() {
+
+    const filter = document.getElementById('filter').value;
+    const keyword = document
+      .getElementById('search')
+      .value
+      .toLowerCase();
+
+    terminal.innerHTML = '';
+
+    for (const log of logs) {
+
+      if (filter !== 'all' && log.type !== filter) {
+        continue;
       }
 
-      let type = 'info';
-
-      if (input.value.includes('error')) {
-        type = 'error';
-      } else if (input.value.includes('warn')) {
-        type = 'warn';
-      } else if (input.value.includes('ok')) {
-        type = 'success';
+      if (
+        keyword &&
+        !log.message.toLowerCase().includes(keyword)
+      ) {
+        continue;
       }
-
-      addLog(input.value, type);
-
-      input.value = '';
-    }
-
-    function uploadFirmware() {
-      const fileInput = document.getElementById('binFile');
-      const file = fileInput.files[0];
-
-      if (!file) {
-        alert('Please choose .bin firmware');
-        return;
-      }
-
-      firmwareFiles.push(file);
 
       const div = document.createElement('div');
-      div.className = 'file-item';
-      div.innerHTML = `
-        <strong>${file.name}</strong><br>
-        Size: ${(file.size / 1024).toFixed(2)} KB
-      `;
 
-      document.getElementById('firmwareList').appendChild(div);
+      div.className = `line ${log.type}`;
 
-      addLog(`Firmware uploaded: ${file.name}`, 'success');
+      div.textContent =
+        `[${log.time}] [${log.type.toUpperCase()}] ${log.message}`;
 
-      updateStats();
+      terminal.appendChild(div);
     }
 
-    async function connectDevice() {
-      if (!('serial' in navigator)) {
-        addLog(
-          'Web Serial API not supported in this browser',
-          'error'
-        );
+    terminal.scrollTop = terminal.scrollHeight;
+  }
 
-        return;
-      }
+  function updateStats() {
 
-      try {
-        const port = await navigator.serial.requestPort();
+    document.getElementById('totalLogs').textContent =
+      logs.length;
 
-        await port.open({
-          baudRate: 115200,
-        });
+    document.getElementById('errorLogs').textContent =
+      logs.filter(l => l.type === 'error').length;
 
-        document.getElementById('deviceStatus').innerText =
-          'Connected';
+    document.getElementById('warnLogs').textContent =
+      logs.filter(l => l.type === 'warn').length;
 
-        addLog('Serial connected successfully', 'success');
+    document.getElementById('firmwareCount').textContent =
+      firmwareFiles.length;
+  }
 
-        const decoder = new TextDecoderStream();
-        port.readable.pipeTo(decoder.writable);
+  function clearLogs() {
 
-        const reader = decoder.readable.getReader();
+    logs = [];
 
-        while (true) {
-          const { value, done } = await reader.read();
+    renderLogs();
+    updateStats();
+  }
 
-          if (done) {
-            break;
-          }
+  function detectType(line) {
 
-          if (value) {
-            parseIncomingLogs(value);
-          }
-        }
-      } catch (err) {
-        addLog(`Connection failed: ${err.message}`, 'error');
-      }
+    const lower = line.toLowerCase();
+
+    if (
+      lower.includes('error') ||
+      lower.includes('panic') ||
+      lower.includes('guru')
+    ) {
+      return 'error';
     }
 
-    function parseIncomingLogs(text) {
-      const lines = text.split('\n');
+    if (lower.includes('warn')) {
+      return 'warn';
+    }
 
-      lines.forEach((line) => {
-        if (!line.trim()) {
-          return;
-        }
+    if (
+      lower.includes('connected') ||
+      lower.includes('success') ||
+      lower.includes('ok')
+    ) {
+      return 'success';
+    }
 
-        let type = 'info';
+    return 'info';
+  }
 
-        const lower = line.toLowerCase();
+  async function connectSerial() {
 
-        if (lower.includes('error') || lower.includes('guru')) {
-          type = 'error';
-        } else if (lower.includes('warn')) {
-          type = 'warn';
-        } else if (lower.includes('connected')) {
-          type = 'success';
-        }
+    if (!('serial' in navigator)) {
 
-        addLog(line, type);
+      addLog(
+        'Web Serial API not supported',
+        'error'
+      );
+
+      return;
+    }
+
+    try {
+
+      port = await navigator.serial.requestPort();
+
+      const baudRate =
+        parseInt(document.getElementById('baudRate').value);
+
+      await port.open({
+        baudRate,
       });
+
+      document.getElementById('status').innerText =
+        'Connected';
+
+      addLog(
+        `Serial connected at ${baudRate}`,
+        'success'
+      );
+
+      const decoder = new TextDecoderStream();
+
+      port.readable.pipeTo(decoder.writable);
+
+      reader = decoder.readable.getReader();
+
+      while (true) {
+
+        const { value, done } =
+          await reader.read();
+
+        if (done) {
+          break;
+        }
+
+        if (value) {
+          parseSerialData(value);
+        }
+      }
+
+    } catch (err) {
+
+      addLog(
+        `Connect failed: ${err.message}`,
+        'error'
+      );
+    }
+  }
+
+  async function disconnectSerial() {
+
+    try {
+
+      if (reader) {
+        await reader.cancel();
+        reader = null;
+      }
+
+      if (port) {
+        await port.close();
+        port = null;
+      }
+
+      document.getElementById('status').innerText =
+        'Disconnected';
+
+      addLog(
+        'Serial disconnected',
+        'warn'
+      );
+
+    } catch (err) {
+
+      addLog(
+        `Disconnect failed: ${err.message}`,
+        'error'
+      );
+    }
+  }
+
+  function parseSerialData(text) {
+
+    serialBuffer += text;
+
+    const lines = serialBuffer.split('\n');
+
+    serialBuffer = lines.pop();
+
+    for (let line of lines) {
+
+      line = line.replace(/\r/g, '');
+
+      if (!line.trim()) {
+        continue;
+      }
+
+      const type = detectType(line);
+
+      addLog(line, type);
+    }
+  }
+
+  function uploadBin() {
+
+    const input =
+      document.getElementById('binInput');
+
+    const file = input.files[0];
+
+    if (!file) {
+
+      alert('Please select .bin firmware');
+
+      return;
     }
 
-    addLog('ESP dashboard initialized', 'success');
-    addLog('Waiting for serial device...', 'info');
-  </script>
+    firmwareFiles.push(file);
+
+    const div = document.createElement('div');
+
+    div.className = 'file-item';
+
+    div.innerHTML = `
+      <strong>${file.name}</strong><br>
+      ${(file.size / 1024).toFixed(2)} KB
+    `;
+
+    document
+      .getElementById('firmwareList')
+      .appendChild(div);
+
+    addLog(
+      `Firmware uploaded: ${file.name}`,
+      'success'
+    );
+
+    updateStats();
+  }
+
+  function fakeLog() {
+
+    const input =
+      document.getElementById('fakeInput');
+
+    if (!input.value.trim()) {
+      return;
+    }
+
+    const type = detectType(input.value);
+
+    addLog(input.value, type);
+
+    input.value = '';
+  }
+
+  addLog(
+    'ESP Serial Monitor Ready',
+    'success'
+  );
+
+</script>
+
 </body>
 </html>
