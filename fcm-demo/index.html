@@ -1,0 +1,403 @@
+<!doctype html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Demo FCM</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg1: #0f172a;
+            --bg2: #1e293b;
+            --card: rgba(255, 255, 255, 0.92);
+            --text: #0f172a;
+            --muted: #64748b;
+            --primary: #2563eb;
+            --success: #16a34a;
+            --danger: #dc2626;
+            --radius: 24px;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            margin: 0;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background:
+                    radial-gradient(circle at top left, #3b82f6 0, transparent 32%),
+                    radial-gradient(circle at bottom right, #22c55e 0, transparent 28%),
+                    linear-gradient(135deg, var(--bg1), var(--bg2));
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .app-card {
+            width: 100%;
+            max-width: 760px;
+            background: var(--card);
+            backdrop-filter: blur(18px);
+            border-radius: var(--radius);
+            box-shadow: 0 24px 80px rgba(0, 0, 0, 0.28);
+            overflow: hidden;
+        }
+
+        .app-header {
+            padding: 28px;
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+            color: white;
+        }
+
+        .app-header h1 {
+            font-size: 28px;
+            font-weight: 800;
+            margin: 0 0 8px;
+        }
+
+        .app-header p {
+            margin: 0;
+            opacity: 0.9;
+            font-size: 15px;
+        }
+
+        .app-body {
+            padding: 28px;
+        }
+
+        .status-box {
+            border-radius: 18px;
+            padding: 14px 16px;
+            background: #f1f5f9;
+            color: var(--muted);
+            font-size: 14px;
+            margin-bottom: 20px;
+            word-break: break-word;
+        }
+
+        .status-box.success {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .status-box.error {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .action-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 22px;
+        }
+
+        .btn-main {
+            min-height: 48px;
+            border-radius: 14px;
+            font-weight: 700;
+            border: none;
+        }
+
+        .btn-register {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-register:hover {
+            color: white;
+            background: #1d4ed8;
+        }
+
+        .btn-copy {
+            background: #0f172a;
+            color: white;
+        }
+
+        .btn-copy:hover {
+            color: white;
+            background: #020617;
+        }
+
+        .token-label {
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .token-area {
+            width: 100%;
+            min-height: 180px;
+            border-radius: 18px;
+            border: 1px solid #cbd5e1;
+            padding: 16px;
+            resize: vertical;
+            font-size: 13px;
+            line-height: 1.5;
+            background: #f8fafc;
+            color: #0f172a;
+        }
+
+        .token-area:focus {
+            outline: none;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15);
+        }
+
+        .hint {
+            color: var(--muted);
+            font-size: 13px;
+            margin-top: 10px;
+        }
+
+        .footer-note {
+            border-top: 1px solid #e2e8f0;
+            padding: 18px 28px;
+            font-size: 13px;
+            color: var(--muted);
+            background: rgba(248, 250, 252, 0.8);
+        }
+
+        @media (max-width: 576px) {
+            body {
+                padding: 12px;
+                align-items: flex-start;
+            }
+
+            .app-card {
+                border-radius: 20px;
+            }
+
+            .app-header {
+                padding: 22px;
+            }
+
+            .app-header h1 {
+                font-size: 23px;
+            }
+
+            .app-body {
+                padding: 22px;
+            }
+
+            .action-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .token-area {
+                min-height: 220px;
+                font-size: 12px;
+            }
+
+            .footer-note {
+                padding: 16px 22px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+<main class="app-card">
+    <section class="app-header">
+        <h1>Firebase FCM Token</h1>
+        <p>Đăng ký Service Worker, lấy FCM token và copy nhanh để test push notification.</p>
+    </section>
+
+    <section class="app-body">
+        <div id="status" class="status-box">
+            Chưa đăng ký Service Worker.
+        </div>
+
+        <div class="action-grid">
+            <button type="button" class="btn btn-main btn-register" id="register-sw">
+                Đăng ký & lấy FCM Token
+            </button>
+
+            <button type="button" class="btn btn-main btn-copy" id="copy-fcm-token">
+                Copy FCM Token
+            </button>
+        </div>
+
+        <div>
+            <div class="token-label">FCM Token</div>
+
+            <textarea
+                    id="fcm-token"
+                    class="token-area"
+                    placeholder="FCM token sẽ hiển thị ở đây sau khi đăng ký thành công..."
+                    readonly></textarea>
+
+            <div class="hint">
+                FCM token này dùng để gửi test notification tới đúng trình duyệt/thiết bị hiện tại.
+            </div>
+        </div>
+    </section>
+
+    <section class="footer-note">
+        Lưu ý: Web Push cần chạy trên HTTPS hoặc localhost, trình duyệt phải cho phép Notification.
+    </section>
+</main>
+
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-messaging-compat.js"></script>
+<script src="https://code.jquery.com/jquery-4.0.0.js"></script>
+
+<script src="./scripts/config.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const $status = $('#status');
+        const $token = $('#fcm-token');
+        const $registerBtn = $('#register-sw');
+        const $copyBtn = $('#copy-fcm-token');
+
+        firebase.initializeApp(FIREBASE_CONFIG);
+
+        const messaging = firebase.messaging();
+
+        function setStatus(message, type = '') {
+            $status
+                .removeClass('success error')
+                .addClass(type)
+                .text(message);
+        }
+
+        function setLoading(isLoading) {
+            $registerBtn.prop('disabled', isLoading);
+            $registerBtn.text(isLoading ? 'Đang xử lý...' : 'Đăng ký & lấy FCM Token');
+        }
+
+        messaging.onMessage((payload) => {
+            console.log('Foreground message:', payload);
+
+            const title =
+                payload?.data?.fcm_title ||
+                payload?.notification?.title ||
+                'Thông báo mới';
+
+            const body =
+                payload?.data?.fcm_body ||
+                payload?.notification?.body ||
+                '';
+
+            new Notification(title, { body });
+        });
+
+        async function checkNotificationPermission() {
+            if (!('Notification' in window)) {
+                throw new Error('Trình duyệt không hỗ trợ Notification.');
+            }
+
+            if (Notification.permission === 'granted') {
+                return true;
+            }
+
+            if (Notification.permission === 'denied') {
+                throw new Error('Bạn đã chặn quyền Notification. Hãy bật lại trong cài đặt trình duyệt.');
+            }
+
+            const permission = await Notification.requestPermission();
+
+            if (permission !== 'granted') {
+                throw new Error('Bạn chưa cấp quyền Notification.');
+            }
+
+            return true;
+        }
+
+        async function waitForServiceWorkerActive(registration) {
+            let sw = registration.installing || registration.waiting || registration.active;
+
+            if (!sw) return;
+
+            if (sw.state === 'activated') return;
+
+            await new Promise((resolve, reject) => {
+                const timeout = setTimeout(() => {
+                    reject(new Error('Service Worker activate timeout.'));
+                }, 10000);
+
+                sw.addEventListener('statechange', () => {
+                    if (sw.state === 'activated') {
+                        clearTimeout(timeout);
+                        resolve();
+                    }
+                });
+            });
+        }
+
+        async function registerServiceWorkerAndGetToken() {
+            try {
+                setLoading(true);
+                setStatus('Đang xin quyền Notification...');
+
+                if (!('serviceWorker' in navigator)) {
+                    throw new Error('Trình duyệt không hỗ trợ Service Worker.');
+                }
+
+                await checkNotificationPermission();
+
+                setStatus('Đang đăng ký Service Worker...');
+
+                const registration = await navigator.serviceWorker.register(
+                    './scripts/firebase-messaging-sw.js'
+                );
+
+                await waitForServiceWorkerActive(registration);
+
+                setStatus('Service Worker đã active. Đang lấy FCM token...');
+
+                const token = await messaging.getToken({
+                    serviceWorkerRegistration: registration,
+                    vapidKey: FCM_VAPID_PUBLIC_KEY,
+                });
+
+                if (!token) {
+                    throw new Error('Không lấy được FCM token.');
+                }
+
+                $token.val(token);
+
+                setStatus('Lấy FCM token thành công.', 'success');
+
+                console.log('FCM Token:', token);
+            } catch (error) {
+                console.error(error);
+                setStatus(error.message || 'Có lỗi xảy ra khi lấy FCM token.', 'error');
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        async function copyFcmToken() {
+            const token = $token.val().trim();
+
+            if (!token) {
+                setStatus('Chưa có FCM token để copy.', 'error');
+                return;
+            }
+
+            try {
+                await navigator.clipboard.writeText(token);
+                setStatus('Đã copy FCM token.', 'success');
+            } catch (error) {
+                console.error(error);
+
+                $token[0].select();
+                document.execCommand('copy');
+
+                setStatus('Đã copy FCM token.', 'success');
+            }
+        }
+
+        $registerBtn.on('click', registerServiceWorkerAndGetToken);
+        $copyBtn.on('click', copyFcmToken);
+    });
+</script>
+</body>
+</html>
