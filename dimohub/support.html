@@ -1,0 +1,1112 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DimoHub - Hỗ Trợ & Hướng Dẫn Sử Dụng</title>
+  <meta name="description" content="Trang hỗ trợ chính thức của ứng dụng DimoHub: Giới thiệu tính năng, hướng dẫn cấp quyền GPS, theo dõi tốc độ, cảnh báo biển báo, kết nối HUD/Bluetooth, chạy nền và giải đáp lỗi thường gặp.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-dark: #0A0E17;
+      --bg-surface: rgba(16, 24, 38, 0.85);
+      --bg-surface-elevated: rgba(22, 33, 53, 0.95);
+      --border-color: rgba(255, 255, 255, 0.08);
+      --border-focus: rgba(0, 215, 255, 0.35);
+      --cyan: #00D7FF;
+      --cyan-glow: rgba(0, 215, 255, 0.2);
+      --green: #00E68C;
+      --green-glow: rgba(0, 230, 140, 0.2);
+      --amber: #FFB300;
+      --red: #FF4757;
+      --text-primary: #F8FAFC;
+      --text-secondary: #94A3B8;
+      --text-muted: #64748B;
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-primary);
+      line-height: 1.65;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Ambient lighting */
+    .glow-top-left {
+      position: absolute;
+      width: 480px;
+      height: 480px;
+      background: radial-gradient(circle, rgba(0, 215, 255, 0.1) 0%, transparent 70%);
+      top: -120px;
+      left: 5%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .glow-bottom-right {
+      position: absolute;
+      width: 550px;
+      height: 550px;
+      background: radial-gradient(circle, rgba(0, 230, 140, 0.07) 0%, transparent 70%);
+      top: 600px;
+      right: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Top Navigation */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      background: rgba(10, 14, 23, 0.85);
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .header-inner {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 16px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--text-primary);
+    }
+
+    .brand-icon {
+      width: 38px;
+      height: 38px;
+      background: linear-gradient(135deg, #00D7FF, #0077FF);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 16px var(--cyan-glow);
+    }
+
+    .brand-icon svg {
+      width: 22px;
+      height: 22px;
+      fill: #FFFFFF;
+    }
+
+    .brand-title {
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: -0.3px;
+    }
+
+    .brand-badge {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--cyan);
+      background: rgba(0, 215, 255, 0.12);
+      border: 1px solid rgba(0, 215, 255, 0.3);
+      padding: 2px 8px;
+      border-radius: 12px;
+      margin-left: 6px;
+    }
+
+    .header-nav {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .nav-link {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .nav-link:hover {
+      color: var(--cyan);
+    }
+
+    .nav-btn-privacy {
+      padding: 8px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #06111E;
+      background: linear-gradient(135deg, #00D7FF, #0099FF);
+      border-radius: 20px;
+      text-decoration: none;
+      box-shadow: 0 2px 10px rgba(0, 215, 255, 0.3);
+      transition: all 0.2s;
+    }
+
+    .nav-btn-privacy:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 16px rgba(0, 215, 255, 0.45);
+    }
+
+    /* Container */
+    main {
+      flex: 1;
+      max-width: 1080px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Hero */
+    .hero {
+      text-align: center;
+      margin-bottom: 36px;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--green);
+      background: rgba(0, 230, 140, 0.1);
+      border: 1px solid rgba(0, 230, 140, 0.25);
+      padding: 5px 14px;
+      border-radius: 20px;
+      margin-bottom: 16px;
+    }
+
+    .hero-badge .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 8px var(--green);
+    }
+
+    .hero h1 {
+      font-size: 34px;
+      font-weight: 800;
+      letter-spacing: -0.6px;
+      margin-bottom: 12px;
+      background: linear-gradient(180deg, #FFFFFF 30%, #A5C2DE 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero p {
+      color: var(--text-secondary);
+      font-size: 16px;
+      max-width: 680px;
+      margin: 0 auto 24px;
+    }
+
+    /* Quick Jump Nav Pills */
+    .quick-nav {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 40px;
+    }
+
+    .jump-pill {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border-color);
+      padding: 6px 14px;
+      border-radius: 20px;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+
+    .jump-pill:hover {
+      color: var(--cyan);
+      border-color: var(--cyan);
+      background: rgba(0, 215, 255, 0.08);
+      transform: translateY(-1px);
+    }
+
+    /* Content Cards Section */
+    .section-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      margin-bottom: 24px;
+      backdrop-filter: blur(12px);
+      transition: border-color 0.25s, box-shadow 0.25s;
+    }
+
+    .section-card:hover {
+      border-color: rgba(255, 255, 255, 0.15);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+
+    .icon-box {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .icon-cyan {
+      background: rgba(0, 215, 255, 0.12);
+      border: 1px solid rgba(0, 215, 255, 0.25);
+    }
+
+    .icon-green {
+      background: rgba(0, 230, 140, 0.12);
+      border: 1px solid rgba(0, 230, 140, 0.25);
+    }
+
+    .icon-amber {
+      background: rgba(255, 179, 0, 0.12);
+      border: 1px solid rgba(255, 179, 0, 0.25);
+    }
+
+    .icon-red {
+      background: rgba(255, 71, 87, 0.12);
+      border: 1px solid rgba(255, 71, 87, 0.25);
+    }
+
+    .icon-purple {
+      background: rgba(168, 85, 247, 0.12);
+      border: 1px solid rgba(168, 85, 247, 0.25);
+    }
+
+    .card-header h2 {
+      font-size: 20px;
+      font-weight: 700;
+      color: #FFFFFF;
+      letter-spacing: -0.2px;
+    }
+
+    .card-body {
+      color: #CBD5E1;
+      font-size: 15px;
+      line-height: 1.7;
+    }
+
+    .card-body p {
+      margin-bottom: 12px;
+    }
+
+    .card-body ul, .card-body ol {
+      margin-left: 20px;
+      margin-bottom: 14px;
+    }
+
+    .card-body li {
+      margin-bottom: 6px;
+    }
+
+    .card-body strong {
+      color: #FFFFFF;
+    }
+
+    /* Highlight callout box */
+    .callout-box {
+      background: rgba(0, 215, 255, 0.06);
+      border-left: 3px solid var(--cyan);
+      padding: 12px 16px;
+      border-radius: 4px var(--radius-sm) var(--radius-sm) 4px;
+      margin: 16px 0;
+      font-size: 14px;
+      color: #E2E8F0;
+    }
+
+    .callout-warning {
+      background: rgba(255, 179, 0, 0.08);
+      border-left-color: var(--amber);
+    }
+
+    /* Grid for features / errors */
+    .sub-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    .sub-card {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: var(--radius-md);
+      padding: 18px;
+    }
+
+    .sub-card h3 {
+      font-size: 15px;
+      font-weight: 700;
+      color: #FFFFFF;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .sub-card p {
+      font-size: 13.5px;
+      color: var(--text-secondary);
+      margin-bottom: 0;
+    }
+
+    /* FAQ accordion inside errors section */
+    .faq-block {
+      margin-top: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .faq-row {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      transition: all 0.2s;
+    }
+
+    .faq-trigger {
+      padding: 14px 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      user-select: none;
+      font-weight: 600;
+      font-size: 14.5px;
+      color: #FFFFFF;
+    }
+
+    .faq-chevron {
+      width: 18px;
+      height: 18px;
+      stroke: var(--text-muted);
+      fill: none;
+      stroke-width: 2.2;
+      transition: transform 0.25s ease;
+      flex-shrink: 0;
+    }
+
+    .faq-row.open .faq-chevron {
+      transform: rotate(180deg);
+      stroke: var(--cyan);
+    }
+
+    .faq-row.open {
+      border-color: var(--border-focus);
+      background: rgba(18, 27, 43, 0.95);
+    }
+
+    .faq-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease, padding 0.25s ease;
+      padding: 0 18px;
+      color: var(--text-secondary);
+      font-size: 13.5px;
+      line-height: 1.6;
+    }
+
+    .faq-row.open .faq-content {
+      max-height: 400px;
+      padding: 0 18px 16px;
+    }
+
+    /* Contact Form Section */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1.3fr 1fr;
+      gap: 24px;
+    }
+
+    @media (max-width: 800px) {
+      .contact-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .form-group {
+      margin-bottom: 14px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-bottom: 5px;
+    }
+
+    .form-input {
+      width: 100%;
+      background: rgba(10, 14, 23, 0.8);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      padding: 10px 14px;
+      color: #FFFFFF;
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .form-input:focus {
+      border-color: var(--cyan);
+      box-shadow: 0 0 12px var(--cyan-glow);
+    }
+
+    textarea.form-input {
+      min-height: 90px;
+      resize: vertical;
+    }
+
+    .btn-send {
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(135deg, #00D7FF, #0088FF);
+      color: #06111E;
+      font-size: 14px;
+      font-weight: 700;
+      border: none;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+
+    .btn-send:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 16px rgba(0, 215, 255, 0.4);
+    }
+
+    .contact-channels {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .channel-box {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--text-primary);
+      transition: all 0.2s;
+    }
+
+    .channel-box:hover {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: var(--border-focus);
+      transform: translateX(2px);
+    }
+
+    .channel-box strong {
+      font-size: 13px;
+      display: block;
+    }
+
+    .channel-box span {
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+
+    /* Privacy Banner Card */
+    .privacy-card {
+      background: linear-gradient(135deg, rgba(16, 24, 38, 0.95), rgba(9, 32, 54, 0.8));
+      border: 1px solid rgba(0, 215, 255, 0.3);
+      border-radius: var(--radius-lg);
+      padding: 28px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+
+    .privacy-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 22px;
+      background: linear-gradient(135deg, #00D7FF, #0077FF);
+      color: #06111E;
+      font-weight: 700;
+      font-size: 14px;
+      border-radius: 24px;
+      text-decoration: none;
+      box-shadow: 0 4px 16px rgba(0, 215, 255, 0.35);
+      transition: all 0.2s;
+    }
+
+    .privacy-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 215, 255, 0.5);
+    }
+
+    /* Toast */
+    .toast-notice {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #0F172A;
+      border: 1px solid var(--green);
+      color: #FFFFFF;
+      padding: 14px 20px;
+      border-radius: var(--radius-md);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      z-index: 1000;
+      transform: translateY(120%);
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .toast-notice.show {
+      transform: translateY(0);
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border-color);
+      background: rgba(8, 12, 19, 0.96);
+      padding: 30px 24px;
+      margin-top: auto;
+    }
+
+    .footer-inner {
+      max-width: 1080px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 18px;
+    }
+
+    .footer-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover {
+      color: var(--cyan);
+    }
+
+    @media (max-width: 640px) {
+      .hero h1 {
+        font-size: 26px;
+      }
+      .section-card {
+        padding: 22px 18px;
+      }
+      .privacy-card {
+        padding: 20px;
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .footer-inner {
+        flex-direction: column;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="glow-top-left"></div>
+  <div class="glow-bottom-right"></div>
+
+  <!-- Header -->
+  <header>
+    <div class="header-inner">
+      <a href="#" class="brand-logo">
+        <div class="brand-icon">
+          <svg viewBox="0 0 24 24">
+            <path d="M12 2L4.5 20.29l.71.71L12 18l6.79 3 .71-.71z"/>
+          </svg>
+        </div>
+        <span class="brand-title">DimoHub <span class="brand-badge">Trợ Giúp</span></span>
+      </a>
+
+      <div class="header-nav">
+        <a href="#gioi-thieu" class="nav-link">Giới Thiệu</a>
+        <a href="#loi-thuong-gap" class="nav-link">Lỗi Thường Gặp</a>
+        <a href="#lien-he" class="nav-link">Liên Hệ</a>
+        <a href="https://dangtinh97.github.io/dimohub/apple-privacy" target="_blank" class="nav-btn-privacy">Chính Sách Quyền Riêng Tư</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main>
+    <!-- Hero -->
+    <div class="hero">
+      <div class="hero-badge">
+        <span class="dot"></span>
+        Hỗ Trợ Kỹ Thuật & Hướng Dẫn Sử Dụng
+      </div>
+      <h1>Trung Tâm Trợ Giúp DimoHub</h1>
+      <p>Cẩm nang hướng dẫn tính năng, theo dõi tốc độ, cảnh báo camera giao thông, chế độ HUD taplo và giải đáp thắc mắc cho tài xế.</p>
+
+      <!-- Quick Nav Pills -->
+      <div class="quick-nav">
+        <a href="#gioi-thieu" class="jump-pill">1. Giới thiệu DimoHub</a>
+        <a href="#cap-quyen-gps" class="jump-pill">2. Cấp quyền GPS</a>
+        <a href="#theo-doi-toc-do" class="jump-pill">3. Theo dõi tốc độ</a>
+        <a href="#canh-bao-bien-bao" class="jump-pill">4. Cảnh báo biển báo</a>
+        <a href="#ket-noi-hud-bluetooth" class="jump-pill">5. Kết nối HUD/Bluetooth</a>
+        <a href="#chay-nen" class="jump-pill">6. Chạy nền</a>
+        <a href="#loi-thuong-gap" class="jump-pill">7. Các lỗi thường gặp</a>
+        <a href="#lien-he" class="jump-pill">8. Liên hệ hỗ trợ</a>
+        <a href="#quyen-rieng-tu" class="jump-pill">9. Quyền riêng tư</a>
+      </div>
+    </div>
+
+    <!-- 1. Giới thiệu DimoHub -->
+    <section id="gioi-thieu" class="section-card">
+      <div class="card-header">
+        <div class="icon-box icon-cyan">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#00D7FF" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <path d="M12 16v-4M12 8h.01"></path>
+          </svg>
+        </div>
+        <h2>1. Giới thiệu DimoHub</h2>
+      </div>
+      <div class="card-body">
+        <p><strong>DimoHub</strong> là ứng dụng trợ lý lái xe thông minh được tối ưu chuyên sâu cho điều kiện giao thông tại Việt Nam. Ứng dụng cung cấp giải pháp hiển thị vận tốc GPS tức thì, định vị lộ trình trực quan và cảnh báo an toàn đường bộ trước hàng nghìn điểm kiểm soát trên toàn quốc.</p>
+        <div class="sub-grid">
+          <div class="sub-card">
+            <h3>🚘 Chế độ Drive Mode & HUD</h3>
+            <p>Giao diện tối giản, số đo tốc độ cỡ lớn tương phản cao, dễ nhìn ngay cả trong ánh sáng gắt ban ngày lẫn không gian tối ban đêm.</p>
+          </div>
+          <div class="sub-card">
+            <h3>📷 Cảnh báo đa dạng</h3>
+            <p>Nhận diện chính xác camera phạt nguội, camera giám sát vượt đèn đỏ, biển báo khu đông dân cư và giới hạn tốc độ phân đoạn đường.</p>
+          </div>
+          <div class="sub-card">
+            <h3>⚡ Hoạt động ổn định</h3>
+            <p>Khởi động tức thì, tối ưu tiêu thụ pin và tài nguyên, tương thích hoàn hảo khi chạy song song cùng các hệ thống dẫn đường khác.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. Hướng dẫn cấp quyền GPS -->
+    <section id="cap-quyen-gps" class="section-card">
+      <div class="card-header">
+        <div class="icon-box icon-green">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#00E68C" stroke-width="2">
+            <path d="M12 2a8 8 0 0 0-8 8c0 5.25 8 12 8 12s8-6.75 8-12a8 8 0 0 0-8-8z"></path>
+            <circle cx="12" cy="10" r="3"></circle>
+          </svg>
+        </div>
+        <h2>2. Hướng dẫn cấp quyền GPS</h2>
+      </div>
+      <div class="card-body">
+        <p>Để tính toán vận tốc xe chính xác và phát hiện các điểm camera trước 300m - 500m, ứng dụng yêu cầu quyền truy cập định vị vị trí chính xác (GPS) trên thiết bị của bạn.</p>
+
+        <h3 style="font-size: 15px; color: #FFFFFF; margin: 12px 0 8px;">Cách thiết lập trên iPhone (iOS):</h3>
+        <ol>
+          <li>Mở <strong>Cài đặt (Settings)</strong> trên điện thoại &gt; Tìm và chọn ứng dụng <strong>DimoHub</strong>.</li>
+          <li>Chọn mục <strong>Vị trí (Location)</strong> &gt; Chọn <strong>"Khi dùng ứng dụng"</strong> hoặc <strong>"Luôn luôn"</strong> (khuyến nghị "Luôn luôn" để cảnh báo khi tắt màn hình hoặc chạy ngầm).</li>
+          <li><strong>Quan trọng:</strong> Bật công tắc <strong>"Vị trí chính xác" (Precise Location)</strong> sang màu xanh.</li>
+        </ol>
+
+        <h3 style="font-size: 15px; color: #FFFFFF; margin: 12px 0 8px;">Cách thiết lập trên Android:</h3>
+        <ol>
+          <li>Mở <strong>Cài đặt</strong> &gt; <strong>Ứng dụng</strong> &gt; <strong>DimoHub</strong> &gt; <strong>Quyền</strong>.</li>
+          <li>Chọn <strong>Vị trí</strong> &gt; Cho phép <strong>"Luôn cho phép"</strong> (Allow all the time) và bật chế độ <strong>"Sử dụng vị trí chính xác"</strong>.</li>
+        </ol>
+
+        <div class="callout-box">
+          💡 <strong>Lưu ý:</strong> Hãy mở GPS và đứng tại khu vực thoáng (không bị che khuất bởi tầng hầm hoặc mái che kim loại dày) khoảng 10-20 giây đầu để máy kết nối đủ vệ tinh.
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. Theo dõi tốc độ -->
+    <section id="theo-doi-toc-do" class="section-card">
+      <div class="card-header">
+        <div class="icon-box icon-cyan">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#00D7FF" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polyline points="12 6 12 12 16 14"></polyline>
+          </svg>
+        </div>
+        <h2>3. Theo dõi tốc độ</h2>
+      </div>
+      <div class="card-body">
+        <p>Giao diện theo dõi tốc độ của DimoHub được thiết kế theo tiêu chuẩn công thái học lái xe (Driver Ergonomics):</p>
+        <ul>
+          <li><strong>Vận tốc GPS tức thì:</strong> Hiển thị số đo km/h thời gian thực với độ trễ cực thấp dựa trên thuật toán lọc nhiễu vệ tinh.</li>
+          <li><strong>Biển báo giới hạn tốc độ:</strong> Hiển thị biển tròn đỏ quy định tốc độ tối đa cho phép trên đoạn đường bạn đang di chuyển (ví dụ: 50 km/h trong đô thị, 60/80/90 km/h trên quốc lộ, 100/120 km/h trên cao tốc).</li>
+          <li><strong>Cảnh báo trực quan khi vượt tốc độ:</strong> Đồng hồ số sẽ tự động đổi màu và phát tín hiệu rung / âm thanh nhắc nhở bạn giảm ga ngay khi tốc độ xe vượt quá giới hạn cho phép.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 4. Cảnh báo biển báo -->
+    <section id="canh-bao-bien-bao" class="section-card">
+      <div class="card-header">
+        <div class="icon-box icon-amber">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FFB300" stroke-width="2">
+            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+            <line x1="12" y1="9" x2="12" y2="13"></line>
+            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+          </svg>
+        </div>
+        <h2>4. Cảnh báo biển báo & Camera giao thông</h2>
+      </div>
+      <div class="card-body">
+        <p>DimoHub liên tục quét phạm vi di chuyển phía trước và thông báo sớm các loại biển báo và camera quan trọng:</p>
+        <div class="sub-grid">
+          <div class="sub-card">
+            <h3>📷 Camera Giám Sát & Phạt Nguội</h3>
+            <p>Cảnh báo sớm camera đo tốc độ tự động, camera phạt nguội vượt đèn đỏ và camera giám sát làn đường tại các nút giao.</p>
+          </div>
+          <div class="sub-card">
+            <h3>🏘️ Khu Đông Dân Cư</h3>
+            <p>Báo hiệu biển vào khu dân cư (tối đa 50 - 60 km/h) và biển báo hết khu dân cư để tài xế chủ động điều chỉnh tốc độ.</p>
+          </div>
+          <div class="sub-card">
+            <h3>🚫 Biển Cấm Vượt & Cấm Rẽ</h3>
+            <p>Thông báo biển cấm vượt xe cơ giới, biển cấm rẽ/quay đầu tại các đoạn đường cua nguy hiểm hoặc phân luồng một chiều.</p>
+          </div>
+          <div class="sub-card">
+            <h3>🛣️ Phân Đoạn Đường Cao Tốc</h3>
+            <p>Thông báo quy định tốc độ tối đa / tối thiểu và các trạm thu phí ETC trên các tuyến cao tốc huyết mạch Bắc - Nam.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Kết nối HUD / Bluetooth -->
+    <section id="ket-noi-hud-bluetooth" class="section-card">
+      <div class="card-header">
+        <div class="icon-box icon-purple">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#A855F7" stroke-width="2">
+            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+            <line x1="8" y1="21" x2="16" y2="21"></line>
+            <line x1="12" y1="17" x2="12" y2="21"></line>
+          </svg>
+        </div>
+        <h2>5. Kết nối HUD & Âm thanh Bluetooth</h2>
+      </div>
+      <div class="card-body">
+        <h3 style="font-size: 15px; color: #FFFFFF; margin-bottom: 8px;">Chế độ HUD phản chiếu kính lái taplo:</h3>
+        <p>Chế độ HUD (Head-Up Display) cho phép bạn đặt điện thoại nằm ngang trên mặt taplo ô tô vào ban đêm:</p>
+        <ol>
+          <li>Mở màn hình HUD và bấm vào nút <strong>Lật Gương (Mirror Mode)</strong> để chữ số đảo chiều đối xứng.</li>
+          <li>Đặt ngửa điện thoại lên miếng lót chống trượt taplo dưới kính chắn gió.</li>
+          <li>Hình ảnh tốc độ và cảnh báo sẽ phản chiếu xuôi chiều trên kính lái, giúp bạn theo dõi thông tin trực tiếp trong tầm mắt mà không cần cúi đầu nhìn điện thoại.</li>
+        </ol>
+
+        <h3 style="font-size: 15px; color: #FFFFFF; margin: 14px 0 8px;">Đồng bộ âm thanh qua loa ô tô (Bluetooth):</h3>
+        <ul>
+          <li>Ghép nối điện thoại với Bluetooth của xe hơi trước khi lăn bánh.</li>
+          <li>Trong cài đặt âm thanh, chọn kênh phát qua <strong>Bluetooth / Media</strong> để giọng nói cảnh báo phát trực tiếp qua dàn loa ô tô rõ ràng, không bị lẫn tiếng ồn gió ngoài xe.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 6. Chạy nền -->
+    <section id="chay-nen" class="section-card">
+      <div class="card-header">
+        <div class="icon-box icon-green">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#00E68C" stroke-width="2">
+            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+          </svg>
+        </div>
+        <h2>6. Chạy nền & Sử dụng cùng ứng dụng khác</h2>
+      </div>
+      <div class="card-body">
+        <p>DimoHub được xây dựng để hỗ trợ đa nhiệm mạnh mẽ, có thể chạy song song và phát giọng nói cảnh báo ngay cả khi:</p>
+        <ul>
+          <li>Bạn đang mở bản đồ điều hướng khác như <strong>Google Maps</strong> hoặc <strong>Apple Maps</strong> trên màn hình chính.</li>
+          <li>Bạn đang nghe nhạc qua Spotify, YouTube Music hoặc nghe podcast.</li>
+          <li>Màn hình điện thoại đang tắt hoặc khóa máy để tiết kiệm pin.</li>
+        </ul>
+        <div class="callout-box">
+          ⚙️ <strong>Điều kiện kích hoạt:</strong> Hãy cấp quyền <em>"Vị trí luôn luôn"</em> (Always) và quyền <em>"Làm mới ứng dụng trong nền"</em> (Background App Refresh) trong phần Cài đặt điện thoại để đảm bảo hệ điều hành không đóng ứng dụng khi xe đang chạy.
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. Các lỗi thường gặp -->
+    <section id="loi-thuong-gap" class="section-card">
+      <div class="card-header">
+        <div class="icon-box icon-red">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FF4757" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+          </svg>
+        </div>
+        <h2>7. Các lỗi thường gặp & Cách khắc phục</h2>
+      </div>
+      <div class="card-body">
+        <div class="faq-block">
+          <!-- FAQ 1 -->
+          <div class="faq-row open">
+            <div class="faq-trigger">
+              <span>Tốc độ hiển thị 0 km/h hoặc báo mất tín hiệu GPS?</span>
+              <svg class="faq-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </div>
+            <div class="faq-content">
+              Kiểm tra xem bạn đã bật quyền "Vị trí chính xác" chưa. Nếu đang ở trong hầm chung cư hoặc dưới tán cây/mái tôn rậm rạp, hãy lái xe ra đoạn đường thoáng 15-30 giây để chip GPS kết nối vệ tinh ổn định.
+            </div>
+          </div>
+
+          <!-- FAQ 2 -->
+          <div class="faq-row">
+            <div class="faq-trigger">
+              <span>Không nghe thấy âm thanh / giọng nói cảnh báo?</span>
+              <svg class="faq-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </div>
+            <div class="faq-content">
+              Kiểm tra cần gạt im lặng (Silent switch) bên sườn iPhone hoặc âm lượng chuông/thông báo trên điện thoại. Nếu kết nối Bluetooth xe hơi, hãy chắc chắn nguồn phát âm thanh trên ô tô đang chọn kênh Bluetooth.
+            </div>
+          </div>
+
+          <!-- FAQ 3 -->
+          <div class="faq-row">
+            <div class="faq-trigger">
+              <span>Tốc độ GPS có bị lệch so với đồng hồ cơ của xe ô tô không?</span>
+              <svg class="faq-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </div>
+            <div class="faq-content">
+              Theo quy chuẩn sản xuất ô tô quốc tế, đồng hồ taplo trên xe thường chỉ số cao hơn thực tế từ 3-5 km/h để đảm bảo an toàn. Vận tốc GPS từ DimoHub phản ánh tốc độ di chuyển thực tế theo tọa độ vệ tinh.
+            </div>
+          </div>
+
+          <!-- FAQ 4 -->
+          <div class="faq-row">
+            <div class="faq-trigger">
+              <span>Ứng dụng có tự động cập nhật camera mới không?</span>
+              <svg class="faq-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </div>
+            <div class="faq-content">
+              Có. Hệ thống tự động kiểm tra và tải bản cập nhật dữ liệu camera mới nhất khi bạn mở app có mạng 4G/Wifi. Dữ liệu đã lưu sẽ hoạt động bình thường ngay cả khi bạn di chuyển vào vùng mất sóng điện thoại.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. Liên hệ hỗ trợ -->
+    <section id="lien-he" class="section-card">
+      <div class="card-header">
+        <div class="icon-box icon-cyan">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#00D7FF" stroke-width="2">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+          </svg>
+        </div>
+        <h2>8. Liên hệ hỗ trợ kỹ thuật</h2>
+      </div>
+      <div class="card-body">
+        <p>Đội ngũ DimoHub luôn sẵn sàng lắng nghe mọi góp ý, thắc mắc hoặc báo cáo điểm camera mới từ các tài xế:</p>
+
+        <div class="contact-grid">
+          <!-- Form -->
+          <div>
+            <form id="contactForm" onsubmit="submitForm(event)">
+              <div class="form-group">
+                <label for="contactName">Họ và tên của bạn</label>
+                <input type="text" id="contactName" class="form-input" placeholder="Ví dụ: Nguyễn Văn Tuấn" required>
+              </div>
+
+              <div class="form-group">
+                <label for="contactEmail">Email liên hệ</label>
+                <input type="email" id="contactEmail" class="form-input" placeholder="tuan.nguyen@gmail.com" required>
+              </div>
+
+              <div class="form-group">
+                <label for="contactSubject">Vấn đề cần hỗ trợ</label>
+                <input type="text" id="contactSubject" class="form-input" placeholder="Báo lỗi GPS / Báo vị trí camera mới / Góp ý tính năng" required>
+              </div>
+
+              <div class="form-group">
+                <label for="contactContent">Nội dung chi tiết</label>
+                <textarea id="contactContent" class="form-input" placeholder="Mô tả cụ thể vấn đề hoặc cung cấp tọa độ/địa điểm camera..." required></textarea>
+              </div>
+
+              <button type="submit" class="btn-send">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <line x1="22" y1="2" x2="11" y2="13"></line>
+                  <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                </svg>
+                Gửi Yêu Cầu Hỗ Trợ
+              </button>
+            </form>
+          </div>
+
+          <!-- Direct Channels -->
+          <div class="contact-channels">
+            <a href="mailto:support@dimohub.vn" class="channel-box">
+              <div class="icon-box icon-cyan" style="width:36px; height:36px;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00D7FF" stroke-width="2">
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                  <polyline points="22,6 12,13 2,6"></polyline>
+                </svg>
+              </div>
+              <div>
+                <strong>Hộp thư điện tử</strong>
+                <span>support@dimohub.vn</span>
+              </div>
+            </a>
+
+            <a href="https://t.me/dimohub_support" target="_blank" class="channel-box">
+              <div class="icon-box icon-green" style="width:36px; height:36px;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00E68C" stroke-width="2">
+                  <line x1="22" y1="2" x2="11" y2="13"></line>
+                  <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                </svg>
+              </div>
+              <div>
+                <strong>Kênh Telegram Hỗ Trợ</strong>
+                <span>@dimohub_support</span>
+              </div>
+            </a>
+
+            <div class="channel-box" style="cursor: default;">
+              <div class="icon-box icon-amber" style="width:36px; height:36px;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFB300" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
+              </div>
+              <div>
+                <strong>Thời gian phản hồi</strong>
+                <span>Thường trong vòng 2 - 4 giờ làm việc</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 9. Link sang Privacy Policy -->
+    <section id="quyen-rieng-tu" class="privacy-card">
+      <div>
+        <h3 style="font-size: 19px; font-weight: 800; color: #FFFFFF; margin-bottom: 6px;">Chính Sách Quyền Riêng Tư (Privacy Policy)</h3>
+        <p style="color: var(--text-secondary); font-size: 14px; max-width: 620px;">
+          Chúng tôi cam kết tôn trọng và bảo vệ tuyệt đối dữ liệu định vị cá nhân của bạn. Dữ liệu GPS chỉ phục vụ mục đích tính toán tốc độ và cảnh báo biển báo theo thời gian thực tại chỗ trên thiết bị.
+        </p>
+      </div>
+      <div>
+        <a href="https://dangtinh97.github.io/dimohub/apple-privacy" target="_blank" rel="noopener noreferrer" class="privacy-btn">
+          Xem Chi Tiết Chính Sách
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+            <polyline points="15 3 21 3 21 9"></polyline>
+            <line x1="10" y1="14" x2="21" y2="3"></line>
+          </svg>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <!-- Toast Notice -->
+  <div id="toast" class="toast-notice">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#00E68C" stroke-width="2.5">
+      <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+      <polyline points="22 4 12 14.01 9 11.01"></polyline>
+    </svg>
+    <div>
+      <strong style="font-size: 14px; display:block;">Đã nhận thông tin hỗ trợ!</strong>
+      <span style="font-size: 12px; color: #94A3B8;">Kỹ thuật viên sẽ kiểm tra và phản hồi sớm qua email của bạn.</span>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-inner">
+      <div>
+        <p>© 2026 <strong>DimoHub Vietnam</strong>. Bảo lưu mọi quyền.</p>
+        <p style="font-size: 11px; margin-top: 3px; color: var(--text-muted);">Trang hỗ trợ chính thức theo tiêu chuẩn App Store cho DimoHub.</p>
+      </div>
+      <div class="footer-links">
+        <a href="https://dangtinh97.github.io/dimohub/apple-privacy" target="_blank">Chính Sách Quyền Riêng Tư</a>
+        <a href="#gioi-thieu">Giới Thiệu</a>
+        <a href="#loi-thuong-gap">Lỗi Thường Gặp</a>
+        <a href="#lien-he">Hỗ Trợ</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // FAQ accordion toggle
+    document.querySelectorAll('.faq-trigger').forEach(trigger => {
+      trigger.addEventListener('click', () => {
+        const row = trigger.parentElement;
+        row.classList.toggle('open');
+      });
+    });
+
+    // Form submit
+    function submitForm(e) {
+      e.preventDefault();
+      const toast = document.getElementById('toast');
+      toast.classList.add('show');
+      document.getElementById('contactForm').reset();
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 4000);
+    }
+  </script>
+</body>
+</html>
